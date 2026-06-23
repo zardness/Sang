@@ -1,0 +1,4 @@
+1장 주피터 노트북 사용방법
+    -shift + Enter 실행
+    -esc + m,b,a,o
+    -help() / shift + tap+tap
