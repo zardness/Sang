@@ -7,3 +7,7 @@
    input(label) : 사용자로부터 문자영 입력
    print(출력내용들,sep="구분자",end="종결어구)
 3장 기본자료형
+   숫자 : int/float/complex
+   형 변환시 int( ), float( ) 함수 사용 가능 
+   문자
+   논리
