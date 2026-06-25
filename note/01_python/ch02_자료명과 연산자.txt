@@ -3,9 +3,11 @@
    문자,_,숫자만 사용가능. 문자로시작
    예약어 사용불가
    다중 변수 할당 가능(일괄 할당)
+
 2절 화면 I/O
    input(label) : 사용자로부터 문자영 입력
    print(출력내용들,sep="구분자",end="종결어구)
+
 3장 기본자료형
    숫자 : int/float/complex
    형 변환시 int( ), float( ) 함수 사용 가능 
@@ -26,6 +28,17 @@
 	논리연산자: and, or, &, |, not (&, |는 연산자 앞뒤에 논리값이 올 경우)
 	비교연산자: > >= < <= == !=
 	비트연산자: &, |, ^, ~
+
+6절. 문자열 다루기
+	인덱싱, 슬라이싱,len(문자변수)
+	dir(str): 문자 함수 리스트
+		replace( ), find( ), split( ), strip( ), join( )
+		upper( ), lower( ), startswith( ), endswidth( )...
+7절. 시간 날짜, 시간, 날짜 다루기
+	datetime(년 월 일 시 분 초), date(년, 월, 일), time(시, 분)
+	datetime.now( ) : 현재 시점의 날짜와 시간
+
+
 
 
 
