@@ -18,3 +18,5 @@ def safe_remove(lst, remove_item):
         lst.remove(remove_item)
     else:
         print('해당 데이터는 없는 데이터입니다.')
+
+        
