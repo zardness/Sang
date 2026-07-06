@@ -1,0 +1,15 @@
+6장 모듈과 패키지
+
+ 1. 파이썬 표준모듈 사용
+	
+	모듈/패키지이나 모듈안의 함수를 가져오는 방법
+
+import A             -A모듈을 가져옴 
+import A as B        -A모듈을 B이름으로 가져옴
+from A import B      -A모듈안의 B함수(클래스/변수)를 가져옴 
+from A import B as C -A모듈안의 B함수를 C이름으로 가져옴
+
+from A import B      -A패키지안의 B모듈을 가져옴
+from A.B import C    -A패키지안의 B모듈안의 C함수를 가져옴 
+from A import B as C -A패키지안의 B모듈을 C이름으로 가져옴
+from A.B import C as D -A패키지안의 B모듈안의 C를D이름으로 가져옴 
