@@ -1,6 +1,6 @@
 6장 모듈과 패키지
 
- 1. 파이썬 표준모듈 사용
+ 1절. 파이썬 표준모듈과 사용자 정의 모듈 사용
 	
 	모듈/패키지이나 모듈안의 함수를 가져오는 방법
 
@@ -13,3 +13,12 @@ from A import B      -A패키지안의 B모듈을 가져옴
 from A.B import C    -A패키지안의 B모듈안의 C함수를 가져옴 
 from A import B as C -A패키지안의 B모듈을 C이름으로 가져옴
 from A.B import C as D -A패키지안의 B모듈안의 C를D이름으로 가져옴 
+
+ 2절 패키지 : __init__.py 포함한 모듈이 있는 폴더
+
+3절 패키지 
+
+-패키지 설치 : pip install 패키지명[==버젼] / conda install 패키지명[==버전]
+-패키지 확인 : pip show 패키지명           / conda list 패키지명
+-패키지 삭제 : pip uninstall 패키지명      / conda remove 패키지명 
+
