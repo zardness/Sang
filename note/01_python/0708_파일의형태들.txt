@@ -1,0 +1,18 @@
+- csv파일 형태
+"name","age","address"
+홍길동,59,신림동
+김길동,19,봉천동
+- json파일 형태
+[{'name':'홍길동','age':59,'address':'신림동'},
+{'name':'김길동','age':19,'address':'봉천동'}]
+- xml파일 형태
+<person>
+	<name>홍길동</name>
+	<age>59</age>
+	<address>신림동</address>
+</person>
+<person>
+	<name>김길동</name>
+	<age>19</age>
+	<address>봉천동</address>
+</person>
