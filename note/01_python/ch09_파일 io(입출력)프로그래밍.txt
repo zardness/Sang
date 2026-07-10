@@ -1,0 +1,32 @@
+9장 파일 I/O 프로그래밍
+	
+	1절. txt파일 io
+		with open(파일 상대 경로, 또는 파일 절대경로로, 'r|w|a',encoding)as f:
+			ilst변수 = f.readlines()/ 문자변수 = f.read()
+			f.write(저장할 문자열) / f.writelines(문자list)
+	
+	2절. 피클(pkl,pickle,data)파일 io
+		with open(파일 경로,'rb|wb') as f:
+		 	변수 = pickle.load(f)
+			picke,dump(변수,f)
+	
+	3절. csv파일 io
+		with open(파일 경로, 'r|w|a|rt|wt|at',encoding) as f:
+			reader = csv.reader(f); 2차원 list = list(reader)
+			writer = csv.writer(f); writer.writerows(2차원list)
+
+			dic_reader = csv.DictReader(f);딕셔너리list = list(dic_reader)
+			dic_writer = csv.DictWriter(f);dic_writer.writerows(딕셔너리list)
+	
+	4절.json파일 io
+		with open(파일경로, 'r|w|a|rt|wt|at', encoding) as f:
+			딕셔너리list - json.load(f)
+			json.dump(딕셔너리list,f,ensure_ascii=False,indent)
+
+			객체 ilst = json.load(f,object_hook=딕셔너리를 객체로 return하는 함수명)
+			json.dump(객체list,f,default=클래스명. 객체를 딕셔너리로 return함수명)		
+
+	5절. h5/hdf5파일 io		
+		import pandas as pd
+		데이터 프레임 변수=	pd.read_hdf(파일 경로,key)	
+		데이터 프레임 변수.to_	hdf(파일 경로,key)		
