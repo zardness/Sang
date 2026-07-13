@@ -1,7 +1,7 @@
 Numpy 패키지의 함수와 속성
 	
 	-배열 속성
-		dtype : 요소들의 타입(타입 변경시 astype
+		dtype : 요소들의 타입(타입 변경시 astype)
 		itemsize : 요소의 byte 사이즈
 		ndim : 차원수(축수)
 		size : 요소갯수
@@ -14,11 +14,55 @@ Numpy 패키지의 함수와 속성
 		np.pull(tup,dtype)
 		np.empty(tup,dtype)
 
+	※ n차원 배열만들기
+		- np.random.random(tup) : 0부터 1미만의 균등 분포를 갖는 tup사이즈 n차원 배열 
+		- np.random.uniform(low=0, high=1.0, size=tup) : low부터 high미만까지 균등분포n차원 배열 
+		- np.random.normal(loc=0.0,scale=1.0,size=tup) : 평균loc,표준편차scale을 갖는 정규분포 n차원 배열 
 
+	※차원 배열만들기
+		- np.random.rand(n) : 균등분포의 1차원 난수 1차원 배열 발생(난수가 n개)
+		- np.random.randa(n) : 표준 정규 분포(평균이 0이고 표준편차가1인 정규분포)의 1차원 배열(난수n개)
 
+	※ 난수 1개 만들기
+		- np.rendom.randint(n) 0부터 n미만의 정수 난수 1개 발생==random.randint(0,n-1)
+		- np.random.randint(from,to) : from부터 새 미만의 정수 난수 1개 발생
+                    		==random.randint(from,to)
 
+		-np.arange(from,to,by,dtype) : from~to 앞까지 by씩 증감하는 1차원 배열
+		-np.ilnspace(from,to,num,) : from~to 까지 같은 간격의 num개수를 1차원 배열
 
+	-배열차원변경
+		reshape():-1사용하면 자동계산
+		resize() : -1불가
+		T, transpose() : 전치행렬
+		flattern(), ravel() : 1차원 변경
+	-배열연산
+		요소별연산, 행렬곱(@,단위행렬),집합함수(sum,min,max,mean,var,std)
+		범용함수(np.add,np.sqrt...), 브로드 캐스팅
 
+	-배열 합치기
+		np.vstack(tup)
+		np.hstack(tup)
+		np.dstack(tup):마지막 축(열)들끼리 합침
+		np.concatenate(tup,axis)axis축으로 합침
+
+		np.column_stack(tup) : 1차원 배열을 열단위로 배열하여 2차원 배열로 합침
+		np.row_stack(tup) : 행단위로 합침
+
+		np.stack(tup,axis)
+			
+		np.r_[a,b,c] row 단위로 쌓음(한행으로 합치기)
+		np.c_[a,b,c]컬럼으로 쌓아서 합치기(1차원을 2차원으로)
+		
+		1차원 배열[:,np.newaxis] : 1차원 배열을 2차원 배열로 쌓아줌(충 증가)
+			reshap(-1,1)/np.expand_dims(a,axis=1)
+	
+	-배열 분할하기
+		vsplit(ary,indices_or_sections): 첫번째 축(2차원의 경우 가로축)을 따라 분할
+		hsplit(ary,indices_or_sections): 두번째 축(2차원의 경우 가로축)을 따라 분할
+		split(ary,indices_or_sections,axis): axis가 0이면 vsplit,axis가 1이면 hsplit과 동일
+
+		array_split(ary, indices_or_sections, axis) : 나눠지지 않는 정수로도 split 가능
 
 
 
