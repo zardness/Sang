@@ -1,0 +1,7 @@
+1)데이터 준비
+2)미적속성설정sns.set(style='white',
+                            context='notebook',
+                	 palette='Dark2',
+                           rc=({})
+3)그래프 함수
+ⓐ 관계형 그래프 : scatterplot,lineplot=>relplot(서브 플롯)
