@@ -4,4 +4,17 @@
                 	 palette='Dark2',
                            rc=({})
 3)그래프 함수
-ⓐ 관계형 그래프 : scatterplot,lineplot=>relplot(서브 플롯)
+	ⓐ 관계형 그래프 : scatterplot,lineplot=>relplot(서브 플롯)
+	
+	ⓑ 범주형 그래프 : stripplot, swarmplot(산점도),
+				 barplot, pointplot,
+				 countplot,
+				 boxplot, violinplot, boxenplot ==> catplot(서브플롯)
+	
+	ⓒ 쌍관계 그래프 :  pairplot
+
+	ⓓ밀도 그래프 : hisplot, displot(rug)
+
+	ⓔ회귀 그래프 : regplot => implot(서브플롯)
+
+4)다중 그래프 그래프를 위한 FacetGrid
