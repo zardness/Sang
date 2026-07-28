@@ -4,3 +4,4 @@ lecNote/
 __pycache__
 .vscode/
 .venv/
+.vs/

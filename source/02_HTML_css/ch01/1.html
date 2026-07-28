@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head> <!-- head영역 : 설정 정보 -->
+  <meta charset="utf-8" />
+  <title>첫예제</title>
+  <style> /* 디자인 설정(CSS/CSS3) */
+    body{
+      background-color:yellow;
+      font-size: 30pt;
+    }
+  </style>
+  <script>
+    /* 동적인 부분 */
+    name = prompt("이름은?", "홍길동"); // 취소를 클릭하면 'null'
+    if (name != 'null' && name != '') {
+      document.write(name + '님 방가방가<br><br>');
+      }    
+
+  </script>
+</head>
+<body> <!-- body영역 : 웹브라우저(웹문서)에 출력될 정보 -->
+  안녕하세요<br />
+  오늘부터 웹표준 &nbsp; &nbsp; 수업 시작합니다<br />
+  Hello, World
+</body>
+</html>
