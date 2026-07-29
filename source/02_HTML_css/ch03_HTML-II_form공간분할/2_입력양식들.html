@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <form action="" method="get">
+        <table>
+            <tr>
+        <td>아이디</td>
+        <td>
+            <input type="hidden" name="data" value="숨겨서 보냄"/><!--form안에만 입력하면 어느위치든 상관없음-->
+            <input type="text" name="id" size="9" autocomplete="off"/>
+            <input type="button" value="중복확인" />
+        </td>
+    </tr>
+    <tr>
+        <td>비밀번호</td>
+        <td><input type="password" name="pw" /></td>
+    </tr>
+    <tr>
+        <td>전화번호</td>
+        <td>
+            <input type="tel" name="phone1" size="1" /> -
+            <input type="tel" name="phone2" size="1" /> -
+            <input type="tel" name="phone3" size="1" />
+        </td>
+    </tr>
+    <tr>
+        <td>경력(정수)</td>
+        <td><input type="number" name="career" min="0" max="60" value="0"/></td>
+    </tr>
+    <tr>
+        <td>이메일</td>
+        <td><input type="email" name="email" /></td>
+    </tr>
+    <tr>
+        <td>사진</td>
+        <td><input type="file" name="filename"/></td>
+    </tr>
+            <tr>
+                <td>성별</td>
+                <td>
+                    <input type="radio" name="gender" value="m" checked="checked" />남
+                    <input type="radio" name="gender" value="f" />여
+                </td>
+            </tr>
+            <tr>
+                <td>사용언어</td>
+                <td>
+                    <input type="checkbox" name="lang" value="kor" checked="checked" />한국어
+                    <input type="checkbox" name="lang" value="eng" />영어
+                    <input type="checkbox" name="lang" value="chi" />중국어
+                </td>
+            </tr>
+            <tr>
+                <td>국적</td>
+                <td>
+                    <select name="nation">
+                        <option value="korea">대한민국</option>
+                        <option>미국</option>
+                        <option>중국</option>
+                        <option>인도</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>좋아하는 음식</td>
+                <td>
+                    <select name="food" multiple="multiple" size="3">
+                        <option>볶음밥</option>
+                        <option>비빔밥</option>
+                        <option>주먹밥</option>
+                        <option>탕수육</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>자기소개서(여러줄)</td>
+                <td><textarea name="info" cols="25" rows="3"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>생년월일</td>
+                <td><input type="date" name="birth"/></td>
+            </tr>
+            <tr>
+                <!--<td colspan="2">
+                <input type="range" name="age" min="0" max="100" step="5" value="20"/></td>-->
+            </tr>
+            <tr>
+                <td>type='color' / type=url</td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    <input type="submit" value="입력" />
+                    <input type="reset" value="초기화" />
+                </th>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

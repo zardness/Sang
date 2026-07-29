@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        table{
+            border-collapse : collapse;
+        }
+        tr {
+             border-top: 1px solid red;
+             border-bottom: 1px solid green;
+            }
+        td, th{padding:5px 10px;/*상우하좌 순 안 여백*/}
+        span{
+            color:red;
+            font-weight:bold;
+        }
+    </style>
+    <script>
+        function chk() {
+            /*frm.title.value(필수입력), frm.name.value(2글자 이상) 유효성 검사
+            */
+            if (!frm.title.value.trim()) {// 빈문자, space만 입력하였거나
+                alert('제목을 꼭 입력하세요');
+                frm.title.value = '';
+                frm.title.focus(); //frm.title에 커서가 깜박깜박
+                return false;
+            } else if (frm.name.value.trim().length < 2) {
+                alert('작성자명은 2글자 이상 입력하세요');
+                frm.name.focus();
+                return false; //submit을 제한
+            }
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <form name="frm" onsubmit="return chk()"><!--action"" method="get"-->
+    <table>
+        <caption><h2>게시판</h2></caption>
+        <tr>
+            <td>제목<span>*</span></td>
+            <td><input type="text" name="title" size="25"/></td>
+        </tr>
+        <tr>
+            <td>작성자<span>*</span></td>
+            <td><input type="text" name="name" size="25"/></td>
+        </tr>
+        <tr>
+            <td>본문</td>
+            <td><textarea name="content" cols="25" rows="5"></textarea></td>
+        </tr>
+        <tr>
+            <td>첨부파일</td>
+            <td><input type="file" name="filename"/></td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <input type="submit" value="글쓰기" />
+                <input type="reset" />
+            </th>
+        </tr>
+    </table>
+
+    </form>
+</body>
+</html>

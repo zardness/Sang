@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        p{text-align:center; /*글씨, 이미지, input 등 가운데 정렬*/}
+    </style>
+</head>
+<body>
+    <!--   1. 참조:https://ko.wikipedia.org/wiki/%EC%A0%95%EA%B7%9C_%ED%91%9C%ED%98%84%EC%8B%9D
+    2. 간략문법
+        \d :(숫자와 매치 [0-9]와동일)
+        \D : (숫자가 아닌 문자)
+        \w : (영문자나 숫자.[a-zA-Z0-9]와 동일)
+        \W : (영문자나 숫자가 아닌 문자)
+        . : (문자)
+        \.: (.)
+        \s : ()
+        {n,} : n회 반복
+        {2,4} : 2-4회 반복
+        ? : (0번이나 1번의 의미)
+        + : (1번 이상 반복)
+        * : (0번이상 반복)
+     3.정규표현식 연습장 :
+        ex1.전화번호 패턴:0\d{1,2}[\-)\s\.]\d{3,4}[\-\s\.]\d{4},(\d{2,3}[\-)]?\d{3,4}-\d{4})|\d{2,3}|\d{9,11}
+        ex2.이메일 패턴 : \w[a-z0-9_]+@\w+(\.\w+){1,2}, \w[a-z0-9_\.]{3,}@\w+(\.\w+){1,2}
+        ex3)생년월일 :\d{2}(0[0-9]|1[0-2])(0[1-9]|[1-2]\d|3[01]),^\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])-[1-8]\d{6}$
+        ex4)주민등록번호 : \d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2]\d|3[01])-?[1-4]\d{6}\b
+        https://regexr.com/-->
+    <form>
+        <fieldset>
+            <legend>필드유효성검사</legend>
+            <ul>
+                <li>
+                    <label for="tel">연락처</label>
+                    <input type="text" name="tel" id="tel"
+                           placeholder="전화번호형식(첫화면 도움말)"
+                           required="required"
+                           autofocus="autofocus"
+                           autocomplete="off" 
+                           pattern="\d{2,3}-?\d{3,4}-?\d{4}"
+                           title="전화번호패턴을 지켜주세요"/>
+                </li>
+                <li>
+                    <label for="email">이메일</label>
+                    <input type="text" name="email" id="email"
+                           placeholder="아이디@도메인"
+                           pattern="\w[a-z0-9_\.]{3,}@\w+(\.\w+){1,2}"
+                           title="이메일패턴을 지켜주세요"/>
+                </li>
+            </ul>
+            <p>
+                <input type="submit" value="입력" />
+                <input type="reset" />
+
+            </p>
+        </fieldset>
+    </form>
+</body>
+</html>

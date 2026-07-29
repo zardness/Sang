@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        table{
+            border-collapse : collapse;
+        }
+        tr {
+             border-top: 1px solid red;
+             border-bottom: 1px solid green;
+            }
+        td, th{padding:5px 10px;/*상우하좌 순 안 여백*/}
+        span{
+            color:red;
+            font-weight:bold;
+        }
+    </style>
+   
+</head>
+<body>
+    <form><!--action"" method="get"-->
+    <table>
+        <caption><h2>게시판</h2></caption>
+        ㅍ
+        <tr>
+            <td>작성자<span>*</span></td>
+            <td><input type="text" name="name" size="25"required="required" minlength="2"/></td>
+        </tr>
+        <tr>
+            <td>본문</td>
+            <td><textarea name="content" cols="25" rows="5"></textarea></td>
+        </tr>
+        <tr>
+            <td>첨부파일</td>
+            <td><input type="file" name="filename"/></td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <input type="submit" value="글쓰기" />
+                <input type="reset" />
+            </th>
+        </tr>
+    </table>
+
+    </form>
+</body>
+</html>

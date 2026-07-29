@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<script>
+     function chk() {
+         
+         if (!frm.title.value.trim()) {
+             alert('이름은 두글자이상');
+             frm.title.value = '';
+             frm.title.focus(); 
+             return false;
+         } else if (frm.name.value.trim().length < 2) {
+             alert('이름은 2글자 이상 입력하세요');
+             frm.name.focus();
+             return false; 
+         }
+         return false;
+     }
+</script>
+<body>
+    <div id="header">
+        <h1>회원가입</h1>
+    </div>
+    <form action="" method="get" name="frm" onsubmit="return chk()">
+        <fieldset>
+            <legend>필수입력</legend>
+            <div id="join_contents">
+                <td>이 름<span>*</span></td>
+                <td><input type="text" name="name" placeholder="이름은 두글자이상"
+                           autofocus/></td>
+            </div>
+            <div id="Nickname">
+                <td>아이디<span>*</span></td>
+                <td><input type="text" name="id" placeholder="ID는 4글자이상"
+                           pattern=""/></td>
+            </div>
+            <div id="Password">
+                <td>비밀번호<span>*</span></td>
+                <td><input type="password" name="pwChk" /></td>
+            </div>
+            <div id="rePassword">
+                <td>비번확인<span>*</span></td>
+                <td><input type="password" name="pwChk" /></td>
+            </div>
+            <div>
+                <td>
+                    <label for="tel">전화<span>*</span></label>
+                    <input type="text" name="tel" id="tel"
+                           placeholder="xx-xxx-xxxx000-0000-0000"
+                           required="required"
+                           autofocus="autofocus"
+                           autocomplete="off"
+                           pattern="\d{2,3}-?\d{3,4}-?\d{4}"
+                           title="전화번호패턴을 지켜주세요" />
+                </td>
+            </div>
+            <div>
+                <td>
+                    <label for="email">이메일</label>
+                    <input type="text" name="email" id="email"
+                           placeholder="id@domain.com또는 co.kr"
+                           pattern="\w[a-z0-9_\.]{3,}@\w+(\.\w+){1,2}"
+                           title="이메일패턴을 지켜주세요" />
+                </td>
+            </div>
+
+        </fieldset>
+        <fieldset>
+            <legend>추가입력사항</legend>
+            <div>
+                <td>결혼 유 무</td>
+                <td>
+                    <input type="radio" name="wed" value="m" checked="checked" />기혼
+                    <input type="radio" name="wed" value="s" />미혼
+                </td>
+            </div>
+            <div>
+                <td>자식</td>
+                <td>
+                    <input type="checkbox" name="child" value="boy" checked="checked" />아들
+                    <input type="checkbox" name="child" value="girl" />딸                   
+                </td>
+            </div>
+            <div>
+                <td>지역</td>
+                <td>
+                    <select name="nation">
+                        <option>서울</option>
+                        <option>미국</option>
+                        <option>중국</option>
+                        <option>인도</option>
+                    </select>
+            </div>
+
+        </fieldset>
+            
+    </form>
+</body>
+</html>
