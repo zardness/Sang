@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        #wrap{width:750px; margin:0 auto;}
+        #header{
+            border:1px solid gray;
+            text-align:center;
+        }
+        #content{
+            padding:0 10px;
+            text-align:justify;
+        }
+        #content p:nth-child(2)::first-line,
+        #content p:nth-child(3)::first-line{
+            color:blue;
+            font-weight:bold;/*진하게*/
+            font-size:20px;
+        }
+        #content p:nth-child(2)::first-letter{font-size:2em;/*원래 크기의 2배*/}
+        #content p:nth-child(3) span{font-size:2em;}
+        #content a {text-decoration:none; color:blue; font-size:1.5em;}
+        #content a:after{/*링크선택자*/
+            content : '-' attr(href);
+        }
+        #content li:not(.web) a{/*부정선택자*/
+            background-color:yellow;
+        }
+        #footer ul{
+            border-top:1px solid gray;
+            overflow:hidden;
+        }
+        #footer ul{
+            float:left;
+            list-style:none;
+            padding:15px;
+        }
+        #footer ul li:first-child{padding-top:30px;}
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div id="header">
+            <h1>제목이나 회사명</h1>
+        </div>
+        <div id="content">
+            <p>Why do we use it?</p>
+            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+            <ul>
+                <li><a href="http://www.naver.com" target="_blank">네이버</a></li>
+                <li class="web"><a href="http://www.daum.net">다음</a></li>
+                <li><a href="http://www.google.com" target="_blank">구글</a></li>
+                <li><a href="http:/zum.com" target="_blank">줌</a></li>
+            </ul>
+        </div>
+        <div id="footer">
+            <ul>
+                <li><img src="ch04/logo.png" /></li>
+                <li><img src="ch04/address.png" /></li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>

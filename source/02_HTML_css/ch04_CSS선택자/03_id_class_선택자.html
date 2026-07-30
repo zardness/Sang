@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        div{border:1px solid gray;}
+        #header,#footer{ /*id 선택자(#id)*/
+          width : 600px;
+          margin:0 auto;
+          background-color:yellow;
+          text-align:center;
+/*            text-decoration : underline: 밑줄*/
+
+        }
+        #wrap {
+          width: 600px;
+          margin: 0 auto;
+          background-color:aqua;
+          overflow:hidden;/*부모단에*/
+        }
+        #wrap #content{
+          float:left;/*블록형태그를 수평으로*/
+          width:348px;/*content가로 = width(348px) + border(1px*2)=350*/
+          height:300px;
+        }
+        #wrap #content .odd{/*class선택자(.)*/
+          font-size:1.5em;/*원래 크기의 1.5배*/
+        }
+
+        .menu2{font-weight:bold;}
+            #wrap #side_banner {
+                float: left; /*블록형태그를 수평으로*/
+                width: 248px;
+                height: 300px;
+            }
+        #wrap #side_banner img{width:150px;}
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>HEADER</h1>
+    </div>
+    <div id="wrap">
+        <div id="content">
+            <h2>CONTENT</h2>
+            <ul>
+                <li class="menu1 odd">menu1</li>
+                <li class="menu2">menu2</li>
+                <li class="menu3 odd">menu3</li>
+                <li class="menu2">menu4</li>
+                <li class="menu1 odd">menu5</li>
+            </ul>
+        </div>
+
+        <div id="side_banner">
+            <h2>BANNER</h2>
+            <a href="http://www.daun.net">
+                <img src="https://www.brandb.net/_next/image?url=https%3A%2F%2Fapi.brandb.net%2Fapi%2Fv2%2Fcommon%2Fimage%3FfileId%3D22973&w=1920&q=75" alt="다음로고" />
+            </a>
+        </div>
+    </div>
+    <div id="footer">
+        <h1>FOOTER</h1>
+    </div>
+</body>
+</html>

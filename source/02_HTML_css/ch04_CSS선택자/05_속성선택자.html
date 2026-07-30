@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        input{color:green;}
+        input[type='password']{/*type이 password인 속성*/
+          color:black;
+        }
+        input[type^='te']{/*type이 te로 시작되는태그*/
+          width:100px; color:orange;
+        }
+        input[name$='me']{/*name 속성이 me로 끝나는 태그*/
+          border : 1px solid red;
+          padding:10px;
+          outline:0; /*input 태그가 focus되었을때 나타나는 border*/
+        }
+        img[alt]{width:50px; border:2px solid red;}/*img 태그 중alt 속성이 있는 태그*/
+    </style>
+</head>
+<body>
+    <form>
+        이름<input type="text" name="name" /><br />
+        아뒤<input type="text" name="id" /><br />
+        비번<input type="password" name="pw" /><br/>
+        전번<input type="tel" name="tel" /><br />
+        <img src="ch04/sulhyun.jpg" />
+        <img src
+
+    </form>
+
+</body>
+</html>

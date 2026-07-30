@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        input:focus{
+            background-color:yellow;
+            border:2px solid green
+            outline:none;
+        }
+        input:enabled{/*focus 가능*/
+            color:green;
+        }
+        input:disabled{/*focus 불가능*/
+            color:balck;
+        }
+        input:read-only{/*readonly이거나 disable*/
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        이름<input type="text" name="name" /><br />
+        아뒤<input type="text" name="id" /><br />
+        시급<input type="text" name="sal" value="11000" disabled="disabled" /><br />
+        생일<input type="text" name="birth" value="981212" readonly="readonly" /><br />
+        <input type="submit" />
+    </form>
+   
+</body>
+</html>
