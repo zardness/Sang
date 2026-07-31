@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        #container {
+            width:500px; margin:0 auto;
+            border:1px solid gray;
+            padding:10px;
+            text-align:justify;/*양쪽정렬*/
+        }
+        #container p:nth-child(2n+1){background-color:pink;}
+        #container p:nth-child(1){font-size:.8em;/*pxtoem*/}
+        #container p:nth-child(2){font-size:100%;/*기본사이즈 : 16px*/}
+        #container p:nth-child(3){font-size:24px;}
+        #container p:nth-child(4){font-size:24pt;/*3pt = 4px*/}
+        span{
+            display:block;/*display속성을 block으로 수정하면 block형 태그로 전환*/
+            color:gray;
+            font-size:.5em;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <p>The standard chunk of Lorem Ipsum used since 1966 is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+        <span>입력 2026.07.31</span>
+        <p>The standard chunk of Lorem Ipsum used since 1966 is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+        <span>입력 2026.07.31</span>
+        <p>The standard chunk of Lorem Ipsum used since 1966 is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+        <span>입력 2026.07.31</span>
+        <p>The standard chunk of Lorem Ipsum used since 1966 is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+        <span>입력 2026.07.31</span>
+    </div>
+</body>
+</html>

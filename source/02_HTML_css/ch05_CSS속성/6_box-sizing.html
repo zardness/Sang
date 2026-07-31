@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        *{margin:0; padding:0;}
+        div{width:100px; height:100px;}
+        div:nth-child(1){background-color:yellow;}
+        div:nth-child(2){background-color:green; border:5px solid red; box-sizing:border-box;}
+        div:nth-child(3){background-color:blue; border:5px solid red;}
+        ul{overflow:hidden; width:450px; margin:0 auto;}/*부모단*/
+        ul li{
+            float:left;
+            list-style:none;
+            border:1px solid black;
+            width:30.3%;
+            box-sizing:border-box; /*border 공간을 width에 편입*/
+            text-align:center;
+        }
+        ul li a{
+            border:1px solid red;
+            font-size:1.5em;
+            display:block;
+            padding:20px 0;
+
+        }
+    </style>
+</head>
+<body>    
+    <div>1111</div><div>2222</div><div>3333</div>
+    <ul>
+        <li><a href="#1">menu1</a></li>
+        <li><a href="#2">menu2</a></li>
+        <li><a href="#3">menu3</a></li>
+    </ul>
+
+</body>
+</html>

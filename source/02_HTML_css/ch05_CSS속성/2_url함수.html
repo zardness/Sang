@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        @font-face {
+            font-family: 'NanumGgocNaeEum';
+            scr: url('ch05/NanumGgocNaeEum.ttf');
+        }
+        * {
+            font-family: 'NanumGgocNaeEum','Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        #wrap{
+            width:600px; margin:0 auto;
+            border:1px solid gray;
+            height:400px;            
+        }
+        #content {
+            border: 1px solid red;
+            height: 100%; /*부모의 100%*/
+            width: 80%;
+            margin: 0 auto;
+            background: url('ch05/sulhyun.jpg') center no-repeat;
+            background-size:100%;/*사진을 div 가로사이즈 기준에 맞춰 사이즈 조정*/
+            font-size:3em;
+            text-align:center;
+            line-height:400px; /*라인 높이를 height와 같이 ==>세로 가운대 정렬*/
+            color:blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div id="content">
+            설현 설현 설현
+        </div>
+    </div>
+</body>
+</html>
