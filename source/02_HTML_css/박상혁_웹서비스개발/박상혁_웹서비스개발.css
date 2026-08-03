@@ -1,0 +1,68 @@
+*{margin: 0; padding: 0;}
+li{list-style: none;}
+a{text-decoration: none; color:black; display: block;}
+
+/********페이지 전체*********/
+#wrap{
+    width: 1000px;
+    margin: 20px auto;
+}
+/**********nav**********/
+nav{
+    overflow: hidden;
+    text-align: center;
+}
+nav ul li{width: 85; margin: 10px; padding: 5px 10px;}
+nav #nav_left ul li{
+    float: left;
+}
+nav #nav_right ul li{
+    float: right;
+}
+.logo #nav_left ul li:first-child{
+    border: 1px solid gray;
+    background-color: #FDEADA;
+} 
+
+/*****content*****/
+#content{
+    overflow: hidden;
+}
+    #content #title{
+        border-bottom: 1px solid gray;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+#content #lnb ul li {
+    line-height: 30px;
+    padding: 2px 30px;
+    border: 1px solid gray;
+    font-size: .9em;
+}
+#content #my_content{
+    width: 750px;
+    border: 1px solid gray;
+    height: 30px; line-height: 30px;
+    font-size: 0.9em;
+    padding-left: 10px;
+}
+#content #mt_content #modify table{
+    width: 70%; margin: 30px auto;
+}
+#content #my_content #modify table input[type='text'],
+#content #my_content #modify table input[type='email']{
+    width:90%; height:25%;
+    border: 1px solid gray;
+}
+#content #my_content #modify table input[type='submit']{
+    padding: 2px; 10px;
+}
+  #footer{
+            width:100%;
+            height:28px;
+            line-height:28px;
+            margin-top:5px;
+            border:1px solid #888;
+            background:#eee;
+            text-align:center;
+        }

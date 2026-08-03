@@ -1,0 +1,137 @@
+﻿/* css/shoppingmall.css*/
+/* 페이지 초기화(margin,padding,a,li...)*/
+@font-face {
+    font-family: 'Merriweather-Light';
+    src: url(../font/Merriweather-Light.ttf);
+}
+@font-face {
+    font-family: 'Merriweather-Regular';
+    src: url(../font/Merriweather-Regular.ttf);/*css파일 기준경로 설정*/
+}
+*{
+    margin: 0;padding: 0;
+    font-family: 'Merriweather-Regular'; 
+}
+a{
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+li{list-style-type:none;}
+/*header*/
+/*header .gnb*/
+header .gnb{
+    background-color: black;
+}
+header .gnb a{color: white;}
+header .gnb ul{
+    width: 1000px; margin: 0 auto;
+    overflow: hidden;
+    height: 30px; line-height: 30px; /*수평 가운데 정렬*/
+}
+header .gnb ul li{
+    float: left; 
+    width: 9%;
+    margin: 0 0.5%;
+    text-align: center;
+    /* border: 1px solid red;
+    box-sizing: border-box; */
+}
+/*header .logo*/
+header .logo{
+    width: 200px; margin: 30px auto; /*상하좌우30 auto30 auto30*/
+    font-size: 2em;
+    border: 1px solid gray;
+    padding: 10px;
+    text-align: center;
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+/*header .hitmenu*/
+header .hitmenu ul{
+    width: 1000px ; margin: 0 auto;
+    overflow: hidden;
+}
+header .hitmenu ul li{
+    float: right;
+    border: 1px solid black;
+}
+header .hitmenu ul li a{
+    padding: 10px 30px;
+}
+header .hitmenu ul li:first-child{
+    border-radius: 0px 10px 10px 0;
+}
+header .hitmenu ul li:last-child{
+    border-radius: 10px 0 0 10px;
+}
+/*header .lnb*/
+header .lnb{
+    border-top: 1px dashed #555555;
+    border-bottom: 1px dashed #555555;
+}
+header .lnb ul{
+    width: 1000px; margin: 0 auto;
+    height: 30px; line-height: 30px;
+}
+header .lnb ul li{
+    float: left;
+    width: 11.5%; margin: 0 0.5%;
+    text-align: center;
+}
+
+/* #contents */
+#content{
+    width: 1000px; margin: 0 auto;
+}
+/* #contents .section1 */
+#content .section1{
+    overflow: hidden;
+}
+#content .section1> div{
+    float: left;
+    /* height: 400px;  */
+    line-height: 400px;
+    border: 1px solid gray;
+    box-sizing: border-box;
+}
+#content .section1 .slide_benner{width: 700px;}
+#content .section1 .side_benner{width: 300px;}
+/* #contents .section2 */
+#content .section2 div{
+    margin: 5px 0; 
+    border: 1px solid gray;
+}
+#content .section2 ul{
+    overflow: hidden;    
+}
+#content .section2 ul li{
+    float: left;
+    border: 1px solid gray; box-sizing: border-box;
+    width: 24%; margin-left: 0.8%;
+    line-height: 400px;
+    text-align: center;
+}
+/* footer */
+footer{
+    width: 1000px; margin: 0 auto;
+    overflow: hidden;
+}
+/* footer div:nth-child(1),
+footer div:nth-child(2),
+footer div:nth-child(3) */
+footer div:nth-child(-n+3){
+    float:left;
+    width: 33.3%;
+    border: 1px solid gray;
+    box-sizing: border-box;
+    height: 100px;
+}
+footer div:last-child{
+    clear: both; /*앞태그에서 전달받은 float속성을 clear*/
+    background-color: black;
+    color: white;
+    line-height: 50px;
+    text-align: center;
+}

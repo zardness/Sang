@@ -9,16 +9,20 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-/*            background: url('ch05/sulhyun.jpg');
-            background-size: 100%;
-            opacity:0.4;*/
+
         }
         a {
             text-decoration: none;
             color: purple;
-            font-weight: bold;            
+            font-weight: bold;
+            display:block;
         }
-        div{border:1px solid gray;            
+        li{list-style:none;}
+        div{border:1px solid gray; 
+            box-sizing:border-box;
+            text-align:center;
+            margin:5px;
+            padding:5px;
         }
         #container {
             width: 820px;
@@ -113,13 +117,31 @@
         <div id="nav">
             <h2>NAVIGATION</h2>
             <ul>
-                <li><a href="#menu1">menu1</a>
-                <ol class="submenu">
-                    <il><a href=""</il>
-                </ol>
+                <li>
+                    <a href="#menu1">menu1</a>
+                    <ol class="submenu">
+                        <li><a href="#smenu1-1">submenu1-1</a></li>
+                        <li><a href="#smenu1-2">submenu1-2</a></li>
+                        <li><a href="#smenu1-3">submenu1-3</a></li>
+                    </ol>
+                </li> 
+                <li>
+                    <a href="#menu2">menu2</a>
+                    <ol class="submenu">
+                        <li><a href="#smenu2-1">submenu2-1</a></li>
+                        <li><a href="#smenu2-2">submenu2-2</a></li>
+                        <li><a href="#smenu2-3">submenu2-3</a></li>
+                    </ol>
+                </li>                
+                
+                <li>
+                    <a href="#menu3">menu3</a>
+                    <ol class="submenu">
+                        <li><a href="#smenu3-1">submenu3-1</a></li>
+                        <li><a href="#smenu3-2">submenu3-2</a></li>
+                        <li><a href="#smenu3-3">submenu3-3</a></li>
+                    </ol>
                 </li>
-                <li><a href="#menu2">menu2</a></li>
-                <li><a href="#menu3">menu3</a></li>
                 <li><a href="#menu4">menu4</a></li>
                 <li><a href="#menu5">menu5</a></li>
             </ul>
