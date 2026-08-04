@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        /***페이지 초기화***/
+        *{margin: 0; padding: 0;}
+        li{list-style: none;}
+        a{
+            text-decoration: none;
+            color: black;
+            display: block;
+            font-weight: bold;
+        }
+        /***공통부분***/
+        #wrap{
+            border: 1px solid gray;
+            box-sizing: border-box;
+            text-align: justify;
+        }
+        #wrap #header{
+            height: 100px; line-height: 100px; text-align: center;
+            border: 1px solid gray;
+            box-sizing: border-box;
+        }
+        #wrap #nav ul{overflow: hidden;}
+        #wrap #nav li{
+            float: left;
+            height: 60px; line-height: 60px; text-align: center;
+            border: 1px solid gray;
+            box-sizing: border-box; 
+        }
+        #wrap #content{padding: 10px;}
+        #wrap #footer{
+            line-height:70px; text-align: center;
+            background-color: gray;
+        }
+        /***스마트폰 용***/
+        @media screen and (max-width: 849px){
+            #wrap{
+                background-color: pink;
+                width: 99%;
+                margin: 0.5%;
+                font-size: 1.2em;
+                }
+            #wrap #nav ul li{width: 33.3%;}
+            #wrap #nav ul li:nth-child(2),
+            #wrap #nav ul li:nth-child(4){
+                display: none;
+            }
+            
+        }              
+        /***탭용***/
+        @media screen and (min-width:850px) and (max-width:1200px) {
+            #wrap{
+                background-color: lightgreen;
+                font-size: 1.1em;
+            }
+            #wrap #nav ul li{width: 25%;}
+            #wrap #nav ul li:nth-child(4){display: none;}
+        }
+        /***PC용***/
+        @media screen and (min-width:1201px) {
+            #wrap{
+                width:800px; margin: 0 auto;
+            }
+            #wrap #nav li{width: 20%;}
+        }
+
+    </style>
+    <script>
+        
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <div id="header"><h1>반응형웹</h1></div>
+        <div id="nav">
+            <ul>
+                <li><a href="#">menu1</a></li>
+                <li><a href="#">menu2</a></li>
+                <li><a href="#">menu3</a></li>
+                <li><a href="#">menu4</a></li>
+                <li><a href="#">menu5</a></li>
+            </ul>
+        </div>
+        <div id="content">
+            <h2>What is Lorem Ipsum</h2>
+            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+        </div>        
+        <div id="footer"> 홍길동 주식회사</div>
+    </div>
+</body>
+</html>

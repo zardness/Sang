@@ -1,0 +1,10 @@
+#wrap{
+        width: 500px; margin: 10px auto;
+        border: 1px solid gray;
+        padding: 10px;
+    }        
+    #wrap .title{
+        text-align: center;
+        text-decoration: underline;
+    }
+    #wrap hr{border: 1px solid red;}

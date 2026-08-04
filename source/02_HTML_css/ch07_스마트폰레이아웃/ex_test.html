@@ -2,16 +2,33 @@
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0
+    maximum-scale=2.0, minimum-scale=0.7, user-scalable=yes" />
     <title></title>
     <style>
-        
+    *{
+            margin: 0; padding: 0;
+        }
+        body{background-color: #ea8f00;}
+    #showHide{
+        width: 200px; height: 100px;
+        background-color: red;
+        display: none;        
+    }
+    #toggle:checked ~ #showHide{display: block;}
+    #toggle{display: none;}
     </style>
     <script>
         
     </script>
 </head>
 <body>
-    
+    <input type="checkbox" id="toggle">
+    <p>중간에 내용이 많아도 상관없어요</p>
+    <label for="toggle">
+        <img src="ch07/menu.png" alt="메뉴">        
+    </label>
+    <p>중간에 내용이 많아도 상관없어요</p>
+    <div id="showHide">토글부분(메뉴가 나타났다가 사라졌다가)</div>
 </body>
 </html>
