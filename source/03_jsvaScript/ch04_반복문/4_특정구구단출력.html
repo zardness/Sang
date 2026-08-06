@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+  <title></title>
+  <style>
+    
+  </style>
+  <script>
+    // prompt함수를 이용하여 원하는 구구단 수를 입력받아 해당 구구단을 출력(2~9)
+    do{
+      var su = parseInt(prompt('원하는 구구단(2~9)은?', '2'));
+    }while(isNaN(su) || su<2 || su>9);
+    // 몇 단 구구단을 출력할 지 su에 할당
+    document.write(su+'단 구구단<br>');
+    for(i=1 ; i<=9 ; i++){
+      document.write(`${su} * ${i} = ${su*i} <br>`);
+    }
+  </script>
+</head>
+<body>
+  
+</body>
+</html>
