@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5장. 함수 · 쉬운 파이썬</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root{--py-blue:#3776AB;--py-yellow:#FFD43B;--ink:#1a2233;--ink-soft:#4a5568;--line:#e6e9f0;--bg:#f6f8fc;--card:#fff;--accent:#2f6fb0;--green:#2e9e6b;--green-bg:#e9f8f0;--amber:#b9770e;--amber-bg:#fef6e6;--red:#d64545;--purple:#6b4fbb;--purple-bg:#f1ecfb}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(246,248,252,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-weight:600}.topbar .crumb{color:var(--ink-soft)}
+.hero{background:linear-gradient(135deg,#3776AB,#2b5e8c);color:#fff;border-radius:20px;padding:38px 34px;margin:26px 0 30px;box-shadow:0 10px 30px rgba(55,118,171,.25)}
+.hero .tag{display:inline-block;background:var(--py-yellow);color:#3a3300;font-weight:700;font-size:13px;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.hero h1{font-size:30px;line-height:1.3;margin-bottom:10px;letter-spacing:-.5px}.hero p{color:#eaf2fb;font-size:15.5px}
+.hero p strong{color:#FFE9A8;font-weight:800;background:rgba(255,255,255,.10);padding:1px 6px;border-radius:6px}
+.hero code{background:rgba(255,255,255,.18);color:#fff;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-weight:600}
+.hero p em{color:#EAF3FF;font-style:normal;border-bottom:2px solid rgba(255,212,59,.6)}
+.goals{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:30px}
+.goals h2{font-size:16px;color:var(--accent);margin-bottom:12px}
+.goals ul{list-style:none}.goals li{padding:7px 0 7px 30px;position:relative;font-size:15px}
+.goals li:before{content:"✓";position:absolute;left:0;top:7px;color:var(--green);font-weight:800}
+section{margin:38px 0}
+h2.sec{font-size:23px;letter-spacing:-.4px;padding-bottom:12px;border-bottom:3px solid var(--py-yellow);margin-bottom:22px;display:flex;align-items:center;gap:10px}
+h2.sec .n{background:var(--py-blue);color:#fff;font-size:15px;width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+h3{font-size:18.5px;margin:26px 0 12px;color:var(--ink);letter-spacing:-.3px}
+p{margin:12px 0;color:var(--ink-soft)}p strong,li strong{color:var(--ink);font-weight:700}
+ul.plain{margin:12px 0 12px 4px;padding-left:22px}ul.plain li{margin:7px 0;color:var(--ink-soft)}
+.term{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--py-blue);border-radius:12px;padding:18px 22px;margin:20px 0;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.term .h{font-size:17px;font-weight:800;color:var(--py-blue);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.term .def{font-size:15.5px;color:var(--ink)}
+.term .anal{margin-top:12px;background:var(--purple-bg);border-radius:9px;padding:12px 15px;font-size:14.5px;color:#4a3a7a}
+.term .anal b{color:var(--purple)}
+.box{border-radius:12px;padding:16px 20px;margin:18px 0;font-size:15px}
+.box .t{font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.tip{background:var(--green-bg);border:1px solid #bfe8d4;color:#1f5e42}.tip .t{color:var(--green)}
+.warn{background:var(--amber-bg);border:1px solid #f3ddad;color:#7a5310}.warn .t{color:var(--amber)}
+pre{border-radius:12px;margin:16px 0;overflow:auto;font-size:14px;box-shadow:0 4px 14px rgba(20,30,60,.15)}
+pre code.hljs{padding:18px 20px;line-height:1.65;font-family:'D2Coding','Consolas','Monaco',monospace}
+.codelabel{display:inline-block;background:#2b2f38;color:#9fb4cc;font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+.output{background:#0f1620;color:#6fe08a;border-radius:0 0 12px 12px;padding:12px 20px;margin-top:-16px;font-family:'D2Coding','Consolas',monospace;font-size:13.5px;white-space:pre-wrap;border-top:1px solid #26303f}
+.output:before{content:"▶ 실행결과";display:block;color:#5a7186;font-size:11.5px;margin-bottom:6px;font-weight:700}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(30,50,90,.05)}
+th{background:var(--py-blue);color:#fff;padding:11px 14px;text-align:left;font-weight:700}
+td{padding:10px 14px;border-top:1px solid var(--line);color:var(--ink-soft)}
+td code,p code,li code,.def code,.anal code,.ans code{background:#eef1f7;color:#b8336a;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-size:.9em;font-weight:600}
+tr:nth-child(even) td{background:#fafbfe}
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 24px 24px;margin-top:22px}
+.quiz>.qh{font-size:20px;color:var(--accent);font-weight:800;margin:18px 0 4px;display:flex;align-items:center;gap:9px}
+.quiz .sub{font-size:15px;font-weight:700;color:var(--purple);background:var(--purple-bg);padding:8px 14px;border-radius:8px;margin:18px 0 4px}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}.q:first-of-type{border-top:none}
+.q .qq{font-weight:700;color:var(--ink);font-size:15.5px;margin-bottom:10px}
+.q .qq .num{display:inline-flex;width:26px;height:26px;background:var(--py-yellow);color:#3a3300;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-right:8px}
+details{background:#f3f7fc;border:1px solid #d8e6f2;border-radius:10px;margin-top:8px}
+summary{cursor:pointer;padding:11px 16px;font-weight:700;color:var(--accent);font-size:14.5px;user-select:none;list-style:none}
+summary:before{content:"💡 정답·해설 보기"}details[open] summary:before{content:"🔽 정답·해설 접기"}
+summary::-webkit-details-marker{display:none}
+.ans{padding:4px 18px 16px}.ans .lab{font-weight:800;color:var(--green);margin:10px 0 4px;font-size:14px}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px}
+.pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;text-decoration:none;color:var(--ink);transition:.15s;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.pager a:hover{border-color:var(--py-blue);transform:translateY(-2px)}
+.pager .dir{font-size:12px;color:var(--ink-soft);font-weight:700}.pager .ttl{font-weight:700;color:var(--accent);margin-top:3px;font-size:14.5px}
+.pager a.next{text-align:right}.pager a.disabled{opacity:.4;pointer-events:none}
+.story{background:linear-gradient(135deg,#fff8ec,#fef1d8);border:1px solid #f0dca8;border-left:5px solid #FFB020;border-radius:14px;padding:18px 22px;margin:22px 0 26px}
+.story .st{font-weight:800;color:#9a6a00;font-size:15.5px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.story p{color:#6b5320;margin:6px 0;font-size:15px}
+.story b{color:#9a6a00}
+.recap{background:#eef4fb;border:1px dashed #b9d2ee;border-radius:12px;padding:14px 20px;margin:24px 0;font-size:14.5px;color:#345}
+.recap b{color:#2f6fb0}
+@media(max-width:600px){.hero h1{font-size:24px}.wrap{padding:0 14px 60px}.hero{padding:28px 22px}}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hero .meta span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:12.5px;font-weight:600;padding:4px 13px;border-radius:20px}
+.chapmap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:22px}
+.chapmap h2{font-size:16px;color:var(--accent);margin-bottom:14px}
+.chapmap .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chapmap a{display:flex;gap:11px;align-items:flex-start;background:#fafbfe;border:1px solid var(--line);border-radius:11px;padding:11px 14px;text-decoration:none;color:var(--ink);transition:.15s}
+.chapmap a:hover{border-color:var(--py-blue);background:#f0f6fc;transform:translateY(-1px)}
+.chapmap .no{flex:none;width:25px;height:25px;background:var(--py-blue);color:#fff;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;margin-top:3px}
+.chapmap .no.q{background:var(--purple)}
+.chapmap .tt{font-weight:700;font-size:14.5px;line-height:1.45}
+.chapmap .dd{font-size:12.5px;color:var(--ink-soft);margin-top:2px;line-height:1.5}
+@media(max-width:600px){.chapmap .grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="ch04_제어문.html">← 이전</a>
+  <span class="crumb">5장 · 함수</span>
+  <a href="ch06_모듈과패키지.html">다음 →</a>
+</div>
+<div class="wrap">
+
+<div class="hero">
+  <span class="tag">CHAPTER 05</span>
+  <h1>함수</h1>
+  <p>주문마다 "가격 × 수량 + 포장비" 계산을 <strong>매번 똑같이</strong> 적고 있진 않나요? 이 계산을 <strong>'주문계산'이라는 이름 하나로 묶어</strong> 두면, 다음부턴 이름만 부르면 끝이에요. 이렇게 만든 '나만의 명령'이 바로 함수입니다.</p>
+  <div class="meta"><span>📚 7개 섹션</span><span>🍜 파이 분식 5화</span><span>📝 연습문제 11</span><span>🛠️ 재사용의 기술</span></div>
+</div>
+
+<div class="chapmap">
+  <h2>🗺️ 이번 장 한눈에 보기 <span style="font-weight:400;color:var(--ink-soft);font-size:13px">— 원하는 곳을 눌러 바로 이동하세요</span></h2>
+  <div class="grid">
+    <a href="#sec1"><span class="no">1</span><span><span class="tt">함수란?</span><span class="dd" style="display:block">def로 정의하고 이름으로 호출</span></span></a>
+    <a href="#sec2"><span class="no">2</span><span><span class="tt">return</span><span class="dd" style="display:block">결과를 돌려받아 재사용하기</span></span></a>
+    <a href="#sec3"><span class="no">3</span><span><span class="tt">지역·전역변수</span><span class="dd" style="display:block">변수가 사는 범위 구분</span></span></a>
+    <a href="#sec4"><span class="no">4</span><span><span class="tt">값 vs 참조 호출</span><span class="dd" style="display:block">함수가 원본을 바꿀까?</span></span></a>
+    <a href="#sec5"><span class="no">5</span><span><span class="tt">다양한 매개변수</span><span class="dd" style="display:block">기본값·키워드·*args·**kwargs</span></span></a>
+    <a href="#sec6"><span class="no">6</span><span><span class="tt">람다식</span><span class="dd" style="display:block">이름 없는 한 줄 함수</span></span></a>
+    <a href="#sec7"><span class="no">7</span><span><span class="tt">내장 함수</span><span class="dd" style="display:block">print부터 map·filter까지</span></span></a>
+    <a href="#quiz" style="grid-column:1/-1"><span class="no q">📝</span><span><span class="tt">연습문제</span><span class="dd" style="display:block">실습 7 + 서술 4문제</span></span></a>
+  </div>
+</div>
+
+<div class="story">
+  <div class="st">🍜 파이 분식 이야기 — 5화. 계산 매뉴얼을 만들다</div>
+  <p>손님마다 "가격 곱하기 수량, 거기에 포장이면 500원 추가"를 조수가 매번 처음부터 계산해요. 사장님은 이걸 <b>'주문 계산 매뉴얼'</b>로 만들어 벽에 붙입니다. 이제 조수는 "매뉴얼대로 해!"라는 <b>한마디</b>면 똑같이 정확하게 계산하죠. 이 매뉴얼이 <b>함수</b>예요. 한 번 잘 만들어 두면 <b>몇 번이든 재사용</b>하고, 고칠 때도 <b>매뉴얼 한 장만</b> 고치면 됩니다.</p>
+</div>
+
+<div class="goals">
+  <h2>🎯 이 장을 끝내면 이런 걸 할 수 있어요</h2>
+  <ul>
+    <li>함수를 정의(<code>def</code>)하고 호출할 수 있다</li>
+    <li>매개변수와 인수의 차이를 안다</li>
+    <li><code>return</code>으로 결과를 돌려받을 수 있다</li>
+    <li>지역변수와 전역변수를 구분할 수 있다</li>
+    <li>기본값·키워드 인수·<code>*args</code>·<code>**kwargs</code>를 활용할 수 있다</li>
+    <li>람다식으로 짧은 함수를 만들 수 있다</li>
+  </ul>
+</div>
+
+<section id="sec1">
+  <h2 class="sec"><span class="n">1</span>함수란 무엇일까?</h2>
+  <div class="term">
+    <div class="h">🛠️ 함수(Function)</div>
+    <div class="def">자주 쓰는 코드를 <b>하나로 묶어 이름을 붙인 것</b>이에요. 값을 넣으면(입력) 처리해서 결과를 내놓아요(출력).</div>
+    <div class="anal">🥤 <b>비유</b> — 자판기 같아요. 동전(입력)을 넣고 버튼을 누르면 음료(출력)가 나와요. 안에서 어떻게 만드는지 몰라도 쓸 수 있죠. 게다가 <b>몇 번이든 다시</b> 쓸 수 있어요.</div>
+  </div>
+  <p>함수는 두 단계로 이뤄져요.</p>
+  <ul class="plain">
+    <li><strong>정의(define)</strong> — 함수를 <code>def</code>로 만드는 것 (자판기 설치)</li>
+    <li><strong>호출(call)</strong> — 만든 함수를 <code>이름()</code>으로 실행하는 것 (버튼 누르기)</li>
+  </ul>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">def greet():              # 정의
+    print("안녕하세요!")
+
+greet()   # 호출
+greet()   # 몇 번이든 재사용</code></pre>
+  <div class="output">안녕하세요!
+안녕하세요!</div>
+
+  <h3>매개변수와 인수</h3>
+  <div class="term">
+    <div class="h">📥 매개변수(Parameter) vs 인수(Argument)</div>
+    <div class="def"><b>매개변수</b>는 함수를 정의할 때 값을 받으려고 만든 <b>빈 상자</b>, <b>인수</b>는 호출할 때 실제로 <b>넣는 값</b>이에요.</div>
+    <div class="anal">📮 <b>비유</b> — 매개변수는 우체통(받을 곳), 인수는 그 안에 넣는 편지(실제 값)예요. '주문 계산 매뉴얼'로 치면, "가격 칸과 수량 칸에 숫자를 넣으세요"의 <b>빈 칸</b>이 매개변수, 실제로 적어 넣는 <b>3500·2</b>가 인수입니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">def 주문계산(가격, 수량):     # 가격·수량은 매개변수(빈 칸)
+    print(가격 * 수량)
+
+주문계산(3500, 2)            # 3500·2는 인수(실제 값) → 김밥 2줄</code></pre>
+  <div class="output">7000</div>
+  <div class="box warn"><div class="t">⚠️ 개수를 맞춰야 해요</div>매개변수가 2개면 인수도 2개를 넘겨야 해요(기본값이 없는 한). 개수가 안 맞으면 에러가 납니다.</div>
+
+  <div class="box tip"><div class="t">💡 docstring — 함수 설명서</div>함수 첫 줄에 <code>"""설명"""</code>을 적으면 <strong>함수 사용법 메모</strong>가 돼요. <code>help(함수명)</code>으로 볼 수 있습니다.</div>
+</section>
+
+<section id="sec2">
+  <h2 class="sec"><span class="n">2</span>return — 결과 돌려주기</h2>
+  <div class="term">
+    <div class="h">📤 return</div>
+    <div class="def">함수가 계산한 <b>결과를 밖으로 돌려줘요</b>. <code>print</code>는 화면에 보여줄 뿐이지만, <code>return</code>은 값을 <b>가져와 다시 쓸 수</b> 있게 합니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">def 주문계산(가격, 수량):
+    return 가격 * 수량       # 합계를 '돌려줌'
+
+합계 = 주문계산(3500, 2)     # 돌려받은 7000을 저장
+print(합계 + 500)           # 포장비 500원 더해서 재활용</code></pre>
+  <div class="output">7500</div>
+  <div class="box warn"><div class="t">⚠️ print와 return은 달라요</div><code>print</code>는 화면에 <strong>보여만</strong> 주고, <code>return</code>은 값을 <strong>돌려줘서 재사용</strong>하게 해요. <code>return</code>이 없는 함수를 변수에 담으면 <code>None</code>(아무것도 없음)이 저장됩니다.</div>
+
+  <h3>여러 개 값 반환하기</h3>
+  <p>콤마로 나열하면 <strong>여러 값을 한 번에</strong> 돌려줘요. 이때 값들은 튜플로 묶입니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">def min_max(data):
+    return min(data), max(data)
+
+low, high = min_max([3, 7, 1, 9])   # 각각 받기
+print(low, high)</code></pre>
+  <div class="output">1 9</div>
+</section>
+
+<section id="sec3">
+  <h2 class="sec"><span class="n">3</span>지역변수와 전역변수</h2>
+  <div class="term">
+    <div class="h">🏠 지역변수 (Local) vs 🌍 전역변수 (Global)</div>
+    <div class="def"><b>지역변수</b>는 함수 <b>안에서만</b> 사는 변수, <b>전역변수</b>는 함수 <b>밖에서</b> 만들어 어디서나 볼 수 있는 변수예요.</div>
+    <div class="anal">🏘️ <b>비유</b> — 지역변수는 '집 안에서만 쓰는 물건', 전역변수는 '동네 공용 물건' 같아요. 집 안 물건은 밖에서 못 꺼내 씁니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">num = 20              # 전역변수
+
+def show():
+    print(num)        # 전역변수 읽기는 OK → 20
+
+def local_test():
+    x = 10            # 지역변수 (이 함수 안에서만)
+    print(x)
+
+show()
+local_test()
+# print(x)  → 에러! x는 함수 밖에서 안 보임</code></pre>
+  <div class="output">20
+10</div>
+  <div class="box warn"><div class="t">⚠️ 함수 안에서 전역변수를 바꾸려면?</div>함수 안에서 전역변수에 <strong>새 값을 대입</strong>하려면 <code>global</code> 키워드가 필요해요. 안 그러면 같은 이름의 지역변수가 새로 생겨버립니다.</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">count = 0
+def increase():
+    global count      # "전역 count를 쓸게" 선언
+    count += 1
+
+increase()
+print(count)          # 1</code></pre>
+  <div class="output">1</div>
+  <div class="box tip"><div class="t">💡 변수를 찾는 순서</div>파이썬은 변수를 <strong>지역 → 전역 → 내장</strong> 순서로 찾아요. 함수 안에서 이름을 부르면 먼저 자기 집(지역)을 뒤지고, 없으면 동네(전역)를 봅니다.</div>
+</section>
+
+<section id="sec4">
+  <h2 class="sec"><span class="n">4</span>값에 의한 호출 vs 참조에 의한 호출</h2>
+  <p>함수에 값을 넘길 때, <strong>자료형에 따라 동작이 달라요</strong>. 이게 초보자에게 헷갈리는 부분이에요.</p>
+  <div class="term">
+    <div class="h">📄 값에 의한 호출 (숫자·문자열·튜플)</div>
+    <div class="def">함수 안에서 값을 바꿔도 <b>원본은 그대로</b>예요. 복사본을 넘긴 것과 같아요.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">var = 100
+def change(var):
+    var = 200          # 함수 안의 var만 바뀜
+change(var)
+print(var)             # 여전히 100!</code></pre>
+  <div class="output">100</div>
+  <div class="term">
+    <div class="h">📋 참조에 의한 호출 (리스트·딕셔너리)</div>
+    <div class="def">함수 안에서 내용을 바꾸면 <b>원본도 바뀌어요</b>. 같은 그릇을 함께 보고 있기 때문이에요.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">L = [1, 2, 3]
+def add_item(lst):
+    lst.append(4)      # 원본 리스트를 직접 수정
+add_item(L)
+print(L)               # [1, 2, 3, 4] 로 바뀜!</code></pre>
+  <div class="output">[1, 2, 3, 4]</div>
+  <div class="box tip"><div class="t">💡 한 줄 정리</div>바꿀 수 없는 값(숫자·문자열·튜플)은 <strong>원본 안전</strong>, 바꿀 수 있는 값(리스트·딕셔너리)은 <strong>원본까지 영향</strong>. 이 차이를 알면 예상치 못한 버그를 피할 수 있어요.</div>
+</section>
+
+<section id="sec5">
+  <h2 class="sec"><span class="n">5</span>다양한 매개변수</h2>
+  <h3>기본값을 갖는 매개변수</h3>
+  <p>매개변수에 <strong>기본값</strong>을 정해두면, 인수를 생략했을 때 그 값이 쓰여요.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">def greet(name, greeting="안녕"):
+    print(f"{greeting}, {name}!")
+
+greet("철수")               # 기본값 사용
+greet("영희", "반가워")     # 직접 지정</code></pre>
+  <div class="output">안녕, 철수!
+반가워, 영희!</div>
+
+  <h3>키워드 인수</h3>
+  <p><strong>매개변수 이름을 직접 지정</strong>해서 넘기면 순서를 바꿔도 돼요.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">def profile(name, age):
+    print(name, age)
+
+profile(age=20, name="홍길동")   # 순서 바꿔도 OK</code></pre>
+  <div class="output">홍길동 20</div>
+  <div class="box warn"><div class="t">⚠️ 순서 규칙</div>키워드 인수(<code>name=값</code>)는 <strong>순서 인수 뒤에</strong> 와야 해요. <code>profile("홍길동", age=20)</code>은 되지만 <code>profile(name="홍길동", 20)</code>은 에러입니다.</div>
+
+  <h3>*args 와 **kwargs — 개수가 정해지지 않은 인수</h3>
+  <div class="term">
+    <div class="h">📦 *args (가변 위치 인수)</div>
+    <div class="def">인수를 <b>몇 개든</b> 받아 <b>튜플</b>로 묶어줘요. 매개변수 앞에 <code>*</code>를 붙입니다.</div>
+  </div>
+  <div class="term">
+    <div class="h">🏷️ **kwargs (가변 키워드 인수)</div>
+    <div class="def"><code>이름=값</code> 형태를 <b>몇 개든</b> 받아 <b>딕셔너리</b>로 묶어줘요. <code>**</code>를 붙입니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">def total(*args):          # 여러 숫자를 튜플로
+    return sum(args)
+
+def info(**kwargs):        # 여러 쌍을 딕셔너리로
+    for key, value in kwargs.items():
+        print(key, ":", value)
+
+print(total(1, 2, 3, 4))
+info(name="홍길동", age=20)</code></pre>
+  <div class="output">10
+name : 홍길동
+age : 20</div>
+  <div class="box tip"><div class="t">💡 언패킹(Unpacking) — 반대로 풀기</div>이미 리스트/딕셔너리에 담긴 값을 함수에 넘길 땐 <code>*</code>, <code>**</code>로 풀어줘요. <code>add(*[3, 5])</code>는 <code>add(3, 5)</code>와 같아요.</div>
+</section>
+
+<section id="sec6">
+  <h2 class="sec"><span class="n">6</span>람다식 — 이름 없는 짧은 함수</h2>
+  <div class="term">
+    <div class="h">⚡ 람다(lambda)</div>
+    <div class="def">이름 없이 <b>한 줄로 만드는 작은 함수</b>예요. <code>return</code> 없이도 결과를 돌려줍니다. 문장 하나만 담을 수 있어요.</div>
+    <div class="anal">📝 <b>비유</b> — 정식 함수가 '이름 붙인 레시피 책'이라면, 람다는 '포스트잇에 급히 적은 간단 메모' 같아요.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python"># 일반 함수
+def square(x):
+    return x ** 2
+
+# 같은 걸 람다로
+square2 = lambda x: x ** 2
+
+print(square(4), square2(4))</code></pre>
+  <div class="output">16 16</div>
+  <p>람다는 <code>map()</code>, <code>filter()</code>, <code>sorted()</code>처럼 <strong>함수를 인수로 받는 곳</strong>에서 특히 빛나요.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">nums = [1, 2, 3, 4, 5]
+# 각 값을 제곱 (map)
+print(list(map(lambda x: x**2, nums)))
+# 짝수만 걸러내기 (filter)
+print(list(filter(lambda x: x%2==0, nums)))</code></pre>
+  <div class="output">[1, 4, 9, 16, 25]
+[2, 4]</div>
+</section>
+
+<section id="sec7">
+  <h2 class="sec"><span class="n">7</span>내장 함수 (Built-in)</h2>
+  <div class="term">
+    <div class="h">🎁 내장 함수</div>
+    <div class="def">파이썬이 <b>기본으로 제공</b>해서, 아무것도 import 안 하고 바로 쓸 수 있는 함수예요.</div>
+  </div>
+  <table>
+    <tr><th>함수</th><th>기능</th><th>함수</th><th>기능</th></tr>
+    <tr><td><code>print()</code></td><td>출력</td><td><code>len()</code></td><td>길이</td></tr>
+    <tr><td><code>input()</code></td><td>입력</td><td><code>type()</code></td><td>자료형 확인</td></tr>
+    <tr><td><code>int() str()</code></td><td>형 변환</td><td><code>sum()</code></td><td>합계</td></tr>
+    <tr><td><code>max() min()</code></td><td>최대·최소</td><td><code>range()</code></td><td>숫자 범위</td></tr>
+    <tr><td><code>map()</code></td><td>각 항목에 함수 적용</td><td><code>filter()</code></td><td>조건에 맞는 것만</td></tr>
+  </table>
+  <div class="box warn"><div class="t">⚠️ 내장 함수 이름을 변수로 쓰지 마세요</div><code>list = [1,2,3]</code>처럼 내장 함수 이름을 변수로 덮어쓰면, 그 함수 기능이 <strong>망가져요</strong>. <code>list</code>, <code>str</code>, <code>sum</code>, <code>type</code> 같은 이름은 피하세요.</div>
+</section>
+
+<div class="recap">🎬 <b>다음 화 예고</b> — 계산 매뉴얼(함수)을 만들었어요. 코드가 길어지니 정리가 필요하네요. <b>6장</b>에서는 매뉴얼을 <b>파일별(모듈)</b>로 나누고, 남이 만든 도구도 <b>pip</b>로 가져다 씁니다.</div>
+
+<section id="quiz">
+  <div class="quiz">
+    <div class="qh">📝 연습문제</div>
+    <div class="sub">실습형</div>
+
+    <div class="q">
+      <div class="qq"><span class="num">1</span>리스트를 받아 최댓값과 최솟값을 리턴하는 함수를 작성하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">def get_max_min(data_list):
+    return max(data_list), min(data_list)
+
+print(get_max_min([3, 7, 1, 9, 2]))</code></pre>
+        <div class="output">(9, 1)</div>
+        <div class="lab">해설</div>
+        <p>내장 함수 <code>max()</code>, <code>min()</code>을 그대로 활용해요. 콤마로 두 값을 반환하면 <strong>튜플</strong>로 묶여 돌아옵니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">2</span>체중(kg)과 신장(m)을 받아 BMI 상태를 출력하는 함수를 작성하세요. (BMI = 체중 ÷ 신장², 18.5 미만 마른체형 / 25 미만 표준 / 30 미만 비만 / 이상 고도비만)</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">def getBMI(kg, m):
+    bmi = kg / (m ** 2)
+    if bmi < 18.5:
+        return "마른체형"
+    elif bmi < 25:
+        return "표준"
+    elif bmi < 30:
+        return "비만"
+    else:
+        return "고도비만"
+
+print(getBMI(70, 1.75))</code></pre>
+        <div class="output">표준</div>
+        <div class="lab">해설</div>
+        <p>제곱은 <code>m ** 2</code>. 조건은 낮은 값부터 <code>elif</code>로 이어가면 <strong>범위가 자동으로 나뉘어요</strong>. 70÷(1.75²)≈22.9라서 '표준'입니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">3</span>직각삼각형의 밑변과 높이를 받아 <strong>면적을 리턴</strong>하는 함수를 작성하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">def get_triangle(width, height):
+    return width * height / 2
+
+print(get_triangle(6, 4))</code></pre>
+        <div class="output">12.0</div>
+        <div class="lab">해설</div>
+        <p>삼각형 면적 = 밑변 × 높이 ÷ 2. <code>print</code>가 아니라 <code>return</code>으로 돌려줘야 값을 재사용할 수 있어요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">4</span>시작값과 끝값을 받아 그 사이 모든 정수의 합을 리턴하는 함수를 작성하세요. (양끝 포함)</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">def mysum(start, end):
+    return sum(range(start, end + 1))   # end 포함하려면 +1
+
+print(mysum(1, 10))</code></pre>
+        <div class="output">55</div>
+        <div class="lab">해설</div>
+        <p><code>range</code>는 끝값을 포함하지 않으므로 <strong>+1</strong>을 해줘야 end까지 더해져요. 1~10 합은 55입니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">5</span>문자열 리스트를 받아 각 문자열의 <strong>첫 세 글자</strong>로 이뤄진 리스트를 리턴하세요. 예: <code>['Seoul','Daegu','Kwangju','Jeju']</code> → <code>['Seo','Dae','Kwa','Jej']</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답 (함수 & 람다 두 방식)</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python"># 함수 + 리스트 컴프리헨션
+def get_abbrs(lst):
+    return [s[:3] for s in lst]
+
+# 람다 + map
+get_abbrs2 = lambda lst: list(map(lambda s: s[:3], lst))
+
+print(get_abbrs(['Seoul','Daegu','Kwangju','Jeju']))</code></pre>
+        <div class="output">['Seo', 'Dae', 'Kwa', 'Jej']</div>
+        <div class="lab">해설</div>
+        <p><code>s[:3]</code>은 앞 세 글자를 잘라내는 슬라이싱이에요. 각 문자열에 이걸 적용하면 됩니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">6</span><code>ex = [1,2,3,4,5]</code>를 <code>[1,4,9,16,25]</code>로 바꾸세요. (① 람다+map ② 리스트 컴프리헨션)</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">ex = [1, 2, 3, 4, 5]
+print(list(map(lambda x: x**2, ex)))   # ① map
+print([x**2 for x in ex])              # ② 컴프리헨션</code></pre>
+        <div class="output">[1, 4, 9, 16, 25]
+[1, 4, 9, 16, 25]</div>
+        <div class="lab">해설</div>
+        <p>각 값을 제곱하는 작업이에요. <code>map</code>은 "각 항목에 함수 적용", 리스트 컴프리헨션은 "한 줄로 리스트 생성" — 결과는 같습니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">7</span>여러 벡터(리스트)들의 크기가 모두 같은지 True/False로 리턴하는 <code>vector_size_check(*vec)</code>를 한 줄로 작성하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">def vector_size_check(*vec):
+    return len(set(len(v) for v in vec)) == 1
+
+print(vector_size_check([1,2,3], [4,5,6], [7,8,9]))
+print(vector_size_check([1,2], [1,2,3]))</code></pre>
+        <div class="output">True
+False</div>
+        <div class="lab">해설</div>
+        <p>각 벡터의 길이를 모아 <code>set</code>으로 만들면 <strong>중복이 제거</strong>돼요. 길이가 다 같으면 set에 원소가 <strong>1개</strong>만 남으니, 개수가 1인지 확인하면 됩니다. <code>*vec</code>로 벡터를 몇 개든 받는 게 포인트!</p>
+      </div></details>
+    </div>
+
+    <div class="sub">서술형</div>
+    <div class="q">
+      <div class="qq"><span class="num">8</span>다음 코드의 결과는? <code>var = 100</code> / <code>def func(var): var = 200</code> / <code>func(var)</code> / <code>print(var)</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="output">100</div>
+        <div class="lab">해설</div>
+        <p>숫자는 <strong>값에 의한 호출</strong>이에요. 함수 안의 <code>var = 200</code>은 지역변수만 바꿀 뿐, 밖의 전역 <code>var</code>(100)에는 영향을 주지 못합니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">9</span>다음 코드의 결과는?<br><code>def my_func(func, *args): return func(*args)</code><br><code>my_func(lambda a, b: a**b, 3, 2)</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="output">9</div>
+        <div class="lab">해설</div>
+        <p><code>my_func</code>는 "받은 함수에 받은 인수를 넣어 실행"해요. 람다 <code>a**b</code>에 <code>a=3, b=2</code>를 넣으면 <code>3**2 = 9</code>. 함수를 인수로 넘기는 고급 패턴이에요. (참고: <code>np.add, 2, 3</code>을 넣으면 <code>5</code>가 됩니다.)</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">10</span>파이썬 함수에 대한 설명 중 <strong>잘못된 것</strong>은?<br>① 함수는 중복(오버로딩) 정의해 쓸 수 있다 ② 매개변수는 기본값을 가질 수 있다 ③ <code>**kwargs</code>는 키워드 인수를 딕셔너리로 받는다 ④ 이름 없는 인수는 이름 있는 인수보다 앞에 와야 한다</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>①</strong></p>
+        <div class="lab">해설</div>
+        <p>파이썬은 <strong>함수 오버로딩(같은 이름 중복 정의)을 지원하지 않아요</strong>. 같은 이름으로 두 번 정의하면 <strong>나중 것이 앞의 것을 덮어써요</strong>. ②③④는 모두 맞는 설명입니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">11</span>다음을 설명하는 키워드는? "작은 익명함수 / 한 문장만 실행 / 다른 함수의 인수나 리턴값으로 쓸 수 있음"</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><code>lambda</code> (람다)</p>
+        <div class="lab">해설</div>
+        <p>이름이 없고, 한 줄짜리이며, 함수를 값처럼 넘길 때 쓰는 것 — 모두 람다의 특징이에요.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<div class="pager">
+  <a class="prev" href="ch04_제어문.html"><div class="dir">← 이전</div><div class="ttl">4장. 제어문</div></a>
+  <a class="next" href="ch06_모듈과패키지.html"><div class="dir">다음 →</div><div class="ttl">6장. 모듈과 패키지</div></a>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

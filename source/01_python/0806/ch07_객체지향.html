@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7장. 객체지향 프로그래밍 · 쉬운 파이썬</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root{--py-blue:#3776AB;--py-yellow:#FFD43B;--ink:#1a2233;--ink-soft:#4a5568;--line:#e6e9f0;--bg:#f6f8fc;--card:#fff;--accent:#2f6fb0;--green:#2e9e6b;--green-bg:#e9f8f0;--amber:#b9770e;--amber-bg:#fef6e6;--red:#d64545;--purple:#6b4fbb;--purple-bg:#f1ecfb}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(246,248,252,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-weight:600}.topbar .crumb{color:var(--ink-soft)}
+.hero{background:linear-gradient(135deg,#3776AB,#2b5e8c);color:#fff;border-radius:20px;padding:38px 34px;margin:26px 0 30px;box-shadow:0 10px 30px rgba(55,118,171,.25)}
+.hero .tag{display:inline-block;background:var(--py-yellow);color:#3a3300;font-weight:700;font-size:13px;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.hero h1{font-size:30px;line-height:1.3;margin-bottom:10px;letter-spacing:-.5px}.hero p{color:#eaf2fb;font-size:15.5px}
+.hero p strong{color:#FFE9A8;font-weight:800;background:rgba(255,255,255,.10);padding:1px 6px;border-radius:6px}
+.hero code{background:rgba(255,255,255,.18);color:#fff;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-weight:600}
+.hero p em{color:#EAF3FF;font-style:normal;border-bottom:2px solid rgba(255,212,59,.6)}
+.goals{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:30px}
+.goals h2{font-size:16px;color:var(--accent);margin-bottom:12px}
+.goals ul{list-style:none}.goals li{padding:7px 0 7px 30px;position:relative;font-size:15px}
+.goals li:before{content:"✓";position:absolute;left:0;top:7px;color:var(--green);font-weight:800}
+section{margin:38px 0}
+h2.sec{font-size:23px;letter-spacing:-.4px;padding-bottom:12px;border-bottom:3px solid var(--py-yellow);margin-bottom:22px;display:flex;align-items:center;gap:10px}
+h2.sec .n{background:var(--py-blue);color:#fff;font-size:15px;width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+h3{font-size:18.5px;margin:26px 0 12px;color:var(--ink);letter-spacing:-.3px}
+p{margin:12px 0;color:var(--ink-soft)}p strong,li strong{color:var(--ink);font-weight:700}
+ul.plain{margin:12px 0 12px 4px;padding-left:22px}ul.plain li{margin:7px 0;color:var(--ink-soft)}
+.term{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--py-blue);border-radius:12px;padding:18px 22px;margin:20px 0;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.term .h{font-size:17px;font-weight:800;color:var(--py-blue);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.term .def{font-size:15.5px;color:var(--ink)}
+.term .anal{margin-top:12px;background:var(--purple-bg);border-radius:9px;padding:12px 15px;font-size:14.5px;color:#4a3a7a}
+.term .anal b{color:var(--purple)}
+.box{border-radius:12px;padding:16px 20px;margin:18px 0;font-size:15px}
+.box .t{font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.tip{background:var(--green-bg);border:1px solid #bfe8d4;color:#1f5e42}.tip .t{color:var(--green)}
+.warn{background:var(--amber-bg);border:1px solid #f3ddad;color:#7a5310}.warn .t{color:var(--amber)}
+pre{border-radius:12px;margin:16px 0;overflow:auto;font-size:14px;box-shadow:0 4px 14px rgba(20,30,60,.15)}
+pre code.hljs{padding:18px 20px;line-height:1.65;font-family:'D2Coding','Consolas','Monaco',monospace}
+.codelabel{display:inline-block;background:#2b2f38;color:#9fb4cc;font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+.output{background:#0f1620;color:#6fe08a;border-radius:0 0 12px 12px;padding:12px 20px;margin-top:-16px;font-family:'D2Coding','Consolas',monospace;font-size:13.5px;white-space:pre-wrap;border-top:1px solid #26303f}
+.output:before{content:"▶ 실행결과";display:block;color:#5a7186;font-size:11.5px;margin-bottom:6px;font-weight:700}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(30,50,90,.05)}
+th{background:var(--py-blue);color:#fff;padding:11px 14px;text-align:left;font-weight:700}
+td{padding:10px 14px;border-top:1px solid var(--line);color:var(--ink-soft)}
+td code,p code,li code,.def code,.anal code,.ans code{background:#eef1f7;color:#b8336a;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-size:.9em;font-weight:600}
+tr:nth-child(even) td{background:#fafbfe}
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 24px 24px;margin-top:22px}
+.quiz>.qh{font-size:20px;color:var(--accent);font-weight:800;margin:18px 0 4px;display:flex;align-items:center;gap:9px}
+.quiz .sub{font-size:15px;font-weight:700;color:var(--purple);background:var(--purple-bg);padding:8px 14px;border-radius:8px;margin:18px 0 4px}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}.q:first-of-type{border-top:none}
+.q .qq{font-weight:700;color:var(--ink);font-size:15.5px;margin-bottom:10px}
+.q .qq .num{display:inline-flex;width:26px;height:26px;background:var(--py-yellow);color:#3a3300;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-right:8px}
+details{background:#f3f7fc;border:1px solid #d8e6f2;border-radius:10px;margin-top:8px}
+summary{cursor:pointer;padding:11px 16px;font-weight:700;color:var(--accent);font-size:14.5px;user-select:none;list-style:none}
+summary:before{content:"💡 정답·해설 보기"}details[open] summary:before{content:"🔽 정답·해설 접기"}
+summary::-webkit-details-marker{display:none}
+.ans{padding:4px 18px 16px}.ans .lab{font-weight:800;color:var(--green);margin:10px 0 4px;font-size:14px}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px}
+.pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;text-decoration:none;color:var(--ink);transition:.15s;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.pager a:hover{border-color:var(--py-blue);transform:translateY(-2px)}
+.pager .dir{font-size:12px;color:var(--ink-soft);font-weight:700}.pager .ttl{font-weight:700;color:var(--accent);margin-top:3px;font-size:14.5px}
+.pager a.next{text-align:right}.pager a.disabled{opacity:.4;pointer-events:none}
+.story{background:linear-gradient(135deg,#fff8ec,#fef1d8);border:1px solid #f0dca8;border-left:5px solid #FFB020;border-radius:14px;padding:18px 22px;margin:22px 0 26px}
+.story .st{font-weight:800;color:#9a6a00;font-size:15.5px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.story p{color:#6b5320;margin:6px 0;font-size:15px}
+.story b{color:#9a6a00}
+.recap{background:#eef4fb;border:1px dashed #b9d2ee;border-radius:12px;padding:14px 20px;margin:24px 0;font-size:14.5px;color:#345}
+.recap b{color:#2f6fb0}
+@media(max-width:600px){.hero h1{font-size:24px}.wrap{padding:0 14px 60px}.hero{padding:28px 22px}}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hero .meta span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:12.5px;font-weight:600;padding:4px 13px;border-radius:20px}
+.chapmap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:22px}
+.chapmap h2{font-size:16px;color:var(--accent);margin-bottom:14px}
+.chapmap .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chapmap a{display:flex;gap:11px;align-items:flex-start;background:#fafbfe;border:1px solid var(--line);border-radius:11px;padding:11px 14px;text-decoration:none;color:var(--ink);transition:.15s}
+.chapmap a:hover{border-color:var(--py-blue);background:#f0f6fc;transform:translateY(-1px)}
+.chapmap .no{flex:none;width:25px;height:25px;background:var(--py-blue);color:#fff;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;margin-top:3px}
+.chapmap .no.q{background:var(--purple)}
+.chapmap .tt{font-weight:700;font-size:14.5px;line-height:1.45}
+.chapmap .dd{font-size:12.5px;color:var(--ink-soft);margin-top:2px;line-height:1.5}
+@media(max-width:600px){.chapmap .grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="ch06_모듈과패키지.html">← 이전</a>
+  <span class="crumb">7장 · 객체지향 프로그래밍</span>
+  <a href="ch08_예외처리.html">다음 →</a>
+</div>
+<div class="wrap">
+
+<div class="hero">
+  <span class="tag">CHAPTER 07</span>
+  <h1>객체지향 프로그래밍</h1>
+  <p>지금까지 메뉴 '가격'은 딕셔너리에, '계산'은 함수에 <strong>따로따로</strong> 있었어요. 그런데 메뉴 하나에는 이름·가격·재고·조리법이 <strong>다 딸려</strong> 있죠. 이 <strong>데이터와 기능을 한 덩어리('객체')로 묶는</strong> 게 객체지향이에요. 메뉴를 진짜 '물건'처럼 다룰 수 있게 됩니다.</p>
+  <div class="meta"><span>📚 4개 섹션</span><span>🍜 파이 분식 7화</span><span>📝 연습문제 5</span><span>🏗️ 파이썬의 진짜 힘</span></div>
+</div>
+
+<div class="chapmap">
+  <h2>🗺️ 이번 장 한눈에 보기 <span style="font-weight:400;color:var(--ink-soft);font-size:13px">— 원하는 곳을 눌러 바로 이동하세요</span></h2>
+  <div class="grid">
+    <a href="#sec1"><span class="no">1</span><span><span class="tt">클래스와 객체</span><span class="dd" style="display:block">설계도와 찍어낸 결과물</span></span></a>
+    <a href="#sec2"><span class="no">2</span><span><span class="tt">생성자와 소멸자</span><span class="dd" style="display:block">__init__으로 초기값 채우기</span></span></a>
+    <a href="#sec3"><span class="no">3</span><span><span class="tt">self와 메서드</span><span class="dd" style="display:block">"나 자신"을 가리키는 손가락</span></span></a>
+    <a href="#sec4"><span class="no">4</span><span><span class="tt">상속과 재정의</span><span class="dd" style="display:block">super()로 물려받아 고쳐 쓰기</span></span></a>
+    <a href="#quiz" style="grid-column:1/-1"><span class="no q">📝</span><span><span class="tt">연습문제</span><span class="dd" style="display:block">도형 클래스 실습 + 서술 5문제</span></span></a>
+  </div>
+</div>
+
+<div class="story">
+  <div class="st">🍜 파이 분식 이야기 — 7화. 메뉴가 '살아 있는 물건'이 되다</div>
+  <p>메뉴가 많아지자 관리가 흩어졌어요. 김밥의 가격은 여기, 재고는 저기, 조리법은 또 다른 파일에… 사장님은 생각합니다. "김밥이라는 <b>물건 하나</b>에 가격·재고·조리법을 <b>통째로</b> 붙여 두면 어떨까?" 이 아이디어가 <b>객체지향</b>이에요. 먼저 <b>'메뉴 설계도(클래스)'</b>를 하나 그려 두면, 김밥·라면·떡볶이를 그 설계도로 <b>찍어내듯(객체)</b> 만들 수 있어요. 게다가 '음료 메뉴'는 '메뉴 설계도'를 <b>물려받아(상속)</b> 조금만 고쳐 쓰면 됩니다.</p>
+</div>
+
+<div class="goals">
+  <h2>🎯 이 장을 끝내면 이런 걸 할 수 있어요</h2>
+  <ul>
+    <li>클래스와 객체(인스턴스)의 관계를 설명할 수 있다</li>
+    <li>생성자(<code>__init__</code>)로 객체를 초기화할 수 있다</li>
+    <li><code>self</code>의 의미를 이해하고 메서드를 만들 수 있다</li>
+    <li>상속으로 코드를 재사용하고 <code>super()</code>를 쓸 수 있다</li>
+    <li>재정의(오버라이딩)와 정적/클래스 메서드를 활용할 수 있다</li>
+  </ul>
+</div>
+
+<div class="box tip"><div class="t">🏗️ 객체지향(OOP)이란?</div>프로그램을 <strong>'객체'라는 부품 단위로 나눠</strong> 만드는 방식이에요. 각 객체는 <strong>데이터(상태)</strong>와 <strong>기능(행동)</strong>을 함께 가져요. 현실 세계를 그대로 코드로 옮기기 좋아서 큰 프로그램을 체계적으로 만들 수 있습니다.</div>
+
+<section id="sec1">
+  <h2 class="sec"><span class="n">1</span>클래스와 객체</h2>
+  <div class="term">
+    <div class="h">📐 클래스(Class)</div>
+    <div class="def">객체를 만들기 위한 <b>틀(설계도, 붕어빵 틀)</b>이에요. "이런 데이터와 기능을 가진다"는 청사진입니다.</div>
+  </div>
+  <div class="term">
+    <div class="h">🎁 객체(Object) = 인스턴스(Instance)</div>
+    <div class="def">클래스라는 틀로 <b>실제로 찍어낸 결과물</b>이에요. 하나의 클래스로 여러 객체를 만들 수 있어요.</div>
+    <div class="anal">🐟 <b>비유</b> — 클래스는 <b>'메뉴 설계도'</b>, 객체는 그 설계도로 찍어낸 <b>김밥·라면·떡볶이 각각</b>이에요. 같은 설계도(이름·가격·재고를 가진다)에서 나왔지만, 김밥은 3500원·라면은 4000원처럼 <b>각자 다른 값</b>을 담습니다. 붕어빵 틀 하나로 팥·슈크림 붕어빵을 굽는 것과 똑같죠.</div>
+  </div>
+  <p>객체는 두 가지를 가져요.</p>
+  <table>
+    <tr><th>구분</th><th>다른 이름들</th><th>뜻</th></tr>
+    <tr><td>명사적 특성</td><td>데이터·변수·필드·<strong>속성(Attribute)</strong></td><td>객체가 <strong>가진 값</strong> (예: 이름, 나이)</td></tr>
+    <tr><td>동사적 특성</td><td>함수·<strong>메서드(Method)</strong>·기능</td><td>객체가 <strong>하는 일</strong> (예: 인사하기)</td></tr>
+  </table>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">class Menu:                   # '메뉴 설계도' 정의 (첫 글자 대문자)
+    def 안내(self):
+        print("파이 분식 메뉴입니다!")
+
+김밥 = Menu()    # 설계도로 '김밥' 메뉴 객체 찍어내기
+김밥.안내()       # 객체의 메서드 호출 (점 . 은 참조 연산자)</code></pre>
+  <div class="output">파이 분식 메뉴입니다!</div>
+  <div class="box tip"><div class="t">💡 카멜 표기법</div>클래스 이름은 관례적으로 <strong>첫 글자를 대문자</strong>로 써요(<code>Person</code>, <code>BankAccount</code>). 변수·함수(소문자)와 구분하기 위해서예요.</div>
+</section>
+
+<section id="sec2">
+  <h2 class="sec"><span class="n">2</span>생성자와 소멸자</h2>
+  <div class="term">
+    <div class="h">🔨 생성자 __init__()</div>
+    <div class="def">객체가 <b>만들어질 때 자동으로 실행</b>되는 함수예요. 보통 여기서 객체의 초기 데이터를 설정합니다.</div>
+    <div class="anal">🏭 <b>비유</b> — 메뉴를 등록하는 순간 <b>"이 메뉴 이름은 뭐고, 가격은 얼마야?"</b>를 채워 넣는 과정이 생성자예요. 메뉴 객체가 태어나는 순간 딱 한 번 실행돼, 각 메뉴에 고유한 이름·가격을 새깁니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">class Menu:
+    def __init__(self, 이름, 가격):    # 생성자
+        self.이름 = 이름       # 이 메뉴만의 데이터 초기화
+        self.가격 = 가격
+
+김밥 = Menu("김밥", 3500)     # 만드는 순간 이름·가격이 채워짐
+print(김밥.이름, 김밥.가격)</code></pre>
+  <div class="output">김밥 3500</div>
+  <div class="box warn"><div class="t">⚠️ 생성자는 하나만!</div>파이썬은 <strong>생성자를 여러 개 만들 수 없어요</strong>. 같은 클래스에 <code>__init__</code>을 두 번 정의하면 <strong>마지막 것만</strong> 유효합니다.</div>
+
+  <div class="term">
+    <div class="h">💥 소멸자 __del__()</div>
+    <div class="def">객체가 <b>사라질 때 자동 실행</b>되는 함수예요. 객체를 참조하는 곳이 하나도 없어지면(레퍼런스 카운트 0) 소멸됩니다.</div>
+  </div>
+  <p>객체를 없애는 방법은 세 가지예요: ① 변수에 새 객체를 대입 &nbsp; ② <code>None</code> 대입 &nbsp; ③ <code>del 변수</code></p>
+  <div class="box tip"><div class="t">💡 레퍼런스 카운트</div>객체를 가리키는 이름표가 몇 개인지 세는 숫자예요. <code>p2 = p1</code>이면 카운트 2, 둘 다 없어지면 0이 되어 소멸자가 실행됩니다.</div>
+</section>
+
+<section id="sec3">
+  <h2 class="sec"><span class="n">3</span>self와 메서드</h2>
+  <div class="term">
+    <div class="h">👉 self</div>
+    <div class="def">메서드의 <b>첫 번째 인자</b>로, <b>"이 객체 자신"</b>을 가리켜요. 객체의 데이터에 접근할 때 <code>self.변수</code> 형태로 씁니다.</div>
+    <div class="anal">🪞 <b>비유</b> — "나 자신"을 가리키는 손가락이에요. "<b>내</b> 이름", "<b>내</b> 나이"라고 할 때의 그 '내(self)'입니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">class Person:
+    def __init__(self, name):
+        self.name = name          # 이 객체의 name
+
+    def print_info(self):         # 인스턴스 메서드는 self가 필수
+        print(f"제 이름은 {self.name}입니다")
+
+p1 = Person("홍길동")
+p1.print_info()   # self는 자동으로 p1이 전달됨</code></pre>
+  <div class="output">제 이름은 홍길동입니다</div>
+  <div class="box warn"><div class="t">⚠️ self를 빼먹지 마세요</div>인스턴스 메서드의 첫 인자는 <strong>반드시 <code>self</code></strong>여야 해요(이름은 바꿀 수 있지만 관례상 self). 호출할 땐 <code>p1.print_info()</code>처럼 <strong>self 자리는 자동으로</strong> 채워집니다.</div>
+
+  <div class="box tip"><div class="t">💡 이름을 찾는 순서 (네임스페이스)</div>객체에서 변수를 찾을 땐 <strong>① 인스턴스 → ② 클래스 → ③ 전역</strong> 순서로 뒤져요. 그래서 클래스 변수(공유값)와 인스턴스 변수(각자값)를 함께 쓸 수 있습니다.</div>
+
+  <h3>클래스 메서드 · 정적 메서드</h3>
+  <p>객체를 만들지 않고 <strong>클래스 이름만으로</strong> 부를 수 있는 메서드도 있어요.</p>
+  <table>
+    <tr><th>종류</th><th>데코레이터</th><th>특징</th></tr>
+    <tr><td>인스턴스 메서드</td><td>없음</td><td>첫 인자 <code>self</code>, 객체로 호출</td></tr>
+    <tr><td>클래스 메서드</td><td><code>@classmethod</code></td><td>첫 인자 <code>cls</code>, 클래스 변수 다룸</td></tr>
+    <tr><td>정적 메서드</td><td><code>@staticmethod</code></td><td>self·cls 없음, 독립 기능</td></tr>
+  </table>
+</section>
+
+<section id="sec4">
+  <h2 class="sec"><span class="n">4</span>상속과 재정의</h2>
+  <div class="term">
+    <div class="h">👨‍👦 상속(Inheritance)</div>
+    <div class="def">부모 클래스의 <b>속성과 메서드를 자식이 물려받는</b> 것. 코드를 다시 안 쓰고 재사용할 수 있어요.</div>
+    <div class="anal">🧬 <b>비유</b> — 유전이랑 같아요. "학생은 사람이다(Student is a Person)"처럼, 학생은 사람의 특징(이름·나이)을 물려받고 <b>거기에 전공을 추가</b>합니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">class Person:
+    def __init__(self, name, gender):
+        self.name = name
+        self.gender = gender
+    def __str__(self):
+        return f"{self.name}({self.gender})"
+
+class Student(Person):            # Person을 상속
+    def __init__(self, name, gender, major):
+        super().__init__(name, gender)   # 부모 생성자 호출
+        self.major = major               # 자식만의 속성 추가
+    def __str__(self):                    # 재정의(오버라이딩)
+        return super().__str__() + f", 전공:{self.major}"
+
+s = Student("홍길동", "남자", "컴공")
+print(s)</code></pre>
+  <div class="output">홍길동(남자), 전공:컴공</div>
+
+  <div class="term">
+    <div class="h">🔗 super()</div>
+    <div class="def"><b>부모 클래스</b>를 가리켜요. <code>super().__init__()</code>으로 부모의 생성자를, <code>super().메서드()</code>로 부모의 메서드를 불러올 수 있어요.</div>
+  </div>
+  <div class="term">
+    <div class="h">✏️ 재정의(Overriding)</div>
+    <div class="def">부모의 메서드를 자식에서 <b>같은 이름으로 다시 정의</b>하는 것. 함수 이름과 매개변수가 부모와 같아야 해요.</div>
+    <div class="anal">🎨 <b>비유</b> — 물려받은 옷을 <b>내 스타일로 수선</b>하는 것과 같아요. 기본은 부모 것이지만, 자식이 자기 방식대로 바꿔 씁니다.</div>
+  </div>
+  <div class="box tip"><div class="t">💡 <code>__str__</code>은 뭐예요?</div>객체를 <code>print()</code>할 때 <strong>어떻게 보여줄지</strong> 정하는 특별한 메서드예요. 재정의해두면 <code>print(객체)</code>가 사람이 읽기 좋은 문자열을 출력합니다.</div>
+
+  <h3>정적 변수 (이름 맹글링)</h3>
+  <p>변수 이름 앞에 <strong>밑줄 두 개 <code>__</code></strong>를 붙이면, 파이썬이 내부적으로 이름을 바꿔(<code>_클래스명__변수</code>) 외부에서 함부로 못 건드리게 보호해요.</p>
+</section>
+
+<div class="recap">🎬 <b>다음 화 예고</b> — 메뉴가 객체가 되어 가게가 제법 똑똑해졌어요. 마지막 관문이 남았습니다. <b>8장</b>에서는 이상한 손님이 와도 가게가 <b>멈추지 않도록</b> <b>예외처리</b>로 마무리합니다.</div>
+
+<section id="quiz">
+  <div class="quiz">
+    <div class="qh">📝 연습문제</div>
+    <div class="sub">실습형</div>
+
+    <div class="q">
+      <div class="qq"><span class="num">1</span>도형(Shape)과 삼각형(Triangle) 클래스를 작성하세요.<br>· Shape: 생성자로 x,y 좌표(기본 0,0) 초기화, <code>move()</code>, <code>__str__()</code>, 정적 메서드 하나 이상<br>· Triangle은 Shape를 상속: width, height, x, y 초기화 / <code>calc_area()</code>(면적) / <code>__str__()</code> / 만들어진 객체 개수를 세는 클래스 변수(생성 시 +1, 소멸 시 -1)</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">class Shape:
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+    def move(self, dx, dy):
+        self.x += dx
+        self.y += dy
+    def __str__(self):
+        return f"좌표=({self.x},{self.y})"
+    @staticmethod
+    def info():
+        return "도형 클래스입니다"
+
+class Triangle(Shape):
+    count = 0                       # 클래스 변수(모든 객체 공유)
+    def __init__(self, width, height, x=0, y=0):
+        super().__init__(x, y)      # 부모 생성자로 x,y 초기화
+        self.width = width
+        self.height = height
+        Triangle.count += 1         # 객체 생길 때마다 +1
+    def calc_area(self):
+        return self.width * self.height / 2
+    def __del__(self):
+        Triangle.count -= 1         # 소멸될 때마다 -1
+    def __str__(self):
+        return f"삼각형 넓이={self.calc_area()}, {super().__str__()}"
+    @classmethod
+    def get_count(cls):
+        return cls.count
+
+t1 = Triangle(4, 3, 0, 10)
+t2 = Triangle(3, 4, 5, 5)
+print(t1); print(t2)
+print('Triangle 객체 갯수 :', Triangle.get_count())
+t1.move(50, 50)
+print(t1)</code></pre>
+        <div class="output">삼각형 넓이=6.0, 좌표=(0,10)
+삼각형 넓이=6.0, 좌표=(5,5)
+Triangle 객체 갯수 : 2
+삼각형 넓이=6.0, 좌표=(50,60)</div>
+        <div class="lab">해설</div>
+        <p>핵심 포인트 3가지예요. ① <strong>상속</strong>: <code>Triangle(Shape)</code>로 좌표 기능을 물려받고, <code>super().__init__()</code>으로 부모 생성자를 재활용. ② <strong>클래스 변수</strong> <code>count</code>: 모든 객체가 공유하므로 생성자에서 +1, 소멸자에서 -1 하면 현재 객체 수를 셀 수 있어요. ③ <code>move(50,50)</code>은 물려받은 메서드라 (0,10)→(50,60)으로 이동합니다.</p>
+      </div></details>
+    </div>
+
+    <div class="sub">서술형</div>
+    <div class="q">
+      <div class="qq"><span class="num">2</span>클래스와 객체(인스턴스)의 차이를 비유로 설명하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">예시 답안</div>
+        <p><strong>클래스는 붕어빵 틀(설계도), 객체는 그 틀로 찍어낸 붕어빵</strong>이에요. 클래스는 "어떤 데이터와 기능을 가질지"를 정의한 틀일 뿐이고, 실제로 메모리에 만들어져 값을 담는 것이 객체(인스턴스)입니다. 하나의 클래스로 여러 객체를 만들 수 있어요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">3</span>인스턴스 메서드에서 <code>self</code>는 무엇을 의미하나요?</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답·해설</div>
+        <p><code>self</code>는 <strong>메서드를 호출한 객체 자기 자신</strong>을 가리켜요. <code>p1.print_info()</code>를 호출하면 <code>self</code>에 자동으로 <code>p1</code>이 들어가서, <code>self.name</code>은 곧 <code>p1.name</code>이 됩니다. 그래서 객체마다 다른 자기 데이터에 접근할 수 있어요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">4</span>자식 클래스에서 부모의 <code>do_(a)</code> 메서드를 올바르게 호출하는 것은?<br>① <code>Super.do_(self, a)</code> ② <code>super().do_(a)</code> ③ <code>super.do_(a)</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>②</strong> <code>super().do_(a)</code></p>
+        <div class="lab">해설</div>
+        <p><code>super()</code>는 <strong>괄호를 붙여 호출</strong>해야 부모 클래스를 가리키는 객체가 돼요. ③ <code>super</code>(괄호 없음)는 클래스 자체라 틀리고, ① <code>Super</code>는 대문자 오타 + self를 직접 넘기는 옛날 방식이라 권장하지 않습니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">5</span>파이썬에서 생성자를 두 번 정의하면 어떻게 될까요?</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답·해설</div>
+        <p><strong>마지막에 정의한 생성자만 유효</strong >해요. 파이썬은 생성자(함수) 중복 정의(오버로딩)를 지원하지 않아서, 같은 <code>__init__</code>을 두 번 쓰면 나중 것이 앞의 것을 덮어씁니다. 여러 방식으로 초기화하고 싶으면 <strong>기본값 매개변수</strong>나 <strong>클래스 메서드</strong>를 활용하세요.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<div class="pager">
+  <a class="prev" href="ch06_모듈과패키지.html"><div class="dir">← 이전</div><div class="ttl">6장. 모듈과 패키지</div></a>
+  <a class="next" href="ch08_예외처리.html"><div class="dir">다음 →</div><div class="ttl">8장. 예외처리</div></a>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

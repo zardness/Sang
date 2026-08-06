@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8장. 예외처리 · 쉬운 파이썬</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root{--py-blue:#3776AB;--py-yellow:#FFD43B;--ink:#1a2233;--ink-soft:#4a5568;--line:#e6e9f0;--bg:#f6f8fc;--card:#fff;--accent:#2f6fb0;--green:#2e9e6b;--green-bg:#e9f8f0;--amber:#b9770e;--amber-bg:#fef6e6;--red:#d64545;--purple:#6b4fbb;--purple-bg:#f1ecfb}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(246,248,252,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-weight:600}.topbar .crumb{color:var(--ink-soft)}
+.hero{background:linear-gradient(135deg,#3776AB,#2b5e8c);color:#fff;border-radius:20px;padding:38px 34px;margin:26px 0 30px;box-shadow:0 10px 30px rgba(55,118,171,.25)}
+.hero .tag{display:inline-block;background:var(--py-yellow);color:#3a3300;font-weight:700;font-size:13px;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.hero h1{font-size:30px;line-height:1.3;margin-bottom:10px;letter-spacing:-.5px}.hero p{color:#eaf2fb;font-size:15.5px}
+.hero p strong{color:#FFE9A8;font-weight:800;background:rgba(255,255,255,.10);padding:1px 6px;border-radius:6px}
+.hero code{background:rgba(255,255,255,.18);color:#fff;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-weight:600}
+.hero p em{color:#EAF3FF;font-style:normal;border-bottom:2px solid rgba(255,212,59,.6)}
+.goals{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:30px}
+.goals h2{font-size:16px;color:var(--accent);margin-bottom:12px}
+.goals ul{list-style:none}.goals li{padding:7px 0 7px 30px;position:relative;font-size:15px}
+.goals li:before{content:"✓";position:absolute;left:0;top:7px;color:var(--green);font-weight:800}
+section{margin:38px 0}
+h2.sec{font-size:23px;letter-spacing:-.4px;padding-bottom:12px;border-bottom:3px solid var(--py-yellow);margin-bottom:22px;display:flex;align-items:center;gap:10px}
+h2.sec .n{background:var(--py-blue);color:#fff;font-size:15px;width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+h3{font-size:18.5px;margin:26px 0 12px;color:var(--ink);letter-spacing:-.3px}
+p{margin:12px 0;color:var(--ink-soft)}p strong,li strong{color:var(--ink);font-weight:700}
+ul.plain{margin:12px 0 12px 4px;padding-left:22px}ul.plain li{margin:7px 0;color:var(--ink-soft)}
+.term{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--py-blue);border-radius:12px;padding:18px 22px;margin:20px 0;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.term .h{font-size:17px;font-weight:800;color:var(--py-blue);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.term .def{font-size:15.5px;color:var(--ink)}
+.term .anal{margin-top:12px;background:var(--purple-bg);border-radius:9px;padding:12px 15px;font-size:14.5px;color:#4a3a7a}
+.term .anal b{color:var(--purple)}
+.box{border-radius:12px;padding:16px 20px;margin:18px 0;font-size:15px}
+.box .t{font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.tip{background:var(--green-bg);border:1px solid #bfe8d4;color:#1f5e42}.tip .t{color:var(--green)}
+.warn{background:var(--amber-bg);border:1px solid #f3ddad;color:#7a5310}.warn .t{color:var(--amber)}
+pre{border-radius:12px;margin:16px 0;overflow:auto;font-size:14px;box-shadow:0 4px 14px rgba(20,30,60,.15)}
+pre code.hljs{padding:18px 20px;line-height:1.65;font-family:'D2Coding','Consolas','Monaco',monospace}
+.codelabel{display:inline-block;background:#2b2f38;color:#9fb4cc;font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+.output{background:#0f1620;color:#6fe08a;border-radius:0 0 12px 12px;padding:12px 20px;margin-top:-16px;font-family:'D2Coding','Consolas',monospace;font-size:13.5px;white-space:pre-wrap;border-top:1px solid #26303f}
+.output:before{content:"▶ 실행결과";display:block;color:#5a7186;font-size:11.5px;margin-bottom:6px;font-weight:700}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(30,50,90,.05)}
+th{background:var(--py-blue);color:#fff;padding:11px 14px;text-align:left;font-weight:700}
+td{padding:10px 14px;border-top:1px solid var(--line);color:var(--ink-soft)}
+td code,p code,li code,.def code,.anal code,.ans code{background:#eef1f7;color:#b8336a;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-size:.9em;font-weight:600}
+tr:nth-child(even) td{background:#fafbfe}
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 24px 24px;margin-top:22px}
+.quiz>.qh{font-size:20px;color:var(--accent);font-weight:800;margin:18px 0 4px;display:flex;align-items:center;gap:9px}
+.quiz .sub{font-size:15px;font-weight:700;color:var(--purple);background:var(--purple-bg);padding:8px 14px;border-radius:8px;margin:18px 0 4px}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}.q:first-of-type{border-top:none}
+.q .qq{font-weight:700;color:var(--ink);font-size:15.5px;margin-bottom:10px}
+.q .qq .num{display:inline-flex;width:26px;height:26px;background:var(--py-yellow);color:#3a3300;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-right:8px}
+details{background:#f3f7fc;border:1px solid #d8e6f2;border-radius:10px;margin-top:8px}
+summary{cursor:pointer;padding:11px 16px;font-weight:700;color:var(--accent);font-size:14.5px;user-select:none;list-style:none}
+summary:before{content:"💡 정답·해설 보기"}details[open] summary:before{content:"🔽 정답·해설 접기"}
+summary::-webkit-details-marker{display:none}
+.ans{padding:4px 18px 16px}.ans .lab{font-weight:800;color:var(--green);margin:10px 0 4px;font-size:14px}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px}
+.pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;text-decoration:none;color:var(--ink);transition:.15s;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.pager a:hover{border-color:var(--py-blue);transform:translateY(-2px)}
+.pager .dir{font-size:12px;color:var(--ink-soft);font-weight:700}.pager .ttl{font-weight:700;color:var(--accent);margin-top:3px;font-size:14.5px}
+.pager a.next{text-align:right}.pager a.disabled{opacity:.4;pointer-events:none}
+.story{background:linear-gradient(135deg,#fff8ec,#fef1d8);border:1px solid #f0dca8;border-left:5px solid #FFB020;border-radius:14px;padding:18px 22px;margin:22px 0 26px}
+.story .st{font-weight:800;color:#9a6a00;font-size:15.5px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.story p{color:#6b5320;margin:6px 0;font-size:15px}
+.story b{color:#9a6a00}
+.recap{background:#eef4fb;border:1px dashed #b9d2ee;border-radius:12px;padding:14px 20px;margin:24px 0;font-size:14.5px;color:#345}
+.recap b{color:#2f6fb0}
+@media(max-width:600px){.hero h1{font-size:24px}.wrap{padding:0 14px 60px}.hero{padding:28px 22px}}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hero .meta span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:12.5px;font-weight:600;padding:4px 13px;border-radius:20px}
+.chapmap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:22px}
+.chapmap h2{font-size:16px;color:var(--accent);margin-bottom:14px}
+.chapmap .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chapmap a{display:flex;gap:11px;align-items:flex-start;background:#fafbfe;border:1px solid var(--line);border-radius:11px;padding:11px 14px;text-decoration:none;color:var(--ink);transition:.15s}
+.chapmap a:hover{border-color:var(--py-blue);background:#f0f6fc;transform:translateY(-1px)}
+.chapmap .no{flex:none;width:25px;height:25px;background:var(--py-blue);color:#fff;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;margin-top:3px}
+.chapmap .no.q{background:var(--purple)}
+.chapmap .tt{font-weight:700;font-size:14.5px;line-height:1.45}
+.chapmap .dd{font-size:12.5px;color:var(--ink-soft);margin-top:2px;line-height:1.5}
+@media(max-width:600px){.chapmap .grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="ch07_객체지향.html">← 이전</a>
+  <span class="crumb">8장 · 예외처리</span>
+  <a href="ch09_입출력프로그래밍.html">다음 →</a>
+</div>
+<div class="wrap">
+
+<div class="hero">
+  <span class="tag">CHAPTER 08</span>
+  <h1>예외처리</h1>
+  <p>'파이 분식'이 잘 돌아가는데, 어느 날 손님이 <strong>"김밥 -3줄 주세요"</strong>라거나 수량 칸에 <strong>"두 줄"</strong>이라고 글자를 넣어요. 조수는 당황해서 <strong>가게 문을 닫아버립니다(=프로그램 강제 종료)</strong>. 이런 <strong>돌발 상황에도 멈추지 않게</strong> 대비하는 법을 배웁니다.</p>
+  <div class="meta"><span>📚 5개 섹션</span><span>🍜 파이 분식 8화 · 완결</span><span>📝 연습문제 7</span><span>🛡️ 멈추지 않는 프로그램</span></div>
+</div>
+
+<div class="chapmap">
+  <h2>🗺️ 이번 장 한눈에 보기 <span style="font-weight:400;color:var(--ink-soft);font-size:13px">— 원하는 곳을 눌러 바로 이동하세요</span></h2>
+  <div class="grid">
+    <a href="#sec1"><span class="no">1</span><span><span class="tt">예외란?</span><span class="dd" style="display:block">실행 중 만나는 돌발 오류</span></span></a>
+    <a href="#sec2"><span class="no">2</span><span><span class="tt">try~except</span><span class="dd" style="display:block">위험 구간 감싸기, else까지</span></span></a>
+    <a href="#sec3"><span class="no">3</span><span><span class="tt">raise</span><span class="dd" style="display:block">일부러 예외 일으키기</span></span></a>
+    <a href="#sec4"><span class="no">4</span><span><span class="tt">사용자 정의 예외</span><span class="dd" style="display:block">Exception 상속으로 나만의 예외</span></span></a>
+    <a href="#sec5"><span class="no">5</span><span><span class="tt">finally·with</span><span class="dd" style="display:block">뒷정리는 확실하게</span></span></a>
+    <a href="#quiz" style="grid-column:1/-1"><span class="no q">📝</span><span><span class="tt">연습문제</span><span class="dd" style="display:block">실습 2 + 객관식·서술 5문제</span></span></a>
+  </div>
+</div>
+
+<div class="story">
+  <div class="st">🍜 파이 분식 이야기 — 8화(마지막). 무슨 일이 있어도 멈추지 않는 가게</div>
+  <p>지금까지 조수는 <b>정상 주문</b>만 처리했어요. 그런데 현실엔 이상한 손님이 꼭 있죠. 숫자 대신 글자를 말하거나, 있지도 않은 메뉴를 시키거나. 대비가 없으면 조수는 오류를 내며 <b>가게 전체를 멈춰</b>버려요. <b>예외처리</b>는 "혹시 문제가 생기면(<code>try</code>) → 이렇게 안내하고 넘어가자(<code>except</code>)"라고 <b>미리 짜 둔 대응 매뉴얼</b>이에요. 이걸 갖추면 어떤 손님이 와도 가게가 <b>끝까지 영업</b>합니다. 이로써 '파이 분식'은 진짜 <b>믿음직한 가게</b>가 됩니다. 🎉</p>
+</div>
+
+<div class="goals">
+  <h2>🎯 이 장을 끝내면 이런 걸 할 수 있어요</h2>
+  <ul>
+    <li>예외(오류)가 무엇인지 이해한다</li>
+    <li><code>try~except</code>로 오류를 처리할 수 있다</li>
+    <li>여러 예외를 구분해서 처리할 수 있다</li>
+    <li><code>raise</code>로 예외를 일부러 발생시킬 수 있다</li>
+    <li><code>finally</code>·<code>with</code>로 뒷정리를 안전하게 할 수 있다</li>
+    <li>나만의 예외(사용자 정의 예외)를 만들 수 있다</li>
+  </ul>
+</div>
+
+<section id="sec1">
+  <h2 class="sec"><span class="n">1</span>예외란 무엇일까?</h2>
+  <div class="term">
+    <div class="h">⚠️ 예외(Exception)</div>
+    <div class="def">프로그램 <b>실행 중에 발생하는 오류</b>예요. 문법은 맞지만, 돌리는 도중 예상 못한 상황을 만나 멈추는 것입니다.</div>
+    <div class="anal">🚗 <b>비유</b> — 운전 중 갑자기 나타난 웅덩이 같아요. 미리 대비(예외처리)를 안 해두면 차가 <b>멈춰버려요</b>. 대비해두면 살짝 피해 계속 달릴 수 있죠.</div>
+  </div>
+  <p>이런 상황에서 예외가 잘 생겨요.</p>
+  <ul class="plain">
+    <li>파일이 없거나 쓰기 금지된 파일을 열려 할 때</li>
+    <li><strong>0으로 나눌 때</strong> (<code>ZeroDivisionError</code>)</li>
+    <li>리스트·튜플의 <strong>없는 인덱스</strong>를 참조할 때 (<code>IndexError</code>)</li>
+    <li>네트워크 연결 실패, 데이터베이스 오류 등</li>
+  </ul>
+  <div class="box tip"><div class="t">💡 예외처리는 '복구'가 아니라 '대비'</div>예외처리는 시스템이 스스로 오류를 고치는 게 아니에요. <strong>오류가 날 만한 곳을 미리 감싸서</strong>, 문제가 생겨도 프로그램이 계속 돌아가도록 <strong>대처 코드를 준비</strong>해 두는 것입니다.</div>
+</section>
+
+<section id="sec2">
+  <h2 class="sec"><span class="n">2</span>try ~ except</h2>
+  <div class="term">
+    <div class="h">🛡️ try ~ except</div>
+    <div class="def"><code>try</code> 블록에 <b>위험한 코드</b>를 넣고, 오류가 나면 <code>except</code> 블록이 <b>대신 실행</b>돼요. 오류가 없으면 except는 그냥 건너뜁니다.</div>
+    <div class="anal">🪂 <b>비유</b> — 낙하산 같아요. <code>try</code>는 뛰어내리는 것(위험한 주문 처리), <code>except</code>는 문제가 생겼을 때 펴지는 비상 낙하산(손님에게 안내). 정상 주문이면 낙하산은 안 펴지고 그냥 지나갑니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">try:
+    수량 = int(input("김밥 몇 줄?: "))   # 손님이 "두줄"이라 적으면 위험!
+    print("합계:", 3500 * 수량)
+except ValueError:
+    print("숫자로 입력해 주세요!")         # 글자를 넣었을 때
+except ZeroDivisionError:
+    print("0으로 나눌 수 없어요!")</code></pre>
+  <div class="output">손님이 "두줄" 입력 → 숫자로 입력해 주세요!
+손님이 "2" 입력   → 합계: 7000</div>
+  <div class="box warn"><div class="t">⚠️ 예외 이름을 지정하는 게 좋아요</div><code>except:</code>처럼 이름을 생략하면 <strong>모든 오류를 뭉뚱그려</strong> 잡아요. 어떤 오류인지 알 수 없어 디버깅이 어렵습니다. <code>except ValueError:</code>처럼 <strong>구체적으로</strong> 지정하세요.</div>
+
+  <h3>여러 예외를 구분해서 처리</h3>
+  <p>예외마다 다르게 대응하려면 <code>except</code>를 여러 개 쓰거나, 튜플로 묶어요.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">try:
+    L = [1, 2, 3]
+    print(L[10])
+except (IndexError, KeyError) as e:   # 여러 예외를 한 번에
+    print("인덱스/키 오류:", e)         # as e 로 오류 정보 받기</code></pre>
+  <div class="output">인덱스/키 오류: list index out of range</div>
+  <div class="box warn"><div class="t">⚠️ 순서 규칙 — 자식 예외를 먼저!</div>여러 <code>except</code>를 쓸 때 <strong>부모(상위) 예외를 먼저 쓰면</strong> 그 아래 except는 영영 실행되지 않아요. <code>Exception</code>(모든 예외의 부모)처럼 넓은 것은 <strong>맨 마지막</strong>에 둬야 합니다.</div>
+
+  <h3>else 절</h3>
+  <p><code>else</code>는 <strong>오류가 안 났을 때만</strong> 실행돼요. (except 다음에 위치)</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">try:
+    result = 10 / 2
+except ZeroDivisionError:
+    print("오류!")
+else:
+    print("성공:", result)   # 오류 없을 때만</code></pre>
+  <div class="output">성공: 5.0</div>
+</section>
+
+<section id="sec3">
+  <h2 class="sec"><span class="n">3</span>raise — 예외를 일부러 발생시키기</h2>
+  <div class="term">
+    <div class="h">🚨 raise</div>
+    <div class="def">프로그래머가 <b>직접 예외를 강제로 일으키는</b> 명령이에요. "이건 잘못된 값이야!"라고 알릴 때 씁니다.</div>
+    <div class="anal">🙋 <b>비유</b> — 심판이 반칙에 <b>휘슬을 부는</b> 것과 같아요. 규칙에 어긋나면 스스로 "여기 문제 있어요!"라고 신호를 보냅니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">def divide(a, b):
+    if b == 0:
+        raise ValueError("0으로 나눌 수 없습니다")   # 강제 발생
+    return a / b
+
+try:
+    divide(10, 0)
+except ValueError as e:
+    print("오류 잡음:", e)</code></pre>
+  <div class="output">오류 잡음: 0으로 나눌 수 없습니다</div>
+  <div class="box tip"><div class="t">💡 추상 클래스에도 쓰여요</div>파이썬엔 추상 클래스 전용 키워드가 없어서, <strong>자식이 반드시 재정의해야 하는 메서드</strong>에 <code>raise NotImplementedError</code>를 넣어 둬요. 자식이 구현 안 하고 부르면 오류로 알려주는 방식입니다.</div>
+</section>
+
+<section id="sec4">
+  <h2 class="sec"><span class="n">4</span>사용자 정의 예외</h2>
+  <div class="term">
+    <div class="h">🏷️ 사용자 정의 예외</div>
+    <div class="def">파이썬 기본 예외로 부족할 때, <code>Exception</code>을 <b>상속받아 나만의 예외</b>를 만들 수 있어요.</div>
+    <div class="anal">🎫 <b>비유</b> — 우리 회사만의 '전용 경고 스티커'를 만드는 것과 같아요. 기성품(기본 예외)으로 표현 안 되는 상황을 내 이름으로 표시합니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">class EmptyDataError(Exception):     # Exception 상속
+    pass
+
+def process(data):
+    if len(data) == 0:
+        raise EmptyDataError("데이터가 비었습니다")
+    return sum(data)
+
+try:
+    process([])
+except EmptyDataError as e:
+    print("내 예외 발생:", e)</code></pre>
+  <div class="output">내 예외 발생: 데이터가 비었습니다</div>
+</section>
+
+<section id="sec5">
+  <h2 class="sec"><span class="n">5</span>정리 작업 (finally / with)</h2>
+  <div class="term">
+    <div class="h">🧹 finally</div>
+    <div class="def">오류가 <b>나든 안 나든 항상 실행</b>되는 블록이에요. 파일 닫기, 연결 해제 같은 <b>뒷정리</b>에 씁니다.</div>
+    <div class="anal">🔚 <b>비유</b> — 영화가 어떻게 끝나든 <b>반드시 나오는 엔딩 크레딧</b> 같아요. 성공하든 실패하든 마지막 정리는 꼭 합니다.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">try:
+    f = open("data.txt")
+    print(f.read())
+except FileNotFoundError:
+    print("파일이 없어요")
+finally:
+    print("정리 작업 (항상 실행)")</code></pre>
+  <div class="output">파일이 없어요
+정리 작업 (항상 실행)</div>
+
+  <div class="term">
+    <div class="h">📎 with — 자동 정리</div>
+    <div class="def">파일 같은 자원을 <b>다 쓰면 자동으로 닫아주는</b> 편리한 구문이에요. <code>finally</code>로 일일이 닫을 필요가 없어요.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python"># with 블록이 끝나면 파일 f가 자동으로 닫힘
+with open("data.txt", "w") as f:
+    f.write("안녕")
+# 여기서 파일은 이미 안전하게 닫혀 있음</code></pre>
+  <div class="box tip"><div class="t">💡 with를 추천하는 이유</div>파일을 열고 <code>close()</code>를 깜빡하면 자원이 낭비돼요. <code>with</code>는 블록을 벗어나는 순간 <strong>알아서 닫아줘서</strong> 실수를 막아줍니다. 파일 다룰 땐 <code>with</code>가 정석이에요.</div>
+</section>
+
+<div class="recap">🎉 <b>완결</b> — 축하합니다! '파이 분식'은 이제 손님이 무슨 주문을 해도 <b>끝까지 영업하는 믿음직한 가게</b>가 됐어요. 변수 → 데이터 구조 → 판단 → 함수 → 모듈 → 객체 → 예외처리까지, 여러분은 파이썬 기본기를 <b>하나의 이야기로</b> 완주했습니다. 이제 여러분만의 '가게'를 만들어 보세요!</div>
+
+<section id="quiz">
+  <div class="quiz">
+    <div class="qh">📝 연습문제</div>
+    <div class="sub">실습형</div>
+
+    <div class="q">
+      <div class="qq"><span class="num">1</span>사용자에게 숫자 두 개를 입력받아 나눗셈 결과를 출력하되, 0으로 나누거나 숫자가 아닌 값을 넣으면 각각 알맞은 메시지를 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">try:
+    a = int(input("첫 번째 수: "))
+    b = int(input("두 번째 수: "))
+    print("결과:", a / b)
+except ValueError:
+    print("숫자를 입력하세요!")
+except ZeroDivisionError:
+    print("0으로 나눌 수 없습니다!")</code></pre>
+        <div class="lab">해설</div>
+        <p>두 종류의 오류를 <strong>따로</strong> 잡아요. 글자를 넣으면 <code>int()</code>에서 <code>ValueError</code>, 0을 넣으면 나눗셈에서 <code>ZeroDivisionError</code>가 발생합니다. 예외를 구체적으로 지정하면 상황별로 친절한 안내가 가능해요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">2</span>나이가 음수이면 <code>ValueError</code>를 발생시키는 함수 <code>set_age(age)</code>를 작성하고, 호출부에서 예외를 처리하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">def set_age(age):
+    if age < 0:
+        raise ValueError("나이는 음수일 수 없습니다")
+    return age
+
+try:
+    set_age(-5)
+except ValueError as e:
+    print("오류:", e)</code></pre>
+        <div class="output">오류: 나이는 음수일 수 없습니다</div>
+        <div class="lab">해설</div>
+        <p>잘못된 값을 <strong>스스로 걸러내</strong> <code>raise</code>로 알리는 패턴이에요. 값을 검증(validation)할 때 아주 흔하게 씁니다.</p>
+      </div></details>
+    </div>
+
+    <div class="sub">문제풀이형</div>
+    <div class="q">
+      <div class="qq"><span class="num">3</span>예외 처리에 대해 <strong>잘못 설명한</strong> 것은?<br>① try 블록은 예외 발생 가능성이 있는 문장을 작성한다 ② 예외가 발생하면 except 블록이 실행된다 ③ <strong>상위 예외 except 블록이 하위 예외보다 먼저</strong> 선언되어야 한다 ④ finally 블록은 예외 발생 유무와 상관없이 실행된다</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>③</strong></p>
+        <div class="lab">해설</div>
+        <p>반대예요! <strong>하위(구체적) 예외를 먼저</strong>, 상위(넓은) 예외를 나중에 써야 해요. <code>Exception</code> 같은 상위 예외를 먼저 두면 모든 오류를 거기서 잡아버려, 아래 except는 실행될 기회가 없어집니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">4</span>예외 처리에 대한 설명 중 <strong>잘못된</strong> 것은?<br>① raise는 강제로 예외를 발생시킨다 ② <strong>catch</strong> 절은 예외를 처리하는 구문이다 ③ 여러 예외를 하나의 구문으로 처리할 수 있다 ④ else 절은 예외가 없을 때 실행된다</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>②</strong></p>
+        <div class="lab">해설</div>
+        <p>파이썬은 <code>catch</code>가 아니라 <strong><code>except</code></strong>를 써요! <code>catch</code>는 자바·C++에서 쓰는 키워드입니다. 파이썬 예외처리 키워드는 <code>try</code> / <code>except</code> / <code>else</code> / <code>finally</code>예요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">5</span>다음 중 <code>except</code> 절을 <strong>잘못</strong> 사용한 것은?<br>① <code>except :</code> ② <code>except Exception:</code> ③ <code>except Exception as e:</code> ④ <code>except Exception e:</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>④</strong></p>
+        <div class="lab">해설</div>
+        <p>예외 객체를 변수로 받으려면 반드시 <strong><code>as</code></strong>를 써야 해요: <code>except Exception as e:</code>. <code>except Exception e:</code>처럼 <code>as</code> 없이 쓰면 문법 오류입니다. ①②③은 모두 올바른 형태예요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">6</span>다음 중 예외 처리에 <strong>사용하지 않는</strong> 구문은?<br>① <code>try</code> ② <code>except</code> ③ <code>with</code> ④ <code>finally</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>③</strong> <code>with</code></p>
+        <div class="lab">해설</div>
+        <p>예외 처리의 핵심 구문은 <code>try</code> / <code>except</code> / <code>else</code> / <code>finally</code>예요. <code>with</code>는 <strong>자원 정리(파일 자동 닫기)</strong>에 쓰는 별개의 구문입니다. (정리 작업이라는 점에서 finally와 목적이 비슷하지만, try-except 구조의 일부는 아니에요.)</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">7</span><code>finally</code> 블록과 <code>else</code> 블록의 실행 조건 차이는 무엇일까요?</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답·해설</div>
+        <p><strong><code>else</code></strong>는 <strong>예외가 발생하지 않았을 때만</strong> 실행돼요. 반면 <strong><code>finally</code></strong>는 <strong>예외 발생 여부와 상관없이 항상</strong> 실행됩니다. 그래서 else는 '성공 시 추가 작업', finally는 '무조건 해야 할 뒷정리'에 씁니다.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<div class="box tip" style="margin-top:40px"><div class="t">🎉 2부 핵심 완주!</div>모듈·패키지(6장), 객체지향(7장), 예외처리(8장)까지 배웠어요. 이제 여러분은 <strong>재사용 가능하고 안정적인</strong> 프로그램을 만드는 기술을 갖췄습니다. 다음은 3부 데이터 분석 — 입출력 프로그래밍(9장), 넘파이(10장), 판다스(11장)로 이어집니다.</div>
+
+<div class="pager">
+  <a class="prev" href="ch07_객체지향.html"><div class="dir">← 이전</div><div class="ttl">7장. 객체지향 프로그래밍</div></a>
+  <a class="next" href="ch09_입출력프로그래밍.html"><div class="dir">다음 →</div><div class="ttl">9장. 입출력 프로그래밍</div></a>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

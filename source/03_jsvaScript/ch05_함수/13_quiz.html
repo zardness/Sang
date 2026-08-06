@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        body{
+         /* background-image: url(ch05_img/img01.png); */
+            background-size: 100%;
+            font-size: 1.5em;
+            color: yellow;
+        }
+    </style>
+    <script>              
+        //img01.png(노란색) , img02.png(파란색), img03.png(하얀색)
+        let sec = 0; //몇초가 지났는지 저장 변수
+        const color = ['yellow', 'blue', 'white'];
+        const img =['url(ch05_img/img01.png)',
+                    'url(ch05_img/img02.png)',
+                    'url(ch05_img/img03.png)'];
+        const id = setInterval(()=>{
+            //document.write(new Date().toLocaleString() + '<br>');
+            document.body.innerHTML = `${new Date().toLocaleString()}-${sec}초 지남`; 
+            document.body.style.backgroundImage = img[sec%3];               
+            document.body.style.color = color[sec%3];  
+            sec++
+
+        },1000);          
+        // document.body.style = `background-image: ${img[sec%3]}`;
+        // document.body.style = `color:${color[sec%3]}`;    
+        
+        setTimeout(()=>{
+            clearInterval(id);
+            document.body.innerHTML +='<br>타이머끝';            
+        },10000);
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

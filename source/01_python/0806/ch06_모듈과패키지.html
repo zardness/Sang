@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6장. 모듈과 패키지 · 쉬운 파이썬</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root{--py-blue:#3776AB;--py-yellow:#FFD43B;--ink:#1a2233;--ink-soft:#4a5568;--line:#e6e9f0;--bg:#f6f8fc;--card:#fff;--accent:#2f6fb0;--green:#2e9e6b;--green-bg:#e9f8f0;--amber:#b9770e;--amber-bg:#fef6e6;--red:#d64545;--purple:#6b4fbb;--purple-bg:#f1ecfb}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(246,248,252,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-weight:600}.topbar .crumb{color:var(--ink-soft)}
+.hero{background:linear-gradient(135deg,#3776AB,#2b5e8c);color:#fff;border-radius:20px;padding:38px 34px;margin:26px 0 30px;box-shadow:0 10px 30px rgba(55,118,171,.25)}
+.hero .tag{display:inline-block;background:var(--py-yellow);color:#3a3300;font-weight:700;font-size:13px;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.hero h1{font-size:30px;line-height:1.3;margin-bottom:10px;letter-spacing:-.5px}.hero p{color:#eaf2fb;font-size:15.5px}
+.hero p strong{color:#FFE9A8;font-weight:800;background:rgba(255,255,255,.10);padding:1px 6px;border-radius:6px}
+.hero code{background:rgba(255,255,255,.18);color:#fff;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-weight:600}
+.hero p em{color:#EAF3FF;font-style:normal;border-bottom:2px solid rgba(255,212,59,.6)}
+.goals{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:30px}
+.goals h2{font-size:16px;color:var(--accent);margin-bottom:12px}
+.goals ul{list-style:none}.goals li{padding:7px 0 7px 30px;position:relative;font-size:15px}
+.goals li:before{content:"✓";position:absolute;left:0;top:7px;color:var(--green);font-weight:800}
+section{margin:38px 0}
+h2.sec{font-size:23px;letter-spacing:-.4px;padding-bottom:12px;border-bottom:3px solid var(--py-yellow);margin-bottom:22px;display:flex;align-items:center;gap:10px}
+h2.sec .n{background:var(--py-blue);color:#fff;font-size:15px;width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+h3{font-size:18.5px;margin:26px 0 12px;color:var(--ink);letter-spacing:-.3px}
+p{margin:12px 0;color:var(--ink-soft)}p strong,li strong{color:var(--ink);font-weight:700}
+ul.plain{margin:12px 0 12px 4px;padding-left:22px}ul.plain li{margin:7px 0;color:var(--ink-soft)}
+.term{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--py-blue);border-radius:12px;padding:18px 22px;margin:20px 0;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.term .h{font-size:17px;font-weight:800;color:var(--py-blue);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.term .def{font-size:15.5px;color:var(--ink)}
+.term .anal{margin-top:12px;background:var(--purple-bg);border-radius:9px;padding:12px 15px;font-size:14.5px;color:#4a3a7a}
+.term .anal b{color:var(--purple)}
+.box{border-radius:12px;padding:16px 20px;margin:18px 0;font-size:15px}
+.box .t{font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.tip{background:var(--green-bg);border:1px solid #bfe8d4;color:#1f5e42}.tip .t{color:var(--green)}
+.warn{background:var(--amber-bg);border:1px solid #f3ddad;color:#7a5310}.warn .t{color:var(--amber)}
+pre{border-radius:12px;margin:16px 0;overflow:auto;font-size:14px;box-shadow:0 4px 14px rgba(20,30,60,.15)}
+pre code.hljs{padding:18px 20px;line-height:1.65;font-family:'D2Coding','Consolas','Monaco',monospace}
+.codelabel{display:inline-block;background:#2b2f38;color:#9fb4cc;font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+.output{background:#0f1620;color:#6fe08a;border-radius:0 0 12px 12px;padding:12px 20px;margin-top:-16px;font-family:'D2Coding','Consolas',monospace;font-size:13.5px;white-space:pre-wrap;border-top:1px solid #26303f}
+.output:before{content:"▶ 실행결과";display:block;color:#5a7186;font-size:11.5px;margin-bottom:6px;font-weight:700}
+.filelabel{display:inline-block;background:#3a3320;color:var(--py-yellow);font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(30,50,90,.05)}
+th{background:var(--py-blue);color:#fff;padding:11px 14px;text-align:left;font-weight:700}
+td{padding:10px 14px;border-top:1px solid var(--line);color:var(--ink-soft)}
+td code,p code,li code,.def code,.anal code,.ans code{background:#eef1f7;color:#b8336a;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-size:.9em;font-weight:600}
+tr:nth-child(even) td{background:#fafbfe}
+.tree{background:#0f1620;color:#c8d6e5;border-radius:12px;padding:18px 22px;font-family:'D2Coding',Consolas,monospace;font-size:14px;line-height:1.9;margin:16px 0}
+.tree .dir2{color:var(--py-yellow)}.tree .file{color:#7fd1a0}
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 24px 24px;margin-top:22px}
+.quiz>.qh{font-size:20px;color:var(--accent);font-weight:800;margin:18px 0 4px;display:flex;align-items:center;gap:9px}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}.q:first-of-type{border-top:none}
+.q .qq{font-weight:700;color:var(--ink);font-size:15.5px;margin-bottom:10px}
+.q .qq .num{display:inline-flex;width:26px;height:26px;background:var(--py-yellow);color:#3a3300;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-right:8px}
+details{background:#f3f7fc;border:1px solid #d8e6f2;border-radius:10px;margin-top:8px}
+summary{cursor:pointer;padding:11px 16px;font-weight:700;color:var(--accent);font-size:14.5px;user-select:none;list-style:none}
+summary:before{content:"💡 정답·해설 보기"}details[open] summary:before{content:"🔽 정답·해설 접기"}
+summary::-webkit-details-marker{display:none}
+.ans{padding:4px 18px 16px}.ans .lab{font-weight:800;color:var(--green);margin:10px 0 4px;font-size:14px}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px}
+.pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;text-decoration:none;color:var(--ink);transition:.15s;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.pager a:hover{border-color:var(--py-blue);transform:translateY(-2px)}
+.pager .dir{font-size:12px;color:var(--ink-soft);font-weight:700}.pager .ttl{font-weight:700;color:var(--accent);margin-top:3px;font-size:14.5px}
+.pager a.next{text-align:right}.pager a.disabled{opacity:.4;pointer-events:none}
+.story{background:linear-gradient(135deg,#fff8ec,#fef1d8);border:1px solid #f0dca8;border-left:5px solid #FFB020;border-radius:14px;padding:18px 22px;margin:22px 0 26px}
+.story .st{font-weight:800;color:#9a6a00;font-size:15.5px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.story p{color:#6b5320;margin:6px 0;font-size:15px}
+.story b{color:#9a6a00}
+.recap{background:#eef4fb;border:1px dashed #b9d2ee;border-radius:12px;padding:14px 20px;margin:24px 0;font-size:14.5px;color:#345}
+.recap b{color:#2f6fb0}
+@media(max-width:600px){.hero h1{font-size:24px}.wrap{padding:0 14px 60px}.hero{padding:28px 22px}}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hero .meta span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:12.5px;font-weight:600;padding:4px 13px;border-radius:20px}
+.chapmap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:22px}
+.chapmap h2{font-size:16px;color:var(--accent);margin-bottom:14px}
+.chapmap .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chapmap a{display:flex;gap:11px;align-items:flex-start;background:#fafbfe;border:1px solid var(--line);border-radius:11px;padding:11px 14px;text-decoration:none;color:var(--ink);transition:.15s}
+.chapmap a:hover{border-color:var(--py-blue);background:#f0f6fc;transform:translateY(-1px)}
+.chapmap .no{flex:none;width:25px;height:25px;background:var(--py-blue);color:#fff;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;margin-top:3px}
+.chapmap .no.q{background:var(--purple)}
+.chapmap .tt{font-weight:700;font-size:14.5px;line-height:1.45}
+.chapmap .dd{font-size:12.5px;color:var(--ink-soft);margin-top:2px;line-height:1.5}
+@media(max-width:600px){.chapmap .grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="ch05_함수.html">← 이전</a>
+  <span class="crumb">6장 · 모듈과 패키지</span>
+  <a href="ch07_객체지향.html">다음 →</a>
+</div>
+<div class="wrap">
+
+<div class="hero">
+  <span class="tag">CHAPTER 06</span>
+  <h1>모듈과 패키지</h1>
+  <p>이제 '파이 분식' 코드가 길어졌어요. 계산 매뉴얼, 재고 매뉴얼, 손님 응대 매뉴얼… <strong>한 파일에 다 넣으니</strong> 지저분합니다. 매뉴얼을 <strong>주제별 파일로 나누고(모듈)</strong>, 남이 잘 만들어 둔 매뉴얼도 <strong>가져다 쓰는(import·pip)</strong> 법을 배워요.</p>
+  <div class="meta"><span>📚 5개 섹션</span><span>🍜 파이 분식 6화</span><span>📝 연습문제 8</span><span>🎉 1부 마무리</span></div>
+</div>
+
+<div class="chapmap">
+  <h2>🗺️ 이번 장 한눈에 보기 <span style="font-weight:400;color:var(--ink-soft);font-size:13px">— 원하는 곳을 눌러 바로 이동하세요</span></h2>
+  <div class="grid">
+    <a href="#sec1"><span class="no">1</span><span><span class="tt">모듈이란?</span><span class="dd" style="display:block">함수를 담은 .py 파일 하나</span></span></a>
+    <a href="#sec2"><span class="no">2</span><span><span class="tt">import 방법들</span><span class="dd" style="display:block">import·from·as 구분해 쓰기</span></span></a>
+    <a href="#sec3"><span class="no">3</span><span><span class="tt">내 모듈 만들기</span><span class="dd" style="display:block">__name__ == "__main__"의 비밀</span></span></a>
+    <a href="#sec4"><span class="no">4</span><span><span class="tt">패키지</span><span class="dd" style="display:block">모듈을 묶는 폴더와 __init__.py</span></span></a>
+    <a href="#sec5"><span class="no">5</span><span><span class="tt">pip</span><span class="dd" style="display:block">외부 패키지 설치·삭제</span></span></a>
+    <a href="#quiz" style="grid-column:1/-1"><span class="no q">📝</span><span><span class="tt">연습문제</span><span class="dd" style="display:block">핵심 확인 8문제</span></span></a>
+  </div>
+</div>
+
+<div class="story">
+  <div class="st">🍜 파이 분식 이야기 — 6화. 매뉴얼을 서랍장에 정리하다</div>
+  <p>매뉴얼이 수십 장 쌓이자 뭐가 어디 있는지 모르겠어요. 사장님은 <b>'계산 서랍', '재고 서랍', '응대 서랍'</b>으로 나눠 정리합니다. 이렇게 나눈 파일 하나하나가 <b>모듈</b>, 서랍장 전체가 <b>패키지</b>예요. 게다가 세상엔 <b>이미 전문가가 만들어 둔 매뉴얼</b>(엑셀 계산, 그래프 그리기 등)이 무료로 널려 있어요. 그걸 <code>pip</code>로 받아 <code>import</code>로 꺼내 쓰면, 바퀴를 다시 발명할 필요가 없습니다.</p>
+</div>
+
+<div class="goals">
+  <h2>🎯 이 장을 끝내면 이런 걸 할 수 있어요</h2>
+  <ul>
+    <li>모듈을 <code>import</code>해서 남의 코드를 가져다 쓸 수 있다</li>
+    <li><code>import</code>의 여러 방식을 구분해 쓸 수 있다</li>
+    <li>내 코드를 모듈(.py 파일)로 만들 수 있다</li>
+    <li>패키지가 무엇이고 어떻게 구성되는지 안다</li>
+    <li><code>pip</code>으로 외부 패키지를 설치·삭제할 수 있다</li>
+  </ul>
+</div>
+
+<section id="sec1">
+  <h2 class="sec"><span class="n">1</span>모듈이란?</h2>
+  <div class="term">
+    <div class="h">📄 모듈(Module)</div>
+    <div class="def">함수나 변수를 담아 놓은 <b>파이썬 파일(.py) 하나</b>예요. 자주 쓰는 코드를 파일로 만들어 두면 여러 곳에서 불러 쓸 수 있어요.</div>
+    <div class="anal">🗄️ <b>비유</b> — '파이 분식'의 <b>매뉴얼 서랍</b> 하나예요. 5장에서 만든 <code>주문계산</code> 함수를 <code>calc.py</code>라는 '계산 서랍'에 넣어 두면, 다른 파일에서 <code>import calc</code> 한 줄로 꺼내 씁니다. 매번 다시 만들 필요가 없죠.</div>
+  </div>
+  <p>파이썬에는 이미 만들어진 <strong>표준 모듈</strong>이 200개 넘게 있어요. 설치 없이 바로 <code>import</code>해서 씁니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import math          # 수학 모듈 가져오기
+print(math.sqrt(16))  # 제곱근
+print(math.pi)        # 원주율
+
+import random
+print(random.randint(1, 6))  # 주사위 굴리기</code></pre>
+  <div class="output">4.0
+3.141592653589793
+(1~6 중 랜덤한 값)</div>
+  <div class="box tip"><div class="t">💡 대표적인 표준 모듈</div><code>math</code>(수학) · <code>random</code>(난수) · <code>datetime</code>(날짜/시간) · <code>os</code>(운영체제) · <code>sys</code>(시스템) · <code>json</code> · <code>sqlite3</code>(DB) 등. 공식 문서: <code>docs.python.org/3/library</code></div>
+</section>
+
+<section id="sec2">
+  <h2 class="sec"><span class="n">2</span>import 하는 여러 방법</h2>
+  <p>모듈을 가져오는 방식이 몇 가지 있어요. 상황에 맞게 골라 씁니다.</p>
+  <table>
+    <tr><th>방법</th><th>뜻</th><th>사용 예</th></tr>
+    <tr><td><code>import 모듈</code></td><td>모듈 전체 가져오기</td><td><code>math.sqrt(16)</code></td></tr>
+    <tr><td><code>from 모듈 import 함수</code></td><td>특정 함수만 콕 집어</td><td><code>sqrt(16)</code> (모듈명 생략)</td></tr>
+    <tr><td><code>import 모듈 as 별칭</code></td><td>짧은 별명 붙이기</td><td><code>import numpy as np</code></td></tr>
+    <tr><td><code>from 모듈 import *</code></td><td>모든 것 가져오기(비권장)</td><td>—</td></tr>
+  </table>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">from math import sqrt, pi   # 필요한 것만
+print(sqrt(25), pi)
+
+import random as rd          # 별칭
+print(rd.randint(1, 10))</code></pre>
+  <div class="output">5.0 3.141592653589793
+(1~10 중 랜덤)</div>
+  <div class="box warn"><div class="t">⚠️ <code>from 모듈 import *</code>는 조심</div>모든 이름을 한꺼번에 가져오면 <strong>내 변수와 이름이 겹쳐</strong> 예상치 못한 문제가 생길 수 있어요. 되도록 필요한 것만 콕 집어 가져오는 게 좋습니다.</div>
+  <div class="box tip"><div class="t">💡 dir() — 뭐가 들어있나 보기</div><code>dir(math)</code>를 실행하면 그 모듈이 가진 함수·변수 목록을 볼 수 있어요.</div>
+</section>
+
+<section id="sec3">
+  <h2 class="sec"><span class="n">3</span>내 모듈 만들기</h2>
+  <p>내 함수를 <code>.py</code> 파일로 저장하면, 그게 바로 나만의 모듈이에요.</p>
+  <div class="filelabel">📄 mymath.py</div>
+  <pre><code class="language-python">def add(a, b):
+    return a + b
+
+def multiply(a, b):
+    return a * b</code></pre>
+  <p>같은 폴더의 다른 파일에서 이렇게 불러 써요.</p>
+  <div class="filelabel">📄 main.py</div>
+  <pre><code class="language-python">import mymath
+
+print(mymath.add(3, 5))
+print(mymath.multiply(4, 2))</code></pre>
+  <div class="output">8
+8</div>
+
+  <div class="term">
+    <div class="h">🚪 if __name__ == "__main__":</div>
+    <div class="def">이 파일이 <b>직접 실행될 때만</b> 아래 코드를 돌려요. 다른 파일에서 <code>import</code>될 때는 실행되지 않습니다.</div>
+    <div class="anal">🎭 <b>비유</b> — "내가 주인공으로 무대에 설 때만 이 대사를 하고, 조연(import)으로 불려 갔을 땐 조용히 있는다"는 스위치예요.</div>
+  </div>
+  <div class="filelabel">📄 mymath.py</div>
+  <pre><code class="language-python">def add(a, b):
+    return a + b
+
+if __name__ == "__main__":
+    # 이 파일을 직접 실행할 때만 (테스트용)
+    print("테스트:", add(1, 2))</code></pre>
+  <div class="box tip"><div class="t">💡 왜 쓸까?</div>모듈에는 함수만 담고 싶은데, 직접 실행해 <strong>테스트도 하고 싶을 때</strong> 유용해요. import될 땐 테스트 코드가 안 돌아가니 방해되지 않습니다.</div>
+
+  <ul class="plain">
+    <li><strong><code>sys.path</code></strong> — 파이썬이 모듈을 <strong>찾는 폴더 목록</strong>이에요. <code>sys.path.append(경로)</code>로 추가할 수 있어요.</li>
+    <li><strong><code>__pycache__</code></strong> — 모듈을 빠르게 불러오려고 만든 <strong>컴파일 캐시</strong> 폴더(<code>.pyc</code> 파일)예요. 자동 생성되니 신경 쓰지 않아도 됩니다.</li>
+  </ul>
+</section>
+
+<section id="sec4">
+  <h2 class="sec"><span class="n">4</span>패키지(Package)</h2>
+  <div class="term">
+    <div class="h">📦 패키지(Package)</div>
+    <div class="def"><b>여러 모듈을 폴더로 묶은 것</b>이에요. 모듈이 파일이라면, 패키지는 그 파일들을 담은 폴더입니다.</div>
+    <div class="anal">🗄️ <b>비유</b> — 모듈이 '서류 한 장'이라면, 패키지는 서류들을 정리한 '폴더(서랍)'예요. 점(<code>.</code>)으로 폴더 안을 파고듭니다: <code>패키지.모듈</code></div>
+  </div>
+  <p>패키지는 이런 폴더 구조를 가져요.</p>
+  <div class="tree">sample_pac/
+ ├─ <span class="file">__init__.py</span>
+ └─ <span class="dir2">ab/</span>
+     ├─ <span class="file">__init__.py</span>
+     ├─ <span class="file">a.py</span>
+     └─ <span class="file">b.py</span></div>
+  <div class="box tip"><div class="t">💡 <code>__init__.py</code>의 역할</div>이 파일이 있으면 파이썬이 그 폴더를 <strong>"패키지"로 인식</strong >해요. 비어 있어도 괜찮아요. <code>__all__ = [...]</code>을 적으면 <code>from 패키지 import *</code> 할 때 <strong>어떤 모듈을 가져올지</strong> 지정할 수 있습니다.</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">from sample_pac.ab import a   # 패키지 안 모듈 가져오기
+from sample_pac.ab.a import func  # 함수까지 직접</code></pre>
+  <div class="box warn"><div class="t">⚠️ 한 번 로드된 패키지는 다시 안 불러와요</div>수정한 모듈을 다시 반영하려면 <strong>커널을 재시작</strong>하거나 <code>importlib.reload(모듈)</code>을 써야 해요.</div>
+</section>
+
+<section id="sec5">
+  <h2 class="sec"><span class="n">5</span>외부 패키지 설치 (pip)</h2>
+  <div class="term">
+    <div class="h">📥 pip</div>
+    <div class="def">전 세계 개발자들이 만든 <b>외부 패키지를 설치</b>하는 도구예요. 앱스토어에서 앱 깔듯, 필요한 기능을 내려받습니다.</div>
+    <div class="anal">🛒 <b>비유</b> — 온라인 쇼핑몰 같아요. <code>pip install</code>로 원하는 도구(numpy, pandas 등)를 '주문'하면 자동으로 설치됩니다.</div>
+  </div>
+  <p>명령창(터미널·Anaconda Prompt)에서 이렇게 써요.</p>
+  <div class="codelabel">bash (명령창)</div>
+  <pre><code class="language-bash">pip install numpy          # 설치
+pip install numpy==1.24.0   # 특정 버전 설치
+pip show numpy              # 정보 보기
+pip uninstall numpy         # 삭제
+
+# 아나콘다에서는 conda도 사용
+conda install pandas
+conda list                  # 설치 목록</code></pre>
+  <div class="box tip"><div class="t">💡 표준 라이브러리 vs 외부 패키지</div><strong>표준 라이브러리</strong>(<code>math</code>, <code>random</code> 등)는 파이썬에 <strong>기본 포함</strong>돼 설치가 필요 없어요. 반면 <code>numpy</code>, <code>pandas</code> 같은 <strong>외부 패키지</strong>는 <code>pip</code>으로 따로 설치해야 합니다. 외부 패키지 저장소는 <code>pypi.org</code>예요.</div>
+</section>
+
+<div class="recap">🎬 <b>다음 화 예고</b> — 매뉴얼을 서랍장(모듈·패키지)에 정리했어요. 이제 메뉴 하나에 딸린 정보들을 <b>한 덩어리</b>로 묶고 싶어요. <b>7장</b>에서는 메뉴를 <b>객체(클래스)</b>로 만들어 '살아 있는 물건'처럼 다룹니다.</div>
+
+<section id="quiz">
+  <div class="quiz">
+    <div class="qh">📝 연습문제</div>
+    <p style="color:var(--ink-soft);font-size:14px;margin:2px 0 8px">모듈·패키지의 핵심을 확인하는 문제예요. (원본 교재의 연습문제 페이지를 대신해 구성했습니다)</p>
+
+    <div class="q">
+      <div class="qq"><span class="num">1</span><code>math</code> 모듈을 가져와 100의 제곱근을 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">import math
+print(math.sqrt(100))</code></pre>
+        <div class="output">10.0</div>
+        <div class="lab">해설</div>
+        <p><code>import math</code> 후 <code>math.sqrt()</code>로 제곱근을 구해요. <code>import 모듈</code> 방식은 함수 앞에 <strong>모듈명을 붙여</strong> 씁니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">2</span>다음 두 코드의 차이를 설명하세요.<br>① <code>import random</code> &nbsp; ② <code>from random import randint</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답·해설</div>
+        <p>① 모듈 전체를 가져와서 <strong><code>random.randint(1,6)</code></strong>처럼 모듈명을 붙여 써요.<br>② <code>randint</code> 함수만 콕 집어 가져와서 <strong><code>randint(1,6)</code></strong>처럼 모듈명 없이 바로 씁니다. 필요한 것만 가져오니 간결하지만, 어느 모듈 것인지 드러나지 않는 단점도 있어요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">3</span><code>numpy</code>를 <code>np</code>라는 별칭으로 가져오는 코드를 작성하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">import numpy as np</code></pre>
+        <div class="lab">해설</div>
+        <p><code>as</code>로 <strong>짧은 별명</strong>을 붙여요. 이후 <code>np.array(...)</code>처럼 씁니다. <code>numpy→np</code>, <code>pandas→pd</code>는 관례처럼 굳어진 별칭이에요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">4</span>모듈(module)과 패키지(package)의 차이는 무엇일까요?</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답·해설</div>
+        <p><strong>모듈</strong>은 함수·변수를 담은 <strong>파이썬 파일 하나(.py)</strong>이고, <strong>패키지</strong>는 <strong>여러 모듈을 묶은 폴더</strong>예요. 비유하면 모듈은 '서류 한 장', 패키지는 '서류철(폴더)'. 패키지 안에는 보통 <code>__init__.py</code> 파일이 들어 있습니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">5</span>폴더가 '패키지'로 인식되도록 하려면 그 안에 어떤 파일이 있어야 할까요?</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><code>__init__.py</code></p>
+        <div class="lab">해설</div>
+        <p>이 파일이 있으면 파이썬이 그 폴더를 패키지로 인식해요. 내용이 비어 있어도 됩니다. (최신 파이썬에선 없어도 인식되는 경우가 있지만, 명시적으로 두는 것이 안전해요.)</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">6</span><code>if __name__ == "__main__":</code> 구문은 언제 실행될까요?</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답·해설</div>
+        <p>그 파일을 <strong>직접 실행할 때만</strong> 실행돼요. 다른 파일에서 <code>import</code>로 불러올 때는 실행되지 않습니다. 그래서 모듈 안에 <strong>테스트 코드</strong>를 넣어 두는 용도로 많이 씁니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">7</span><code>requests</code>라는 외부 패키지를 설치하는 명령을 작성하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">bash</div>
+        <pre><code class="language-bash">pip install requests</code></pre>
+        <div class="lab">해설</div>
+        <p>명령창(터미널·Anaconda Prompt)에서 <code>pip install 패키지명</code>으로 설치해요. 삭제는 <code>pip uninstall requests</code>, 정보 확인은 <code>pip show requests</code>입니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">8</span>다음 중 <strong>설치가 필요 없는</strong> 표준 라이브러리 모듈을 모두 고르세요.<br>① <code>math</code> ② <code>numpy</code> ③ <code>random</code> ④ <code>pandas</code> ⑤ <code>datetime</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>①, ③, ⑤</strong> (<code>math</code>, <code>random</code>, <code>datetime</code>)</p>
+        <div class="lab">해설</div>
+        <p>①③⑤는 파이썬에 <strong>기본 포함된 표준 라이브러리</strong>라 바로 import돼요. ② <code>numpy</code>와 ④ <code>pandas</code>는 <strong>외부 패키지</strong>라서 <code>pip install</code>로 먼저 설치해야 합니다.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<div class="box tip" style="margin-top:40px"><div class="t">🎉 1부 완주를 축하해요!</div>여기까지 파이썬의 <strong>기본 문법</strong>(개요 → 자료형 → 데이터구조 → 제어문 → 함수 → 모듈)을 모두 배웠어요. 이제 여러분은 간단한 프로그램을 스스로 만들 수 있는 기초를 갖췄습니다. 다음 단계는 객체지향, 예외처리, 파일 입출력 등이에요.</div>
+
+<div class="pager">
+  <a class="prev" href="ch05_함수.html"><div class="dir">← 이전</div><div class="ttl">5장. 함수</div></a>
+  <a class="next" href="ch07_객체지향.html"><div class="dir">다음 →</div><div class="ttl">7장. 객체지향 프로그래밍</div></a>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

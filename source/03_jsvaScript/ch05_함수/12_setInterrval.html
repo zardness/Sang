@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        
+    </style>
+    <script>//해당  밀리세컨(1000ms)마다 콜백함수 수행
+        var id = setInterval(()=>{
+            //document.write(new Date().toLocaleString() + '<br>');
+            document.body.innerHTML = new Date().toLocaleString();
+        },1000);
+        //10초후 타이머(id)중지
+        setTimeout(()=>{
+            clearInterval(id);
+            document.body.innerHTML +='<br>타이머끝';            
+        },10000);
+        
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

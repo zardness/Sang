@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        
+    </style>
+    <script>
+        var scoreStr = prompt("점수를 입력하세요","0");//취소:null / 확인:string으로 return
+        if(!scoreStr){// if(scoreStr==null  ||  scoreStr==null)
+            alert('점수를 입력하세요');
+        }else{
+            //document.write("입력한 값:" + scoreStr +"-타입:" +typeof(scoreStr) + '<br>');
+            let score = Number(scoreStr); // string을 number로 형변환한 함수. 형변환 불가할 경우 NaN / ''이거나 null일경우 0
+            score = parseInt(scoreStr); // '100'이거나 '100점'일경우 100으로 / '',' ',null일경우 NaN
+            document.write("입력한 점수:" +score+ "-타입" + typeof(score)+'<br> ')
+            if(isNaN(score)){//score가 NaN
+                alert('점수를 입력하세요');
+            }else{
+              result = score>80 ? '잘했어요':'못했어요'; //삼항연산자
+              document.write(result);
+            }
+        }
+       
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

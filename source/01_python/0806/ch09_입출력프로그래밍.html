@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9장. 입출력 프로그래밍 · 쉬운 파이썬</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root{--py-blue:#3776AB;--py-yellow:#FFD43B;--ink:#1a2233;--ink-soft:#4a5568;--line:#e6e9f0;--bg:#f6f8fc;--card:#fff;--accent:#2f6fb0;--green:#2e9e6b;--green-bg:#e9f8f0;--amber:#b9770e;--amber-bg:#fef6e6;--red:#d64545;--purple:#6b4fbb;--purple-bg:#f1ecfb}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(246,248,252,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-weight:600}.topbar .crumb{color:var(--ink-soft)}
+.hero{background:linear-gradient(135deg,#3776AB,#2b5e8c);color:#fff;border-radius:20px;padding:40px 36px;margin:26px 0 22px;box-shadow:0 10px 30px rgba(55,118,171,.25)}
+.hero .tag{display:inline-block;background:var(--py-yellow);color:#3a3300;font-weight:700;font-size:13px;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.hero h1{font-size:31px;line-height:1.3;margin-bottom:10px;letter-spacing:-.5px}.hero p{color:#eaf2fb;font-size:16px;max-width:640px}
+.hero p strong{color:#fff;border-bottom:2px solid var(--py-yellow);padding-bottom:1px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hero .meta span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:12.5px;font-weight:600;padding:4px 13px;border-radius:20px}
+.chapmap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:22px}
+.chapmap h2{font-size:16px;color:var(--accent);margin-bottom:14px}
+.chapmap .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chapmap a{display:flex;gap:11px;align-items:flex-start;background:#fafbfe;border:1px solid var(--line);border-radius:11px;padding:11px 14px;text-decoration:none;color:var(--ink);transition:.15s}
+.chapmap a:hover{border-color:var(--py-blue);background:#f0f6fc;transform:translateY(-1px)}
+.chapmap .no{flex:none;width:25px;height:25px;background:var(--py-blue);color:#fff;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;margin-top:3px}
+.chapmap .no.q{background:var(--purple)}
+.chapmap .tt{font-weight:700;font-size:14.5px;line-height:1.45}
+.chapmap .dd{font-size:12.5px;color:var(--ink-soft);margin-top:2px;line-height:1.5}
+.goals{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:30px}
+.goals h2{font-size:16px;color:var(--accent);margin-bottom:12px}
+.goals ul{list-style:none}.goals li{padding:7px 0 7px 30px;position:relative;font-size:15px}
+.goals li:before{content:"✓";position:absolute;left:0;top:7px;color:var(--green);font-weight:800}
+section{margin:38px 0}
+h2.sec{font-size:23px;letter-spacing:-.4px;padding-bottom:12px;border-bottom:3px solid var(--py-yellow);margin-bottom:22px;display:flex;align-items:center;gap:10px}
+h2.sec .n{background:var(--py-blue);color:#fff;font-size:15px;width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+h3{font-size:18.5px;margin:26px 0 12px;color:var(--ink);letter-spacing:-.3px}
+p{margin:12px 0;color:var(--ink-soft)}p strong,li strong{color:var(--ink);font-weight:700}
+ul.plain{margin:12px 0 12px 4px;padding-left:22px}ul.plain li{margin:7px 0;color:var(--ink-soft)}
+ol.plain{margin:12px 0 12px 4px;padding-left:22px}ol.plain li{margin:7px 0;color:var(--ink-soft)}
+.term{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--py-blue);border-radius:12px;padding:18px 22px;margin:20px 0;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.term .h{font-size:17px;font-weight:800;color:var(--py-blue);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.term .def{font-size:15.5px;color:var(--ink)}
+.term .anal{margin-top:12px;background:var(--purple-bg);border-radius:9px;padding:12px 15px;font-size:14.5px;color:#4a3a7a}
+.term .anal b{color:var(--purple)}
+.box{border-radius:12px;padding:16px 20px;margin:18px 0;font-size:15px}
+.box .t{font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.tip{background:var(--green-bg);border:1px solid #bfe8d4;color:#1f5e42}.tip .t{color:var(--green)}
+.warn{background:var(--amber-bg);border:1px solid #f3ddad;color:#7a5310}.warn .t{color:var(--amber)}
+pre{border-radius:12px;margin:16px 0;overflow:auto;font-size:14px;box-shadow:0 4px 14px rgba(20,30,60,.15)}
+pre code.hljs{padding:18px 20px;line-height:1.65;font-family:'D2Coding','Consolas','Monaco',monospace}
+.codelabel{display:inline-block;background:#2b2f38;color:#9fb4cc;font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+.filelabel{display:inline-block;background:#3a3320;color:var(--py-yellow);font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+.output{background:#0f1620;color:#6fe08a;border-radius:0 0 12px 12px;padding:12px 20px;margin-top:-16px;font-family:'D2Coding','Consolas',monospace;font-size:13.5px;white-space:pre-wrap;border-top:1px solid #26303f}
+.output:before{content:"▶ 실행결과";display:block;color:#5a7186;font-size:11.5px;margin-bottom:6px;font-weight:700}
+.output.filec:before{content:"📄 저장된 파일 내용"}
+.output.err{color:#ff9e9e}.output.err:before{content:"⚠ 에러 발생"}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(30,50,90,.05)}
+th{background:var(--py-blue);color:#fff;padding:11px 14px;text-align:left;font-weight:700}
+td{padding:10px 14px;border-top:1px solid var(--line);color:var(--ink-soft)}
+td code,p code,li code,.def code,.anal code,.ans code,.qq code{background:#eef1f7;color:#b8336a;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-size:.9em;font-weight:600}
+tr:nth-child(even) td{background:#fafbfe}
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 24px 24px;margin-top:22px}
+.quiz>.qh{font-size:20px;color:var(--accent);font-weight:800;margin:18px 0 4px;display:flex;align-items:center;gap:9px}
+.quiz .sub{font-size:15px;font-weight:700;color:var(--purple);background:var(--purple-bg);padding:8px 14px;border-radius:8px;margin:18px 0 4px}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}.q:first-of-type{border-top:none}
+.q .qq{font-weight:700;color:var(--ink);font-size:15.5px;margin-bottom:10px}
+.q .qq .num{display:inline-flex;width:26px;height:26px;background:var(--py-yellow);color:#3a3300;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-right:8px}
+details{background:#f3f7fc;border:1px solid #d8e6f2;border-radius:10px;margin-top:8px}
+summary{cursor:pointer;padding:11px 16px;font-weight:700;color:var(--accent);font-size:14.5px;user-select:none;list-style:none}
+summary:before{content:"💡 정답·해설 보기"}details[open] summary:before{content:"🔽 정답·해설 접기"}
+summary::-webkit-details-marker{display:none}
+.ans{padding:4px 18px 16px}.ans .lab{font-weight:800;color:var(--green);margin:10px 0 4px;font-size:14px}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px}
+.pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;text-decoration:none;color:var(--ink);transition:.15s;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.pager a:hover{border-color:var(--py-blue);transform:translateY(-2px)}
+.pager .dir{font-size:12px;color:var(--ink-soft);font-weight:700}.pager .ttl{font-weight:700;color:var(--accent);margin-top:3px;font-size:14.5px}
+.pager a.next{text-align:right}.pager a.disabled{opacity:.4;pointer-events:none}
+@media(max-width:600px){.hero h1{font-size:24px}.wrap{padding:0 14px 60px}.hero{padding:28px 22px}.chapmap .grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="ch08_예외처리.html">← 이전</a>
+  <span class="crumb">9장 · 입출력 프로그래밍</span>
+  <a href="ch10_Numpy.html">다음 →</a>
+</div>
+<div class="wrap">
+
+<div class="hero">
+  <span class="tag">CHAPTER 09</span>
+  <h1>입출력 프로그래밍</h1>
+  <p>프로그램이 꺼져도 데이터가 <strong>사라지지 않게</strong> — 파일에 저장하고 다시 불러오는 5가지 방법(텍스트·피클·CSV·JSON·HDF5)을 배웁니다.</p>
+  <div class="meta">
+    <span>📚 6개 섹션</span><span>💻 예제 25+</span><span>📝 연습문제 4</span><span>🧰 표준 라이브러리로 OK</span>
+  </div>
+</div>
+
+<div class="chapmap">
+  <h2>🗺️ 이번 장 한눈에 보기 <span style="font-weight:400;color:var(--ink-soft);font-size:13px">— 원하는 곳을 눌러 바로 이동하세요</span></h2>
+  <div class="grid">
+    <a href="#sec1"><span class="no">1</span><span><span class="tt">파일 열고 닫기</span><span class="dd" style="display:block">open()·모드·인코딩, 쓰고 읽는 기본기</span></span></a>
+    <a href="#sec2"><span class="no">2</span><span><span class="tt">형식이 있는 텍스트</span><span class="dd" style="display:block">한 줄씩 읽어 split()으로 분해하기</span></span></a>
+    <a href="#sec3"><span class="no">3</span><span><span class="tt">피클(pickle)</span><span class="dd" style="display:block">파이썬 객체를 통째로 저장·복원</span></span></a>
+    <a href="#sec4"><span class="no">4</span><span><span class="tt">CSV 파일</span><span class="dd" style="display:block">엑셀과 호환되는 표 데이터 읽고 쓰기</span></span></a>
+    <a href="#sec5"><span class="no">5</span><span><span class="tt">JSON 데이터</span><span class="dd" style="display:block">웹 표준 형식으로 저장하고 불러오기</span></span></a>
+    <a href="#sec6"><span class="no">6</span><span><span class="tt">HDF5</span><span class="dd" style="display:block">대용량 데이터를 위한 고성능 형식</span></span></a>
+    <a href="#quiz" style="grid-column:1/-1"><span class="no q">📝</span><span><span class="tt">연습문제</span><span class="dd" style="display:block">고객 관리 프로그램 만들기(실습) + 객관식 3문제</span></span></a>
+  </div>
+</div>
+
+<div class="goals">
+  <h2>🎯 이 장을 끝내면 이런 걸 할 수 있어요</h2>
+  <ul>
+    <li><code>open()</code>으로 파일을 열어 텍스트를 쓰고 읽을 수 있다</li>
+    <li>콤마로 구분된 텍스트를 <code>split()</code>으로 분해해 쓸 수 있다</li>
+    <li>피클로 파이썬 객체를 통째로 저장·복원할 수 있다</li>
+    <li><code>csv</code> 모듈(reader·writer·DictReader·DictWriter)을 다룰 수 있다</li>
+    <li><code>json</code> 모듈로 객체를 JSON으로 저장하고 되살릴 수 있다</li>
+    <li>상황에 맞는 저장 형식(텍스트/피클/CSV/JSON/HDF5)을 고를 수 있다</li>
+  </ul>
+</div>
+
+<section id="sec1">
+  <h2 class="sec"><span class="n">1</span>파일에 데이터 저장하고 불러오기</h2>
+  <p>지금까지 만든 프로그램은 종료하면 변수의 데이터가 모두 사라졌어요. <strong>파일에 저장</strong>해 두면 다음 실행 때 다시 불러올 수 있습니다. 그 출발점이 <code>open()</code> 함수예요.</p>
+  <div class="term">
+    <div class="h">📂 open() — 파일 열기</div>
+    <div class="def"><code>file_pointer = open(파일이름, 모드, encoding='...')</code> — 파일을 열고 <b>파일 객체</b>를 돌려줘요. 이 객체의 <code>write()</code>로 쓰고 <code>readline()</code>/<code>readlines()</code>로 읽습니다.</div>
+    <div class="anal">🚪 <b>비유</b> — 창고 문을 여는 것과 같아요. 문을 열 때 "읽으러 왔어요(r)" / "새로 채우러 왔어요(w)" / "덧붙이러 왔어요(a)"라고 <b>목적(모드)을 말해야</b> 하고, 볼일이 끝나면 문을 꼭 닫아야(<code>close()</code>) 합니다.</div>
+  </div>
+  <table>
+    <tr><th>모드</th><th>이름</th><th>동작</th></tr>
+    <tr><td><code>r</code></td><td>읽기 모드</td><td>파일을 읽기만 할 때 (기본값)</td></tr>
+    <tr><td><code>w</code></td><td>쓰기 모드</td><td>파일에 새로 쓸 때 — <strong>기존 내용은 지워짐!</strong></td></tr>
+    <tr><td><code>a</code></td><td>추가 모드</td><td>파일의 <strong>맨 끝에 덧붙일</strong> 때</td></tr>
+    <tr><td><code>b</code></td><td>바이너리 모드</td><td>피클 등 이진 데이터용 — <code>wb</code>, <code>rb</code>처럼 <strong>조합해서</strong> 사용</td></tr>
+  </table>
+  <div class="box warn"><div class="t">⚠️ w 모드는 파일을 통째로 덮어써요</div>이미 있는 파일을 <code>w</code>로 열면 <strong>기존 내용이 즉시 사라집니다</strong>. 내용을 보존하며 덧붙이려면 <code>a</code>(추가 모드)를 쓰세요. 그리고 한글이 든 파일은 <code>encoding='UTF8'</code>을 지정해야 글자가 깨지지 않아요.</div>
+
+  <h3>파일에 쓰기 (w · a)</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">f = open("sample.txt", "w")   # 쓰기 모드로 열기
+print(f.writable())            # 쓸 수 있는 상태인지 확인
+f.write("Hello\nWorld\n")      # 텍스트 쓰기 (쓴 글자 수를 반환)
+f.close()                      # 반드시 닫기!</code></pre>
+  <div class="output">True</div>
+  <p><code>print()</code> 함수의 <code>file</code> 인수에 파일 객체를 지정하면 <strong>화면 대신 파일로</strong> 출력됩니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">f = open("sample.txt", "a")                  # 추가 모드
+print("프린트 함수로 쓸 수 있습니다.", file=f)  # print로 파일에 쓰기
+f.close()</code></pre>
+
+  <h3>파일 읽기 (r)</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">f = open("sample.txt", "r")    # 읽기 모드
+lines = f.readlines()           # 모든 라인을 리스트로 한 번에
+for line in lines:
+    print(line.strip())         # strip(): 앞뒤 공백·줄바꿈 제거
+f.close()</code></pre>
+  <div class="output">Hello
+World
+프린트 함수로 쓸 수 있습니다.</div>
+  <div class="box tip"><div class="t">💡 읽기 함수 3형제</div><code>read()</code>는 <strong>파일 전체를 문자열 하나</strong>로, <code>readline()</code>은 <strong>한 줄씩</strong>, <code>readlines()</code>는 <strong>모든 줄을 리스트</strong>로 읽어요. 줄 끝의 <code>\n</code>이 함께 읽히므로 보통 <code>strip()</code>과 짝지어 씁니다.</div>
+  <div class="box tip"><div class="t">💡 close()가 귀찮다면 — with (8장 복습)</div><code>with open("sample.txt") as f:</code> 형태로 열면 블록이 끝날 때 <strong>자동으로 닫혀요</strong>. 닫기를 깜빡하는 실수를 원천 차단하므로 실무에선 <code>with</code>가 정석입니다. 이 장의 CSV·JSON 예제도 모두 <code>with</code>를 사용해요.</div>
+</section>
+
+<section id="sec2">
+  <h2 class="sec"><span class="n">2</span>형식이 있는 텍스트 데이터 다루기</h2>
+  <p>실제 데이터 파일은 이렇게 <strong>구분자(delimiter)</strong>로 정리된 형식을 갖는 경우가 많아요.</p>
+  <div class="filelabel">📄 member.txt</div>
+  <pre><code class="language-text">홍길동,20,kildong@hong.com,서울시 강동구
+홍길서,25,kilseo@hong.com,서울시 강서구</code></pre>
+  <p>이런 데이터를 읽어 쓰려면 다음 4단계를 거칩니다.</p>
+  <ol class="plain">
+    <li><strong>한 라인씩 읽기</strong> — <code>readlines()</code> 등으로</li>
+    <li><strong>구분자로 분리</strong> — 콤마(,) 기준 <code>split(',')</code></li>
+    <li><strong>자료형 변환</strong> — 나이는 <code>int()</code>로 (파일에서 읽으면 전부 문자열!)</li>
+    <li><strong>예외 처리</strong> — 빠진 값(NA)이 있을 때를 대비 (8장 활용)</li>
+  </ol>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">f = open("member.txt", "r", encoding='UTF8')
+lines = f.readlines()
+for line in lines:
+    data = line.strip().split(',')   # 줄바꿈 제거 후 콤마로 분리
+    name = data[0]
+    age = int(data[1])               # 문자열 → 정수 변환
+    email = data[2]
+    address = data[3]
+    print("이름 : {}, 나이 : {}, 이메일 : {}, 주소 : {}"
+          .format(name, age, email, address))
+f.close()</code></pre>
+  <div class="output">이름 : 홍길동, 나이 : 20, 이메일 : kildong@hong.com, 주소 : 서울시 강동구
+이름 : 홍길서, 나이 : 25, 이메일 : kilseo@hong.com, 주소 : 서울시 강서구</div>
+  <div class="box warn"><div class="t">⚠️ 파일에서 읽은 값은 전부 문자열이에요</div><code>data[1]</code>은 <code>"20"</code>(문자열)이지 <code>20</code>(숫자)이 아니에요. 계산에 쓰려면 반드시 <code>int()</code>·<code>float()</code>로 변환해야 합니다. 이 번거로움을 덜어주는 게 뒤에 나올 <strong>피클·CSV 모듈</strong>이에요.</div>
+</section>
+
+<section id="sec3">
+  <h2 class="sec"><span class="n">3</span>피클(pickle) — 객체를 통째로 저장</h2>
+  <div class="term">
+    <div class="h">🥒 피클링(Pickling)</div>
+    <div class="def">파이썬 객체를 <b>바이트 스트림으로 변환해 파일에 그대로 저장</b>하는 것(객체 직렬화). 리스트·딕셔너리·직접 만든 클래스 객체까지 <b>텍스트 변환 없이 통째로</b> 저장됩니다.</div>
+    <div class="anal">🫙 <b>비유</b> — 요리를 재료로 분해하지 않고 <b>밀폐용기에 통째로 담아 냉동</b>하는 것과 같아요. 나중에 꺼내면(언피클링) 조리 완료 상태 그대로 되살아나죠. split도 형 변환도 필요 없습니다.</div>
+  </div>
+  <div class="codelabel">구문</div>
+  <pre><code class="language-python">pickle.dump(obj, file)   # obj: 저장할 객체, file: 'wb' 모드로 연 파일 객체
+data = pickle.load(file) # file: 'rb' 모드로 연 파일 객체</code></pre>
+  <div class="box warn"><div class="t">⚠️ 모드는 반드시 바이너리(b)!</div>피클은 이진 데이터라서 저장은 <code>'wb'</code>(바이너리 쓰기), 읽기는 <code>'rb'</code>(바이너리 읽기) 모드로 열어야 해요. 그냥 <code>'w'</code>로 열면 에러가 납니다. 시험에도 자주 나오는 포인트!</div>
+
+  <h3>피클링 — 저장하기</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">class Member:                      # 고객 정보를 저장할 클래스
+    def __init__(self, name, age, email, address):
+        self.name = name
+        self.age = age
+        self.email = email
+        self.address = address
+    def __str__(self):
+        return "Name:{}, Age:{}, Email:{}, Address:{}"\
+               .format(self.name, self.age, self.email, self.address)
+
+user1 = Member("홍길동", 20, "kildong@hong.com", "서울시 강동구")
+user2 = Member("홍길서", 25, "kilseo@hong.com", "서울시 강서구")
+user_list = [user1, user2]         # 저장할 데이터(객체 리스트)
+
+import pickle
+f = open("member.data", "wb")      # 바이너리 쓰기 모드!
+pickle.dump(user_list, f)          # 리스트를 통째로 저장
+f.close()</code></pre>
+  <div class="box tip"><div class="t">💡 저장된 파일을 메모장으로 열면?</div>사람이 읽을 수 없는 <strong>깨진 문자</strong>들이 보여요. 피클은 사람용이 아니라 <strong>파이썬 전용</strong> 형식이기 때문이에요. 사람이 읽어야 한다면 텍스트·CSV·JSON을 쓰세요.</div>
+
+  <h3>언피클링 — 다시 불러오기</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import pickle
+f = open("member.data", "rb")      # 바이너리 읽기 모드!
+user_list = pickle.load(f)         # 객체를 그대로 복원
+print(type(user_list))             # 리스트 타입 그대로!
+
+for user in user_list:
+    print(user)                    # Member 객체의 __str__ 실행
+f.close()</code></pre>
+  <div class="output">&lt;class 'list'&gt;
+Name:홍길동, Age:20, Email:kildong@hong.com, Address:서울시 강동구
+Name:홍길서, Age:25, Email:kilseo@hong.com, Address:서울시 강서구</div>
+  <div class="box warn"><div class="t">⚠️ 모르는 피클 파일은 열지 마세요</div>피클 파일은 로드 과정에서 코드가 실행될 수 있어, <strong>출처를 믿을 수 없는 피클 파일을 load하면 보안 위험</strong>이 있어요. 내가 만든 파일, 신뢰할 수 있는 파일만 언피클링하세요.</div>
+</section>
+
+<section id="sec4">
+  <h2 class="sec"><span class="n">4</span>CSV 형식 파일 읽기/쓰기</h2>
+  <div class="term">
+    <div class="h">📊 CSV (Comma Separated Values)</div>
+    <div class="def">값을 <b>콤마로 구분해 저장하는 표 형식</b> 파일. 엑셀·데이터베이스와 데이터를 주고받을 때 가장 널리 쓰여요. 파이썬 기본 라이브러리의 <code>csv</code> 모듈로 다룹니다.</div>
+    <div class="anal">📋 <b>비유</b> — 엑셀 시트를 <b>가장 단순한 텍스트로 눌러 담은 것</b>이에요. 한 줄이 한 행, 콤마가 셀 구분선. 그래서 메모장으로도 열리고 엑셀로도 열립니다.</div>
+  </div>
+
+  <h3>reader() — 읽기</h3>
+  <div class="codelabel">구문</div>
+  <pre><code class="language-python">csv.reader(csvfile, dialect='excel', **fmtparams)
+# delimiter=','  : 필드 구분자 (기본 콤마)
+# quotechar='"' : 값을 감싸는 인용 문자 (기본 큰따옴표)
+# quoting=csv.QUOTE_NONNUMERIC : 숫자가 아닌 값만 인용 → 자동 형 변환</code></pre>
+  <div class="filelabel">📄 member1.csv</div>
+  <pre><code class="language-text">"홍길동",20,"kildong@hong.com","서울시 강동구"
+"홍길서",25,"kilseo@hong.com","서울시 강서구"</code></pre>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import csv
+with open('member1.csv', 'r', encoding='UTF8') as csvfile:
+    r = csv.reader(csvfile)
+    for row in r:
+        print(row)          # 각 행이 문자열 리스트로</code></pre>
+  <div class="output">['홍길동', '20', 'kildong@hong.com', '서울시 강동구']
+['홍길서', '25', 'kilseo@hong.com', '서울시 강서구']</div>
+  <p>나이가 <code>'20'</code>(문자열)로 읽혔죠? <code>quoting=csv.QUOTE_NONNUMERIC</code>을 지정하면 <strong>따옴표로 안 묶인 값을 숫자로 자동 변환</strong>해 줍니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import csv
+with open('member1.csv', 'r', encoding='UTF8') as csvfile:
+    r = csv.reader(csvfile, quotechar='"',
+                   quoting=csv.QUOTE_NONNUMERIC)
+    for row in r:
+        print(row)</code></pre>
+  <div class="output">['홍길동', 20.0, 'kildong@hong.com', '서울시 강동구']
+['홍길서', 25.0, 'kilseo@hong.com', '서울시 강서구']</div>
+  <div class="box warn"><div class="t">⚠️ 자동 형 변환의 함정</div><code>QUOTE_NONNUMERIC</code>은 "따옴표 없는 값 = 숫자"로 간주해요. 그래서 <code>홍길동,20,...</code>처럼 문자 데이터가 <strong>따옴표 없이</strong> 저장된 파일에 쓰면 "홍길동을 숫자로 바꿀 수 없다"며 <strong>형 변환 에러</strong>가 납니다.</div>
+
+  <h3>writer() — 쓰기</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">user_list = [['홍길동', 20.0, 'kildong@hong.com', '서울시 강동구'],
+             ['홍길서', 25.0, 'kilseo@hong.com', '서울시 강서구']]
+
+import csv
+with open('member2.csv', 'w', newline='', encoding='UTF8') as csvfile:
+    w = csv.writer(csvfile, quoting=csv.QUOTE_NONNUMERIC)
+    w.writerows(user_list)      # 모든 행을 한 번에 저장</code></pre>
+  <div class="output filec">"홍길동",20.0,"kildong@hong.com","서울시 강동구"
+"홍길서",25.0,"kilseo@hong.com","서울시 강서구"</div>
+  <div class="box tip"><div class="t">💡 newline=''을 꼭 쓰세요</div>윈도우에서 <code>newline=''</code> 없이 CSV를 쓰면 행마다 <strong>빈 줄이 하나씩 끼어드는</strong> 유명한 버그가 생겨요. CSV를 쓸 때는 습관처럼 <code>open(..., 'w', newline='')</code>! 한 행씩 저장할 땐 <code>writerow()</code>, 여러 행은 <code>writerows()</code>입니다.</div>
+
+  <h3>DictReader — 딕셔너리로 읽기</h3>
+  <div class="term">
+    <div class="h">🏷️ DictReader</div>
+    <div class="def">CSV의 <b>첫 줄(헤더)을 열 이름으로 삼아</b>, 각 행을 <b>딕셔너리</b>로 돌려줘요. <code>row[2]</code> 대신 <code>row["Email"]</code>처럼 이름으로 접근할 수 있어 훨씬 읽기 좋습니다.</div>
+  </div>
+  <div class="filelabel">📄 member3.csv</div>
+  <pre><code class="language-text">Name,Age,Email,Address
+홍길동,20,kildong@hong.com,서울시 강동구
+홍길서,25,kilseo@hong.com,서울시 강서구</code></pre>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import csv
+with open('member3.csv', encoding='UTF8') as csvfile:
+    dict_reader = csv.DictReader(csvfile)
+    for row in dict_reader:
+        print(row["Name"], row["Age"], row["Email"], row["Address"])</code></pre>
+  <div class="output">홍길동 20 kildong@hong.com 서울시 강동구
+홍길서 25 kilseo@hong.com 서울시 강서구</div>
+  <div class="box tip"><div class="t">💡 버전에 따른 출력 차이</div>행을 통째로 <code>print(row)</code>하면 예전 파이썬(~3.7)은 <code>OrderedDict([...])</code>, <strong>3.8 이상은 일반 딕셔너리</strong> <code>{'Name': '홍길동', ...}</code>로 보여요. 사용법은 같으니 교재 스크린샷과 달라도 놀라지 마세요.</div>
+  <p>헤더가 없거나 필드 수가 안 맞는 파일을 위한 옵션 3가지도 알아두세요.</p>
+  <table>
+    <tr><th>옵션</th><th>상황</th><th>동작</th></tr>
+    <tr><td><code>fieldnames</code></td><td>파일에 헤더가 없을 때</td><td>열 이름을 직접 지정</td></tr>
+    <tr><td><code>restkey</code></td><td>데이터가 필드 이름보다 <strong>많을 때</strong></td><td>남는 값들을 지정한 키에 리스트로 저장</td></tr>
+    <tr><td><code>restval</code></td><td>데이터가 필드 이름보다 <strong>적을 때</strong></td><td>비는 자리를 지정한 값으로 채움</td></tr>
+  </table>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python"># 헤더 없는 member1.csv에 이름 붙여 읽기 + 남는 값 처리
+with open('member1.csv', encoding='UTF8') as csvfile:
+    dict_reader = csv.DictReader(csvfile,
+                    fieldnames=["Name", "Age", "Email"],  # 3개만 지정
+                    restkey="Etc")                        # 남는 건 Etc로
+    for row in dict_reader:
+        print(row["Name"], row["Age"], row["Email"], row["Etc"])</code></pre>
+  <div class="output">홍길동 20 kildong@hong.com ['서울시 강동구']
+홍길서 25 kilseo@hong.com ['서울시 강서구']</div>
+
+  <h3>DictWriter — 딕셔너리로 쓰기</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">user1 = {"Name":"홍길동", "Age":20, "Email":"kildong@hong.com",
+         "Address":"서울시 강동구"}
+user2 = {"Name":"홍길서", "Age":25, "Email":"kilseo@hong.com",
+         "Address":"서울시 강서구"}
+
+import csv
+with open('member4.csv', 'w', newline='', encoding='utf8') as csvfile:
+    fieldnames = ['Name', 'Age', 'Email', 'Address']
+    dict_writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    dict_writer.writeheader()          # 헤더(열 이름) 한 줄 쓰기
+    dict_writer.writerow(user1)        # 한 행씩 저장
+    dict_writer.writerow(user2)        # writerows([user1, user2])도 가능</code></pre>
+  <div class="output filec">Name,Age,Email,Address
+홍길동,20,kildong@hong.com,서울시 강동구
+홍길서,25,kilseo@hong.com,서울시 강서구</div>
+  <p>딕셔너리에 <code>fieldnames</code>에 없는 키가 들어 있으면? <code>extrasaction</code> 옵션이 결정해요.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python"># fieldnames에 Address가 없는 상태로 저장 시도
+with open('member5.csv', 'w', newline='', encoding='utf8') as csvfile:
+    fieldnames = ['Name', 'Age', 'Email']
+    dict_writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    dict_writer.writeheader()
+    dict_writer.writerows([user1, user2])   # Address가 남는다!</code></pre>
+  <div class="output err">ValueError: dict contains fields not in fieldnames: 'Address'</div>
+  <div class="box tip"><div class="t">💡 extrasaction 두 가지</div>기본값 <code>extrasaction='raise'</code>는 위처럼 <strong>ValueError를 발생</strong>시키고, <code>extrasaction='ignore'</code>로 지정하면 남는 값을 <strong>조용히 무시</strong>하고 저장합니다.</div>
+</section>
+
+<section id="sec5">
+  <h2 class="sec"><span class="n">5</span>JSON 데이터 저장하고 불러오기</h2>
+  <div class="term">
+    <div class="h">🌐 JSON (JavaScript Object Notation)</div>
+    <div class="def">웹에서 데이터를 주고받는 <b>표준 텍스트 형식</b>이에요. 사람이 읽을 수 있으면서 구조(중첩)도 표현할 수 있어, 설정 파일·API 응답 등에 널리 쓰입니다. <code>json</code> 모듈로 다뤄요.</div>
+    <div class="anal">🌍 <b>비유</b> — 피클이 '파이썬 전용 밀폐용기'라면, JSON은 <b>어느 나라 언어(자바스크립트·자바·파이썬…)든 알아보는 만국 공용 문서</b>예요. 파이썬 딕셔너리·리스트와 생김새도 거의 같습니다.</div>
+  </div>
+  <table>
+    <tr><th>파이썬</th><th>JSON</th><th>파이썬</th><th>JSON</th></tr>
+    <tr><td><code>dict</code></td><td>object <code>{ }</code></td><td><code>str</code></td><td>string</td></tr>
+    <tr><td><code>list</code>, <code>tuple</code></td><td>array <code>[ ]</code></td><td><code>int</code>, <code>float</code></td><td>number</td></tr>
+    <tr><td><code>True</code> / <code>False</code></td><td>true / false</td><td><code>None</code></td><td>null</td></tr>
+  </table>
+
+  <h3>json.dump() — 저장</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">data = ['foo', {'bar': ('baz', None, 1.0, 2)}]
+
+import json
+with open('sample.json', 'w') as jsonfile:
+    json.dump(data, jsonfile, indent='\t')   # indent: 들여쓰기로 보기 좋게</code></pre>
+  <div class="output filec">[
+	"foo",
+	{
+		"bar": [
+			"baz",
+			null,
+			1.0,
+			2
+		]
+	}
+]</div>
+  <p>튜플은 배열로, <code>None</code>은 <code>null</code>로 바뀐 게 보이죠? 그런데 <strong>직접 만든 클래스 객체</strong>는 JSON이 모르는 타입이라 그냥 저장하면 에러가 나요. <code>default</code> 인수에 <strong>"객체 → 딕셔너리" 변환 함수</strong>를 알려주면 해결됩니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">class Member:
+    def __init__(self, name, age, email, address):
+        self.name = name
+        self.age = age
+        self.email = email
+        self.address = address
+    def as_dict(self):                  # 객체를 딕셔너리로 변환
+        return {"name":self.name, "age":self.age,
+                "email":self.email, "address":self.address}
+
+user_list = [Member("홍길동", 20, "kildong@hong.com", "서울시 강동구"),
+             Member("홍길서", 25, "kilseo@hong.com", "서울시 강서구")]
+
+import json
+with open('member.json', 'w', encoding="UTF8") as jsonfile:
+    json.dump(user_list, jsonfile, ensure_ascii=False,
+              indent="\t", default=Member.as_dict)   # 변환 방법 지정</code></pre>
+  <div class="output filec">[
+	{
+		"name": "홍길동",
+		"age": 20,
+		"email": "kildong@hong.com",
+		"address": "서울시 강동구"
+	},
+	...
+]</div>
+  <div class="box tip"><div class="t">💡 한글은 ensure_ascii=False</div>기본값(<code>True</code>)이면 한글이 <code>홍길동</code> 같은 유니코드 코드로 저장돼요. <code>ensure_ascii=False</code>로 지정해야 <strong>한글이 그대로</strong> 저장됩니다.</div>
+
+  <h3>json.load() — 불러오기</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import json
+with open('member.json', encoding="UTF8") as jsonfile:
+    user_list = json.load(jsonfile)    # JSON → 파이썬 객체
+    print(user_list[0])</code></pre>
+  <div class="output">{'name': '홍길동', 'age': 20, 'email': 'kildong@hong.com', 'address': '서울시 강동구'}</div>
+  <p>기본으로는 <strong>딕셔너리</strong>로 읽혀요. 딕셔너리가 아니라 <strong>Member 객체로 바로</strong> 되살리고 싶다면 <code>object_hook</code>에 "딕셔너리 → 객체" 함수를 지정합니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">def as_member(dct):                    # 딕셔너리를 Member 객체로
+    return Member(dct['name'], dct['age'], dct['email'], dct['address'])
+
+with open('member.json', encoding="UTF8") as jsonfile:
+    user_list = json.load(jsonfile, object_hook=as_member)
+    for user in user_list:
+        print(user)                    # Member의 __str__ 출력</code></pre>
+  <div class="output">Name:홍길동, Age:20, Email:kildong@hong.com, Address:서울시 강동구
+Name:홍길서, Age:25, Email:kilseo@hong.com, Address:서울시 강서구</div>
+  <div class="box tip"><div class="t">💡 또 다른 방법 — JSONEncoder 상속</div><code>json.JSONEncoder</code>를 상속해 <code>default()</code> 메서드를 재정의한 클래스를 만들고 <code>json.dump(..., cls=MemberEncoder)</code>처럼 넘겨도 돼요. 객체를 리스트로 반환하면 JSON 배열로 저장됩니다. 7장(상속)의 응용이에요!</div>
+</section>
+
+<section id="sec6">
+  <h2 class="sec"><span class="n">6</span>HDF5 파일 읽기/쓰기</h2>
+  <div class="term">
+    <div class="h">🗄️ HDF5 (Hierarchical Data Format)</div>
+    <div class="def">HDF 그룹이 관리하는 <b>대용량·고성능 데이터 저장 형식</b>이에요. 빠른 입출력을 위해 설계되어, 과학 데이터·딥러닝 모델 저장 등에 쓰입니다.</div>
+    <div class="anal">🏢 <b>비유</b> — CSV가 '종이 장부'라면 HDF5는 <b>계층 구조를 갖춘 자동화 물류창고</b>예요. 데이터가 커질수록(수백만 행) 진가를 발휘합니다.</div>
+  </div>
+  <p>읽고 쓰는 방법은 두 가지예요: ① <strong>판다스</strong>의 <code>to_hdf()</code> / <code>read_hdf()</code> 함수, ② <strong>h5py</strong> 모듈의 <code>File</code> 클래스. 여기선 다음 장부터 본격적으로 배울 판다스 방식을 맛봅니다.</p>
+  <div class="box tip"><div class="t">💡 실습 데이터 — iris(붓꽃) 데이터셋</div>에드거 앤더슨이 정리한 유명한 데이터셋으로, 붓꽃 3종(setosa·versicolor·virginica)별로 50개씩, <strong>꽃받침(sepal) 길이·너비, 꽃잎(petal) 길이·너비</strong>를 잰 150개 데이터예요. 10장·11장 연습문제에도 계속 등장하니 눈에 익혀두세요!</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import pandas as pd
+iris_df = pd.DataFrame(iris_dic)              # 딕셔너리 → 데이터프레임
+iris_df.to_hdf("iris2.hdf5", key="iris")      # HDF5로 저장
+
+iris_df2 = pd.read_hdf("iris2.hdf5", key="iris")  # 다시 읽기
+iris_df2.head()</code></pre>
+  <div class="output">   sepal_length  sepal_width  petal_length  petal_width species
+0           5.1          3.5           1.4          0.2  setosa
+1           4.9          3.0           1.4          0.2  setosa
+2           4.7          3.2           1.3          0.2  setosa
+3           4.6          3.1           1.5          0.2  setosa
+4           5.0          3.6           1.4          0.2  setosa</div>
+  <div class="box tip"><div class="t">💡 HDFView</div>저장된 HDF5 파일은 전용 뷰어 <strong>HDFView</strong>(hdfgroup.org에서 다운로드)로 계층 구조를 눈으로 확인할 수 있어요.</div>
+
+  <h3>어떤 형식을 언제 쓸까? — 한눈 정리</h3>
+  <table>
+    <tr><th>형식</th><th>사람이 읽기</th><th>장점</th><th>이럴 때</th></tr>
+    <tr><td>텍스트(.txt)</td><td>◎</td><td>가장 단순</td><td>로그·간단 메모</td></tr>
+    <tr><td>피클(pickle)</td><td>✕</td><td>객체를 형 변환 없이 통째로</td><td>파이썬끼리 객체 보관</td></tr>
+    <tr><td>CSV</td><td>◎</td><td>엑셀·DB와 호환</td><td>표 형태 데이터 교환</td></tr>
+    <tr><td>JSON</td><td>◎</td><td>웹 표준, 중첩 구조 표현</td><td>API·설정 파일</td></tr>
+    <tr><td>HDF5</td><td>✕</td><td>대용량 고속 입출력</td><td>과학·딥러닝 데이터</td></tr>
+  </table>
+</section>
+
+<section id="quiz">
+  <div class="quiz">
+    <div class="qh">📝 연습문제</div>
+    <div class="sub">실습형 — 고객 관리 프로그램 만들기</div>
+
+    <div class="q">
+      <div class="qq"><span class="num">1</span>이 장의 내용을 총동원해 <strong>파일로 데이터가 유지되는 고객 관리 프로그램</strong>을 작성하세요.<br><br>
+      · 실행하면 <code>data/ch09_customers.txt</code>를 읽어 <code>customer_list</code>에 로드 (파일이 없으면 빈 파일을 만들고 <code>customer_list=[]</code>)<br>
+      · 메뉴 <strong>1:입력</strong>(고객 정보를 입력받아 Customer 객체로 추가) | <strong>2:전체출력</strong> | <strong>3:데이터 백업 후 종료</strong><br>
+      · <code>Customer</code> 클래스: <code>__init__(name, phone, email, age, grade, etc)</code> / <code>to_txt_style()</code>(파일 저장용 한 줄 텍스트) / <code>as_dic()</code>(CSV 저장용 딕셔너리) / <code>__str__()</code>(등급만큼 <code>*</code> 표시)<br>
+      · <code>to_customer(row)</code>: 파일의 한 줄을 Customer 객체로 변환하는 함수</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">실행 예시 (첫 번째 실행)</div>
+        <div class="output">데이터 파일 ch09_customers.txt가 없어서 초기화합니다
+1:입력 | 2:전체출력 | 3:데이터백업후 종료 메뉴선택 : 1
+이름 :홍길동
+전화 :010-9999-9999
+메일 :hong@h.co.kr
+나이 :32
+등급(1~5) : 4
+기타 정보 :동해번쩍
+1:입력 | 2:전체출력 | 3:데이터백업후 종료 메뉴선택 : 2
+======================================================================
+                            고 객   정 보
+----------------------------------------------------------------------
+GRADE   이름    전화             메일            나이   기타
+----------------------------------------------------------------------
+ ****   홍길동  010-9999-9999    hong@h.co.kr    32    동해번쩍
+1:입력 | 2:전체출력 | 3:데이터백업후 종료 메뉴선택 : 3
+백업(data/ch09_customers.txt) 후 종료합니다</div>
+        <div class="lab">정답 (전체 코드 — 실행 검증 완료)</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">import os
+
+class Customer:
+    "고객 정보를 담는 클래스"
+    def __init__(self, name, phone, email, age, grade, etc):
+        self.name = name
+        self.phone = phone
+        self.email = email
+        self.age = age
+        self.grade = grade
+        self.etc = etc
+
+    def to_txt_style(self):
+        "파일 저장용: 홍길동,010-9999-9999,e@e.com,32,4,동해번쩍"
+        return "{},{},{},{},{},{}".format(self.name, self.phone,
+                self.email, self.age, self.grade, self.etc)
+
+    def as_dic(self):
+        "CSV(DictWriter) 저장용 딕셔너리로 반환"
+        return {"name":self.name, "phone":self.phone, "email":self.email,
+                "age":self.age, "grade":self.grade, "etc":self.etc}
+
+    def __str__(self):
+        "출력용: **** 홍길동 010-9999-9999 hong@h.co.kr 32 동해번쩍"
+        return "{:&gt;5}\t{:3}\t{:13}\t{:15}\t{}\t{}".format(
+            "*"*self.grade, self.name, self.phone,
+            self.email, self.age, self.etc)
+
+def to_customer(row):
+    "텍스트 한 줄을 Customer 객체로 변환"
+    data = row.strip().split(',')
+    return Customer(data[0], data[1], data[2],
+                    int(data[3]), int(data[4]), data[5])
+
+def load_customers():
+    "0. 시작 시 파일 로드 (없으면 빈 파일 생성)"
+    customer_list = []
+    if os.path.exists('data/ch09_customers.txt'):
+        with open('data/ch09_customers.txt', 'r', encoding='utf8') as f:
+            for line in f.readlines():
+                customer_list.append(to_customer(line))
+        print('데이터가 로드 되었습니다.')
+    else:
+        os.makedirs('data', exist_ok=True)
+        f = open('data/ch09_customers.txt', 'w', encoding='utf8')
+        f.close()
+        print('데이터 파일 ch09_customers.txt가 없어서 초기화합니다')
+    return customer_list
+
+def fn1_insert_customer_info():
+    "1. 고객 정보를 입력받아 Customer 객체로 반환"
+    name = input('이름 :')
+    phone = input('전화 :')
+    email = input('메일 :')
+    while True:
+        try:
+            age = int(input('나이 :'))
+            break
+        except ValueError:              # 8장 예외처리 활용!
+            print('나이는 숫자로 입력하세요')
+    while True:
+        try:
+            grade = int(input('등급(1~5) : '))
+            if 1 &lt;= grade &lt;= 5:
+                break
+        except ValueError:
+            pass
+        print('등급은 1~5 사이 숫자로 입력하세요')
+    etc = input('기타 정보 :')
+    return Customer(name, phone, email, age, grade, etc)
+
+def fn2_print_customers(customer_list):
+    "2. 전체 고객 출력"
+    print('=' * 70)
+    print('{:^66}'.format('고 객   정 보'))
+    print('-' * 70)
+    print('{:&gt;5} {:&gt;4}\t{:13}\t{:15}\t{}\t{}'.format(
+        'GRADE', '이름', '전화', '메일', '나이', '기타'))
+    print('-' * 70)
+    for customer in customer_list:
+        print(customer)
+
+def fn3_save_customer_txt(customer_list):
+    "3. data/ch09_customers.txt에 백업"
+    lines = [customer.to_txt_style() + '\n' for customer in customer_list]
+    with open('data/ch09_customers.txt', 'w', encoding='utf8') as f:
+        f.writelines(lines)
+    print('백업(data/ch09_customers.txt) 후 종료합니다')
+
+def main():
+    global customer_list
+    customer_list = load_customers()
+    while True:
+        print("1:입력", "2:전체출력", "3:데이터백업후 종료",
+              sep=' | ', end=' ')
+        fn = int(input('메뉴선택 : '))
+        if fn == 1:
+            customer_list.append(fn1_insert_customer_info())
+        elif fn == 2:
+            fn2_print_customers(customer_list)
+        elif fn == 3:
+            fn3_save_customer_txt(customer_list)
+            break
+
+if __name__ == '__main__':
+    main()</code></pre>
+        <div class="lab">해설</div>
+        <p>이 프로그램은 지금까지 배운 것의 <strong>종합 선물세트</strong>예요. ① 7장 <strong>클래스</strong>로 고객 정보를 객체로 묶고, ② 이번 장 <strong>파일 입출력</strong>으로 프로그램을 꺼도 데이터가 유지되게 하고(<code>to_txt_style()</code> ↔ <code>to_customer()</code>가 저장·복원의 짝), ③ 8장 <strong>예외처리</strong>로 잘못된 입력을 막습니다. 핵심 흐름은 <strong>시작할 때 load → 메모리(리스트)에서 작업 → 끝낼 때 save</strong> — 대부분의 데이터 프로그램이 이 구조를 따라요. 두 번째 실행에서 "데이터가 로드 되었습니다."와 함께 이전 고객이 그대로 나오면 성공!</p>
+      </div></details>
+    </div>
+
+    <div class="sub">문제풀이형</div>
+    <div class="q">
+      <div class="qq"><span class="num">2</span>다음 중 <code>open</code> 함수에 대해 <strong>잘못</strong> 설명한 것은?<br>① 함수가 반환하는 것은 열린 파일 객체이다 ② 파일을 열 때 사용하는 모드는 읽기(r), 쓰기(w), 추가(a), 바이너리(b) 모드가 있다 ③ 바이너리(b) 모드와 쓰기(w) 모드는 같이 사용할 수 없다 ④ 파일의 인코딩은 encoding 속성을 이용해 설정할 수 있다</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>③</strong></p>
+        <div class="lab">해설</div>
+        <p>바이너리 모드는 다른 모드와 <strong>조합해서 쓰는 게 기본</strong>이에요. 피클 저장이 바로 <code>'wb'</code>(쓰기+바이너리), 읽기가 <code>'rb'</code>였죠. ①②④는 모두 맞는 설명입니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">3</span>피클링(pickling)에 대해 <strong>잘못</strong> 설명한 것은?<br>① 파이썬의 객체 직렬화(Object Serialization) 방법이다 ② pickle 모듈의 dump()와 load() 함수를 이용해 객체를 쓰고 읽는다 ③ 파이썬 객체를 별도의 텍스트 변환과정 없이 파일에 직접 쓰고 읽는 것을 의미한다 ④ 피클링하기 위한 모드는 쓰기모드('w')여야 한다</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>④</strong></p>
+        <div class="lab">해설</div>
+        <p>피클은 이진 데이터라서 <strong>바이너리 쓰기 모드 <code>'wb'</code></strong>로 열어야 해요. 그냥 <code>'w'</code>(텍스트 쓰기)로 열면 에러가 납니다. ①②③은 피클의 정의 그대로예요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">4</span>다음 중 파이썬의 입/출력 모듈에 대한 설명 중 <strong>잘못된</strong> 것은?<br>① Pandas 패키지를 이용하면 리스트 데이터를 쉽게 파일에 쓰고 읽을 수 있다 ② json 모듈의 dump(), load() 함수를 이용해 JSON 데이터를 파일에 읽고 쓸 수 있다 ③ h5py 모듈의 File 클래스를 이용해 HDF5 데이터를 파일에 읽고 쓸 수 있다 ④ csv 모듈의 reader(), writer() 함수를 이용해 CSV 파일을 읽고 쓸 수 있다</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>①</strong></p>
+        <div class="lab">해설</div>
+        <p>리스트 같은 파이썬 객체를 <strong>변환 없이 직접</strong> 파일에 쓰고 읽는 것은 <strong>pickle 모듈</strong>의 역할이에요. 판다스는 데이터프레임·시리즈라는 표 구조 중심의 도구라, 리스트를 저장하려면 먼저 데이터프레임으로 만드는 변환 과정을 거칩니다. ②③④는 각 모듈의 올바른 사용법이에요.</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<div class="box tip" style="margin-top:40px"><div class="t">🎉 2부 완주! 이제 데이터 분석의 세계로</div>기본 문법(1부)과 프로그래밍 기술(2부: 모듈·객체지향·예외처리·입출력)을 모두 마쳤어요. 다음 장부터는 <strong>3부 데이터 분석 라이브러리</strong> — 넘파이(10장)와 판다스(11장)로 본격적인 데이터 다루기가 시작됩니다!</div>
+
+<div class="pager">
+  <a class="prev" href="ch08_예외처리.html"><div class="dir">← 이전</div><div class="ttl">8장. 예외처리</div></a>
+  <a class="next" href="ch10_Numpy.html"><div class="dir">다음 →</div><div class="ttl">10장. N차원 배열 다루기 — Numpy</div></a>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

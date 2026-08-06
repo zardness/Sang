@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        img{width: 300px;}
+    </style>
+    <script>
+       // const date = new Date(); //오늘날짜
+       //const hour = date.getHours() //0~23
+        const hour = new Date().getHours();
+        if(hour<12){
+            document.write('상쾌한 오전입니다.<br>');
+            document.write('<img src="ch03_img/am.jpg">');
+        }else if(12<=hour && hour<20){
+            document.write('더운 오후입니다.<br>');
+            document.write('<img src="ch03_img/pm.jpg">')
+        }
+        
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

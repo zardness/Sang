@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10장. N차원 배열 다루기 — Numpy · 쉬운 파이썬</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root{--py-blue:#3776AB;--py-yellow:#FFD43B;--ink:#1a2233;--ink-soft:#4a5568;--line:#e6e9f0;--bg:#f6f8fc;--card:#fff;--accent:#2f6fb0;--green:#2e9e6b;--green-bg:#e9f8f0;--amber:#b9770e;--amber-bg:#fef6e6;--red:#d64545;--purple:#6b4fbb;--purple-bg:#f1ecfb}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(246,248,252,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-weight:600}.topbar .crumb{color:var(--ink-soft)}
+.hero{background:linear-gradient(135deg,#3776AB,#2b5e8c);color:#fff;border-radius:20px;padding:40px 36px;margin:26px 0 22px;box-shadow:0 10px 30px rgba(55,118,171,.25)}
+.hero .tag{display:inline-block;background:var(--py-yellow);color:#3a3300;font-weight:700;font-size:13px;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.hero h1{font-size:31px;line-height:1.3;margin-bottom:10px;letter-spacing:-.5px}.hero p{color:#eaf2fb;font-size:16px;max-width:640px}
+.hero p strong{color:#fff;border-bottom:2px solid var(--py-yellow);padding-bottom:1px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hero .meta span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:12.5px;font-weight:600;padding:4px 13px;border-radius:20px}
+.chapmap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:22px}
+.chapmap h2{font-size:16px;color:var(--accent);margin-bottom:14px}
+.chapmap .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chapmap a{display:flex;gap:11px;align-items:flex-start;background:#fafbfe;border:1px solid var(--line);border-radius:11px;padding:11px 14px;text-decoration:none;color:var(--ink);transition:.15s}
+.chapmap a:hover{border-color:var(--py-blue);background:#f0f6fc;transform:translateY(-1px)}
+.chapmap .no{flex:none;width:25px;height:25px;background:var(--py-blue);color:#fff;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;margin-top:3px}
+.chapmap .no.q{background:var(--purple)}
+.chapmap .tt{font-weight:700;font-size:14.5px;line-height:1.45}
+.chapmap .dd{font-size:12.5px;color:var(--ink-soft);margin-top:2px;line-height:1.5}
+.goals{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:30px}
+.goals h2{font-size:16px;color:var(--accent);margin-bottom:12px}
+.goals ul{list-style:none}.goals li{padding:7px 0 7px 30px;position:relative;font-size:15px}
+.goals li:before{content:"✓";position:absolute;left:0;top:7px;color:var(--green);font-weight:800}
+section{margin:38px 0}
+h2.sec{font-size:23px;letter-spacing:-.4px;padding-bottom:12px;border-bottom:3px solid var(--py-yellow);margin-bottom:22px;display:flex;align-items:center;gap:10px}
+h2.sec .n{background:var(--py-blue);color:#fff;font-size:15px;width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+h3{font-size:18.5px;margin:26px 0 12px;color:var(--ink);letter-spacing:-.3px}
+p{margin:12px 0;color:var(--ink-soft)}p strong,li strong{color:var(--ink);font-weight:700}
+ul.plain{margin:12px 0 12px 4px;padding-left:22px}ul.plain li{margin:7px 0;color:var(--ink-soft)}
+ol.plain{margin:12px 0 12px 4px;padding-left:22px}ol.plain li{margin:7px 0;color:var(--ink-soft)}
+.term{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--py-blue);border-radius:12px;padding:18px 22px;margin:20px 0;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.term .h{font-size:17px;font-weight:800;color:var(--py-blue);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.term .def{font-size:15.5px;color:var(--ink)}
+.term .anal{margin-top:12px;background:var(--purple-bg);border-radius:9px;padding:12px 15px;font-size:14.5px;color:#4a3a7a}
+.term .anal b{color:var(--purple)}
+.box{border-radius:12px;padding:16px 20px;margin:18px 0;font-size:15px}
+.box .t{font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.tip{background:var(--green-bg);border:1px solid #bfe8d4;color:#1f5e42}.tip .t{color:var(--green)}
+.warn{background:var(--amber-bg);border:1px solid #f3ddad;color:#7a5310}.warn .t{color:var(--amber)}
+pre{border-radius:12px;margin:16px 0;overflow:auto;font-size:14px;box-shadow:0 4px 14px rgba(20,30,60,.15)}
+pre code.hljs{padding:18px 20px;line-height:1.65;font-family:'D2Coding','Consolas','Monaco',monospace}
+.codelabel{display:inline-block;background:#2b2f38;color:#9fb4cc;font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+.filelabel{display:inline-block;background:#3a3320;color:var(--py-yellow);font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+.output{background:#0f1620;color:#6fe08a;border-radius:0 0 12px 12px;padding:12px 20px;margin-top:-16px;font-family:'D2Coding','Consolas',monospace;font-size:13.5px;white-space:pre-wrap;border-top:1px solid #26303f}
+.output:before{content:"▶ 실행결과";display:block;color:#5a7186;font-size:11.5px;margin-bottom:6px;font-weight:700}
+.output.err{color:#ff9e9e}.output.err:before{content:"⚠ 에러 발생"}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(30,50,90,.05)}
+th{background:var(--py-blue);color:#fff;padding:11px 14px;text-align:left;font-weight:700}
+td{padding:10px 14px;border-top:1px solid var(--line);color:var(--ink-soft)}
+td code,p code,li code,.def code,.anal code,.ans code,.qq code{background:#eef1f7;color:#b8336a;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-size:.9em;font-weight:600}
+tr:nth-child(even) td{background:#fafbfe}
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 24px 24px;margin-top:22px}
+.quiz>.qh{font-size:20px;color:var(--accent);font-weight:800;margin:18px 0 4px;display:flex;align-items:center;gap:9px}
+.quiz .sub{font-size:15px;font-weight:700;color:var(--purple);background:var(--purple-bg);padding:8px 14px;border-radius:8px;margin:18px 0 4px}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}.q:first-of-type{border-top:none}
+.q .qq{font-weight:700;color:var(--ink);font-size:15.5px;margin-bottom:10px}
+.q .qq .num{display:inline-flex;width:26px;height:26px;background:var(--py-yellow);color:#3a3300;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-right:8px}
+details{background:#f3f7fc;border:1px solid #d8e6f2;border-radius:10px;margin-top:8px}
+summary{cursor:pointer;padding:11px 16px;font-weight:700;color:var(--accent);font-size:14.5px;user-select:none;list-style:none}
+summary:before{content:"💡 정답·해설 보기"}details[open] summary:before{content:"🔽 정답·해설 접기"}
+summary::-webkit-details-marker{display:none}
+.ans{padding:4px 18px 16px}.ans .lab{font-weight:800;color:var(--green);margin:10px 0 4px;font-size:14px}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px}
+.pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;text-decoration:none;color:var(--ink);transition:.15s;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.pager a:hover{border-color:var(--py-blue);transform:translateY(-2px)}
+.pager .dir{font-size:12px;color:var(--ink-soft);font-weight:700}.pager .ttl{font-weight:700;color:var(--accent);margin-top:3px;font-size:14.5px}
+.pager a.next{text-align:right}.pager a.disabled{opacity:.4;pointer-events:none}
+@media(max-width:600px){.hero h1{font-size:24px}.wrap{padding:0 14px 60px}.hero{padding:28px 22px}.chapmap .grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="ch09_입출력프로그래밍.html">← 이전</a>
+  <span class="crumb">10장 · N차원 배열 다루기 — Numpy</span>
+  <a href="ch11_Pandas.html">다음 →</a>
+</div>
+<div class="wrap">
+
+<div class="hero">
+  <span class="tag">CHAPTER 10 · 3부 데이터 분석</span>
+  <h1>N차원 배열 다루기 — Numpy</h1>
+  <p>데이터 분석의 출발점. 반복문 없이 <strong>수만 개의 숫자를 한 번에</strong> 계산하는 넘파이 배열(ndarray)을 배웁니다.</p>
+  <div class="meta">
+    <span>📚 10개 섹션</span><span>💻 예제 45+</span><span>📝 연습문제 11</span><span>🧮 판다스·AI의 기초 체력</span>
+  </div>
+</div>
+
+<div class="chapmap">
+  <h2>🗺️ 이번 장 한눈에 보기 <span style="font-weight:400;color:var(--ink-soft);font-size:13px">— 원하는 곳을 눌러 바로 이동하세요</span></h2>
+  <div class="grid">
+    <a href="#sec1"><span class="no">1</span><span><span class="tt">넘파이 소개</span><span class="dd" style="display:block">왜 리스트 대신 ndarray를 쓰는가</span></span></a>
+    <a href="#sec2"><span class="no">2</span><span><span class="tt">ndarray의 속성</span><span class="dd" style="display:block">shape·ndim·dtype 읽는 법</span></span></a>
+    <a href="#sec3"><span class="no">3</span><span><span class="tt">배열 만들기</span><span class="dd" style="display:block">array·zeros·ones·arange·linspace</span></span></a>
+    <a href="#sec4"><span class="no">4</span><span><span class="tt">차원 바꾸기</span><span class="dd" style="display:block">reshape·ravel·T·resize와 배열 인쇄</span></span></a>
+    <a href="#sec5"><span class="no">5</span><span><span class="tt">배열 연산</span><span class="dd" style="display:block">요소별 연산·행렬곱·집계·브로드캐스팅</span></span></a>
+    <a href="#sec6"><span class="no">6</span><span><span class="tt">인덱싱과 슬라이싱</span><span class="dd" style="display:block">원하는 값만 정확히 골라내기</span></span></a>
+    <a href="#sec7"><span class="no">7</span><span><span class="tt">합치기와 분할</span><span class="dd" style="display:block">stack 가족과 split 가족</span></span></a>
+    <a href="#sec8"><span class="no">8</span><span><span class="tt">복사와 뷰</span><span class="dd" style="display:block">= · view() · copy()의 결정적 차이</span></span></a>
+    <a href="#sec9"><span class="no">9</span><span><span class="tt">고급 인덱싱</span><span class="dd" style="display:block">배열로, 조건(논리)으로 인덱싱</span></span></a>
+    <a href="#sec10"><span class="no">10</span><span><span class="tt">선형대수와 팁</span><span class="dd" style="display:block">역행렬·연립방정식·최소제곱법</span></span></a>
+    <a href="#quiz" style="grid-column:1/-1"><span class="no q">📝</span><span><span class="tt">연습문제</span><span class="dd" style="display:block">iris 데이터 실습 6문제 + 객관식 5문제</span></span></a>
+  </div>
+</div>
+
+<div class="goals">
+  <h2>🎯 이 장을 끝내면 이런 걸 할 수 있어요</h2>
+  <ul>
+    <li>ndarray를 만들고 shape·dtype 같은 속성을 읽을 수 있다</li>
+    <li>reshape로 배열의 차원을 자유자재로 바꿀 수 있다</li>
+    <li>반복문 없이 배열 전체를 한 번에 연산할 수 있다(벡터 연산·브로드캐스팅)</li>
+    <li>인덱싱·슬라이싱·논리 인덱싱으로 원하는 데이터만 뽑을 수 있다</li>
+    <li>배열을 합치고(stack) 나눌(split) 수 있다</li>
+    <li>뷰(view)와 복사(copy)의 차이를 알아 원본 훼손 사고를 막을 수 있다</li>
+  </ul>
+</div>
+
+<section id="sec1">
+  <h2 class="sec"><span class="n">1</span>넘파이 패키지</h2>
+  <div class="term">
+    <div class="h">🧮 넘파이(NumPy — Numerical Python)</div>
+    <div class="def">파이썬 <b>과학 컴퓨팅의 기본 패키지</b>(numpy.org). 핵심은 <b>같은 자료형</b>의 데이터를 격자로 담는 <b>N차원 배열 객체(ndarray)</b>이며, 선형대수·난수 등 수치 계산 기능을 제공합니다. 판다스·사이킷런 등 데이터 분석 도구가 모두 넘파이 위에서 동작해요.</div>
+    <div class="anal">🥚 <b>비유</b> — 파이썬 리스트가 '아무거나 담는 장바구니'라면, 넘파이 배열은 <b>계란판</b>이에요. 같은 규격(자료형)의 데이터만 정해진 칸에 담는 대신, "전부 2배!"처럼 <b>판 전체를 한 번에</b> 다룰 수 있죠.</div>
+  </div>
+  <p>넘파이 배열이 리스트보다 좋은 점은 세 가지예요.</p>
+  <ul class="plain">
+    <li><strong>빠르다</strong> — 내부가 C로 구현되어 대량 계산이 리스트보다 훨씬 빠름</li>
+    <li><strong>편하다</strong> — <code>a * 2</code> 한 줄이면 모든 요소가 2배 (반복문 불필요)</li>
+    <li><strong>다차원</strong> — 행렬(2차원), 그 이상(N차원)을 자연스럽게 표현. 넘파이에서 차원은 <strong>축(axis)</strong>이라 불러요</li>
+  </ul>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python"># 설치: pip install numpy  (아나콘다에는 기본 포함)
+import numpy as np        # np라는 별칭이 전 세계 공통 관례!
+
+L = [1, 2, 3]
+print(L * 2)              # 리스트: 반복(연결)이 됨
+print(np.array(L) * 2)    # 넘파이: 각 요소가 2배!</code></pre>
+  <div class="output">[1, 2, 3, 1, 2, 3]
+[2 4 6]</div>
+  <div class="box tip"><div class="t">💡 넘파이 주요 함수 지도 (필요할 때 찾아보세요)</div><strong>만들기</strong> array·arange·linspace·zeros·ones·empty·eye / <strong>조작</strong> reshape·ravel·transpose·concatenate·hstack·vstack·hsplit·vsplit / <strong>찾기·정렬</strong> where·nonzero·sort·argmax·argmin / <strong>집계·통계</strong> sum·cumsum·mean·std·var / <strong>선형대수</strong> dot·linalg.inv·linalg.solve — 공식 문서: <code>numpy.org/doc</code></div>
+</section>
+
+<section id="sec2">
+  <h2 class="sec"><span class="n">2</span>ndarray의 속성</h2>
+  <p>배열을 받으면 가장 먼저 <strong>"몇 차원이고, 크기가 얼마고, 타입이 뭔지"</strong>부터 확인하는 습관을 들이세요. 속성 5개면 충분합니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import numpy as np
+a = np.arange(15).reshape(3, 5)   # 0~14를 3행 5열로
+a</code></pre>
+  <div class="output">array([[ 0,  1,  2,  3,  4],
+       [ 5,  6,  7,  8,  9],
+       [10, 11, 12, 13, 14]])</div>
+  <table>
+    <tr><th>속성</th><th>뜻</th><th>위 배열의 값</th></tr>
+    <tr><td><code>a.ndim</code></td><td>축(차원)의 수</td><td><code>2</code></td></tr>
+    <tr><td><code>a.shape</code></td><td>각 차원의 크기 튜플 — (행, 열)</td><td><code>(3, 5)</code></td></tr>
+    <tr><td><code>a.size</code></td><td>요소의 총 개수 (= shape 값들의 곱)</td><td><code>15</code></td></tr>
+    <tr><td><code>a.dtype</code></td><td>요소의 자료형</td><td><code>int32</code> 또는 <code>int64</code></td></tr>
+    <tr><td><code>a.itemsize</code></td><td>요소 1개의 크기(바이트)</td><td><code>4</code> 또는 <code>8</code></td></tr>
+  </table>
+  <div class="box tip"><div class="t">💡 int32? int64?</div>기본 정수 타입은 <strong>시스템에 따라</strong> 달라요(윈도우는 보통 int32, 리눅스·맥은 int64). 교재와 내 결과의 숫자가 달라도 정상입니다.</div>
+  <div class="box tip"><div class="t">💡 shape 읽는 법 — 차원 감각 익히기</div><code>(4,)</code>는 1차원(요소 4개), <code>(3, 4)</code>는 2차원(3행 4열), <code>(2, 3, 4)</code>는 3차원 — <strong>"(3, 4) 배열이 2개"</strong>라고 바깥부터 읽으면 돼요. 4차원 이상도 같은 원리로 바깥에서 안으로 읽어 나갑니다.</div>
+
+  <h3>dtype의 이해 — 재해석 vs 형 변환</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(12, dtype=np.int32).reshape(3, 4)
+a.dtype = np.int64     # 타입을 '재지정'하면?
+a</code></pre>
+  <div class="output">array([[ 4294967296, 12884901890],
+       [21474836484, 30064771078],
+       [38654705672, 47244640266]])</div>
+  <p>값이 이상해졌죠? <code>dtype</code> 재지정은 형 변환이 아니라 <strong>메모리를 새 타입 크기로 다시 잘라 읽는 것</strong>이에요. int32(4바이트) 두 개(0과 1)가 int64(8바이트) 하나로 합쳐져 4294967296(=2³²)이 된 거죠. 값을 유지하며 타입을 바꾸려면 <strong><code>astype()</code></strong>을 쓰세요.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(12, dtype=np.int32).reshape(3, 4)
+b = a.astype(np.int64)    # 진짜 형 변환 (값 유지)
+b.dtype, b[0]</code></pre>
+  <div class="output">(dtype('int64'), array([0, 1, 2, 3]))</div>
+</section>
+
+<section id="sec3">
+  <h2 class="sec"><span class="n">3</span>넘파이 배열 만들기</h2>
+  <p>배열을 만드는 방법은 크게 네 가지예요: ① 리스트·튜플을 <code>array()</code>로 변환 ② 생성 함수(<code>zeros</code>, <code>arange</code> 등) ③ 디스크의 파일에서 읽기 ④ <code>random</code> 같은 특수 함수. 여기선 ①②④를 익힙니다.</p>
+
+  <h3>array() — 리스트·튜플에서 변환</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.array([2, 3, 4])
+print(a.dtype)                       # 정수 리스트 → int
+
+b = np.array([1.2, 3.5, 5.1])
+print(b.dtype)                       # 실수가 섞이면 → float64
+
+c = np.array([[1, 2], [3, 4]])       # 중첩 리스트 → 2차원 배열!
+print(c.shape)</code></pre>
+  <div class="output">int64
+float64
+(2, 2)</div>
+  <div class="box tip"><div class="t">💡 타입은 재료에서 추론돼요</div>결과 배열의 dtype은 넣은 리스트·튜플의 요소에서 자동 추론됩니다. 원하는 타입이 있으면 <code>np.array([[1,2],[3,4]], dtype=complex)</code>처럼 직접 지정하세요.</div>
+
+  <h3>기본값으로 채운 배열 — zeros · ones · empty</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">print(np.zeros((3, 4)))                    # 0으로 채움
+print(np.ones((2, 3, 4), dtype=np.int16))  # 1로 채움 (타입 지정)
+print(np.empty((2, 3)))                    # 초기화 안 함(쓰레기값) - 빠름</code></pre>
+  <div class="output">[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+[[[1 1 1 1] ... (2×3×4의 1)]]
+[[ ... 메모리 상태에 따른 임의 값 ...]]</div>
+  <p>기본 dtype은 <code>float64</code>예요. <code>zeros_like(a)</code>처럼 <code>_like</code> 함수는 기존 배열과 같은 모양으로 만들어 줍니다.</p>
+
+  <h3>연속된 값 — arange · linspace</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">print(np.arange(10, 30, 5))     # start, stop(미포함), step
+print(np.arange(0, 2, 0.3))     # 실수 step도 가능
+print(np.linspace(0, 2, 9))     # start, stop(포함!), 개수</code></pre>
+  <div class="output">[10 15 20 25]
+[0.  0.3 0.6 0.9 1.2 1.5 1.8]
+[0.   0.25 0.5  0.75 1.   1.25 1.5  1.75 2.  ]</div>
+  <div class="box tip"><div class="t">💡 arange vs linspace 선택법</div><strong>간격</strong>이 중요하면 <code>arange</code>(stop 미포함), <strong>개수</strong>가 중요하면 <code>linspace</code>(stop 포함). 그래프용 x좌표 100개처럼 <strong>많은 점</strong>을 만들 땐 linspace가 정석: <code>x = np.linspace(0, 2*np.pi, 100)</code></div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">rng = np.random.default_rng()       # 난수 생성기
+print(rng.random((2, 3)))            # 0~1 사이 난수 배열</code></pre>
+  <div class="output">[[0.51 0.94 0.30]
+ [0.62 0.79 0.35]]  (실행마다 다름)</div>
+</section>
+
+<section id="sec4">
+  <h2 class="sec"><span class="n">4</span>차원 바꾸기와 배열 인쇄</h2>
+  <h3>모양 바꾸기 4형제</h3>
+  <table>
+    <tr><th>함수</th><th>동작</th><th>원본은?</th></tr>
+    <tr><td><code>a.reshape(6, 2)</code></td><td>모양을 바꾼 <strong>새 배열을 반환</strong></td><td>그대로</td></tr>
+    <tr><td><code>a.ravel()</code></td><td>1차원으로 <strong>펼친</strong> 배열을 반환</td><td>그대로</td></tr>
+    <tr><td><code>a.T</code></td><td><strong>전치</strong>(행↔열 뒤집기) 배열을 반환</td><td>그대로</td></tr>
+    <tr><td><code>a.resize((2, 6))</code></td><td>배열 <strong>자체를</strong> 수정 (반환값 없음)</td><td>바뀜!</td></tr>
+  </table>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(12).reshape(3, 4)
+print(a.ravel())          # 1차원으로 펼치기
+print(a.T.shape)          # 전치: (3,4) → (4,3)
+print(a.reshape(2, -1))   # -1: "알아서 계산해줘" → (2, 6)</code></pre>
+  <div class="output">[ 0  1  2  3  4  5  6  7  8  9 10 11]
+(4, 3)
+[[ 0  1  2  3  4  5]
+ [ 6  7  8  9 10 11]]</div>
+  <div class="box tip"><div class="t">💡 -1은 자동 계산</div><code>reshape</code>에서 한 차원을 <code>-1</code>로 주면 전체 요소 수에 맞게 <strong>자동으로 계산</strong>돼요. <code>a.shape = 2, -1, 3</code>처럼 shape 속성에 직접 대입할 때도 쓸 수 있어요. 단 <code>resize</code>에서는 음수를 못 씁니다(<code>ValueError: negative dimensions not allowed</code>).</div>
+
+  <h3>배열이 인쇄되는 규칙</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">c = np.arange(24).reshape(2, 3, 4)   # (3,4) 행렬이 2개
+print(c)</code></pre>
+  <div class="output">[[[ 0  1  2  3]
+  [ 4  5  6  7]
+  [ 8  9 10 11]]
+
+ [[12 13 14 15]
+  [16 17 18 19]
+  [20 21 22 23]]]</div>
+  <ul class="plain">
+    <li><strong>마지막 축</strong>은 왼쪽→오른쪽, 나머지는 위→아래로 인쇄</li>
+    <li>각 덩어리(슬라이스)는 <strong>빈 줄</strong>로 구분 — 1차원은 행, 2차원은 행렬, 3차원은 "행렬 목록"</li>
+    <li>배열이 너무 크면 가운데가 <code>...</code>으로 생략 — 전부 보려면 <code>np.set_printoptions(threshold=크기)</code></li>
+  </ul>
+</section>
+
+<section id="sec5">
+  <h2 class="sec"><span class="n">5</span>배열 연산 — 넘파이의 심장</h2>
+  <h3>요소별(element-wise) 연산</h3>
+  <p>산술 연산자는 <strong>같은 위치의 요소끼리</strong> 적용됩니다. 반복문이 필요 없어요!</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.array([20, 30, 40, 50])
+b = np.arange(4)                # [0 1 2 3]
+print(a - b)                    # 요소별 뺄셈
+print(b ** 2)                   # 요소별 제곱
+print(10 * np.sin(a))           # 함수도 요소별로!
+print(a &lt; 35)                   # 비교도 요소별 → 논리 배열</code></pre>
+  <div class="output">[20 29 38 47]
+[0 1 4 9]
+[ 9.12945251 -9.88031624  7.4511316  -2.62374854]
+[ True  True False False]</div>
+
+  <h3>행렬의 곱 — *가 아니라 @</h3>
+  <div class="term">
+    <div class="h">✖️ 행렬 곱 (Matrix Product)</div>
+    <div class="def"><code>*</code>는 <b>요소별 곱</b>이고, 수학의 행렬 곱은 <b><code>@</code> 연산자</b> 또는 <code>dot()</code> 함수를 써요. m×n 행렬 @ n×r 행렬 = <b>m×r 행렬</b> (앞의 열 수와 뒤의 행 수가 같아야 함).</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">A = np.array([[1, 1],
+              [0, 1]])
+B = np.array([[2, 0],
+              [3, 4]])
+print(A * B)        # 요소별 곱
+print(A @ B)        # 행렬 곱 (A.dot(B)와 동일)</code></pre>
+  <div class="output">[[2 0]
+ [0 4]]
+[[5 4]
+ [3 4]]</div>
+  <div class="q" style="border:1px solid var(--line);border-radius:12px;padding:14px 18px;background:#fafbfe">
+    <div class="qq">✍️ <strong>손계산 미니 퀴즈</strong> — <code>[[1,2],[3,4]] @ [[-1,-1],[1,1]]</code>와 순서를 바꾼 <code>[[-1,-1],[1,1]] @ [[1,2],[3,4]]</code>의 결과는?</div>
+    <details><summary></summary><div class="ans">
+      <div class="lab">정답</div>
+      <p>앞의 식은 <code>[[1, 1], [1, 1]]</code>, 순서를 바꾸면 <code>[[-4, -6], [4, 6]]</code> — <strong>행렬 곱은 순서를 바꾸면 결과가 달라져요!</strong> (교환법칙 불성립) 행렬 곱은 "앞 행렬의 <strong>행</strong> × 뒤 행렬의 <strong>열</strong>"을 짝지어 곱해 더한 값이 각 칸에 들어갑니다.</p>
+    </div></details>
+  </div>
+  <div class="box warn"><div class="t">⚠️ 복합대입연산자와 타입</div><code>a += b</code>는 새 배열을 만들지 않고 <strong>a를 직접 수정</strong>해요. 그래서 정수 배열 a에 실수 배열 b를 <code>a += b</code>하면 "float64를 int에 담을 수 없다"는 <strong>TypeError</strong>가 납니다(넘파이는 자동 하향 형 변환을 안 함). 반대로 <code>b += a</code>(실수에 정수를 더함)는 괜찮아요.</div>
+
+  <h3>집계 — sum · min · max와 축(axis)</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.array([[1, 2], [3, 4]])
+print(a.sum(), a.min(), a.max())   # 전체 집계</code></pre>
+  <div class="output">10 1 4</div>
+  <p><code>axis</code>를 지정하면 <strong>그 축을 따라(그 축을 없애며)</strong> 집계합니다. 3차원 배열로 감을 잡아보세요.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">c = np.arange(24).reshape(2, 3, 4)   # (면, 행, 열)
+print(c.sum(axis=0))   # 면끼리 더함: 0+12, 1+13, ...  → (3, 4)
+print(c.sum(axis=1))   # 행을 따라: 0+4+8, ...          → (2, 4)
+print(c.sum(axis=2))   # 열을 따라: 0+1+2+3, ...        → (2, 3)</code></pre>
+  <div class="output">[[12 14 16 18]
+ [20 22 24 26]
+ [28 30 32 34]]
+[[12 15 18 21]
+ [48 51 54 57]]
+[[ 6 22 38]
+ [54 70 86]]</div>
+  <div class="box tip"><div class="t">💡 axis 암기법</div>"<strong>지정한 축이 사라진다</strong>"고 기억하세요. shape (2,3,4)에서 <code>axis=0</code>이면 결과는 (3,4), <code>axis=1</code>이면 (2,4), <code>axis=2</code>면 (2,3). 2차원에서 <code>axis=0</code>은 <strong>열별 집계</strong>(행 방향으로 접음), <code>axis=1</code>은 <strong>행별 집계</strong>입니다.</div>
+
+  <h3>범용 함수 (ufunc)</h3>
+  <p><code>np.exp</code>, <code>np.sqrt</code>, <code>np.sin</code>, <code>np.add</code>처럼 <strong>배열의 각 요소마다 적용되는 함수</strong>를 범용 함수(universal function)라고 해요.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">B = np.arange(3)
+print(np.exp(B))                       # e^0, e^1, e^2
+print(np.sqrt(B))                      # 제곱근
+print(np.add(B, np.array([2., -1., 4.])))  # 요소별 덧셈</code></pre>
+  <div class="output">[1.         2.71828183 7.3890561 ]
+[0.         1.         1.41421356]
+[2. 0. 6.]</div>
+  <div class="box tip"><div class="t">💡 출력 인수로 메모리 아끼기</div>범용 함수의 마지막 인수에 결과를 담을 배열을 지정할 수 있어요. <code>G = A*B; np.add(G, C, G)</code>는 <code>G = A*B + C</code>와 같지만 <strong>중간 결과용 배열을 새로 안 만들어</strong> 대용량 데이터에서 메모리를 절약합니다. (주피터에서 <code>%%time</code>·<code>%memit</code>으로 시간·메모리를 측정해 비교할 수 있어요)</div>
+
+  <h3>브로드캐스팅 (Broadcasting)</h3>
+  <div class="term">
+    <div class="h">📡 브로드캐스팅</div>
+    <div class="def">모양이 <b>다른</b> 배열끼리 연산할 때, 작은 배열을 <b>자동으로 늘려서(stretch)</b> 맞춰주는 규칙이에요. 실제 복사 없이 처리되어 메모리도 아낍니다.</div>
+    <div class="anal">📢 <b>비유</b> — 방송(broadcast)처럼 <b>하나의 값이 모든 자리에 전파</b>돼요. "전 직원 월급 +10만원"이라고 한 번만 말하면 모두에게 적용되는 것과 같죠.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.array([1, 2, 3])
+print(a + 10)                 # 스칼라 10이 [10,10,10]처럼 확장
+
+b = np.array([[ 0,  0,  0],
+              [10, 10, 10],
+              [20, 20, 20],
+              [30, 30, 30]])   # (4,3)
+c = np.array([1, 2, 3])        # (3,)
+print(b + c)                   # c가 4개 행으로 확장!</code></pre>
+  <div class="output">[11 12 13]
+[[ 1  2  3]
+ [11 12 13]
+ [21 22 23]
+ [31 32 33]]</div>
+  <div class="box warn"><div class="t">⚠️ 브로드캐스팅 규칙</div>"두 배열의 <strong>뒤쪽(후미) 축 크기가 같거나, 둘 중 하나가 1</strong>이어야 한다." (4,3)과 (3,)은 후미가 3=3이라 OK. (4,3)과 (4,)는 안 돼요 — 이때는 <code>a[:, np.newaxis]</code>로 (4,1)을 만들면 (4,1)+(3,) → (4,3)으로 브로드캐스팅되어 <strong>모든 조합(외적 스타일)</strong> 연산이 됩니다.</div>
+</section>
+
+<section id="sec6">
+  <h2 class="sec"><span class="n">6</span>인덱싱과 슬라이싱</h2>
+  <p>3장에서 배운 리스트 인덱싱·슬라이싱이 그대로 통하고, 다차원으로 확장됩니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(10) ** 3    # [0 1 8 27 64 125 216 343 512 729]
+print(a[2])               # 양수 인덱스 (0부터)
+print(a[-2])              # 음수 인덱스 (뒤에서부터)
+print(a[2:5])             # 슬라이싱: 2 이상 5 미만
+print(a[::2])             # 처음부터 끝까지 2칸씩
+print(a[::-1])            # 역순!
+a[:6:2] = -1000           # 슬라이스에 대입하면 값이 바뀜
+print(a)</code></pre>
+  <div class="output">8
+512
+[ 8 27 64]
+[  0   8  64 216 512]
+[729 512 343 216 125  64  27   8   1   0]
+[-1000     1 -1000    27 -1000   125   216   343   512   729]</div>
+  <div class="box warn"><div class="t">⚠️ 범위를 벗어나면 IndexError</div>요소가 10개인 배열에서 <code>a[10]</code>은 <code>IndexError: index 10 is out of bounds</code> 에러예요. 단, 슬라이싱은 범위를 넘겨도 에러 없이 알아서 잘라줍니다.</div>
+
+  <h3>다차원 인덱싱 — 콤마로 축을 구분</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">b = np.array([[ 0,  1,  2,  3],
+              [10, 11, 12, 13],
+              [20, 21, 22, 23],
+              [30, 31, 32, 33],
+              [40, 41, 42, 43]])
+print(b[1, 3])      # 1행 3열
+print(b[-2, -3])    # 음수도 OK: 뒤에서 2번째 행, 3번째 열
+print(b[0:5, 1])    # 모든 행의 1열 (= b[:, 1])
+print(b[1:3, :])    # 1~2행의 모든 열</code></pre>
+  <div class="output">13
+31
+[ 1 11 21 31 41]
+[[10 11 12 13]
+ [20 21 22 23]]</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">c = np.arange(24).reshape(2, 3, 4)   # 3차원
+print(c[0, 1, 2])   # 0번 면, 1행, 2열
+print(c[1, 2, 3])   # 마지막 요소
+print(c[0])          # 인덱스를 생략하면 "전부" → 0번 면 전체
+print(c[..., 0])     # ...은 "나머지 축 전부" → 모든 면·행의 0열</code></pre>
+  <div class="output">6
+23
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+[[ 0  4  8]
+ [12 16 20]]</div>
+  <div class="box tip"><div class="t">💡 점 세 개(...)의 정체</div><code>c[1, ...]</code>는 <code>c[1, :, :]</code>와 같아요. 축이 많을 때 "<strong>나머지는 전부</strong>"를 줄여 쓰는 기호입니다.</div>
+</section>
+
+<section id="sec7">
+  <h2 class="sec"><span class="n">7</span>배열 합치기와 분할하기</h2>
+  <h3>쌓아 합치기 — stack 가족</h3>
+  <table>
+    <tr><th>함수</th><th>방향</th><th>기억법</th></tr>
+    <tr><td><code>vstack([A, B])</code></td><td>아래로(세로) 쌓기</td><td><b>v</b>ertical</td></tr>
+    <tr><td><code>hstack([A, B])</code></td><td>옆으로(가로) 붙이기</td><td><b>h</b>orizontal</td></tr>
+    <tr><td><code>dstack([A, B])</code></td><td>깊이(3번째 축)로 쌓기</td><td><b>d</b>epth</td></tr>
+    <tr><td><code>column_stack()</code></td><td>1차원들을 <strong>열</strong>로 세워 2차원 생성</td><td>열(column) 쌓기</td></tr>
+    <tr><td><code>stack(..., axis=n)</code></td><td><strong>새 축</strong>을 만들며 쌓기</td><td>축 위치 지정</td></tr>
+  </table>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">A = np.arange(12).reshape(3, 4)        # 0~11
+B = np.arange(12, 24).reshape(3, 4)    # 12~23
+print(np.vstack([A, B]).shape)   # 아래로 → (6, 4)
+print(np.hstack([A, B]).shape)   # 옆으로 → (3, 8)
+print(np.dstack([A, B]).shape)   # 깊이로 → (3, 4, 2)
+print(np.stack([A, B]).shape)    # 새 축(axis=0) → (2, 3, 4)</code></pre>
+  <div class="output">(6, 4)
+(3, 8)
+(3, 4, 2)
+(2, 3, 4)</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.array((1, 2, 3, 4))
+b = np.array((5, 6, 7, 8))
+print(np.hstack((a, b)))          # 1차원끼리 hstack → 1차원!
+print(np.column_stack((a, b)))    # 열로 세워 2차원으로</code></pre>
+  <div class="output">[1 2 3 4 5 6 7 8]
+[[1 5]
+ [2 6]
+ [3 7]
+ [4 8]]</div>
+  <div class="box tip"><div class="t">💡 newaxis — 1차원을 열벡터로</div><code>a[:, np.newaxis]</code>는 (4,)를 <strong>(4,1) 열벡터로</strong> 바꿔요. 그러면 <code>hstack</code>으로도 column_stack과 같은 결과를 만들 수 있죠. 간단히 줄인 표기로 <code>np.r_[a, b]</code>(행 방향 나열)와 <code>np.c_[a, b]</code>(열 방향 쌓기)도 자주 쓰입니다 — <code>np.c_[a, b]</code>는 위 column_stack과 같은 결과!</div>
+
+  <h3>분할하기 — split 가족</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(12).reshape(3, 4)
+print(np.vsplit(a, 3))        # 세로(행 방향)로 3등분
+print(np.hsplit(a, 4)[0])     # 가로(열 방향)로 4등분한 첫 조각</code></pre>
+  <div class="output">[array([[0, 1, 2, 3]]), array([[4, 5, 6, 7]]), array([[ 8,  9, 10, 11]])]
+[[0]
+ [4]
+ [8]]</div>
+  <p>등분 대신 <strong>자를 위치(인덱스)를 튜플로</strong> 지정할 수도 있어요.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">A = np.arange(24).reshape(3, 8)
+pieces = np.hsplit(A, (2, 5, 6))     # 2, 5, 6열 앞에서 자르기
+for p in pieces:
+    print(p.shape, end=' ')</code></pre>
+  <div class="output">(3, 2) (3, 3) (3, 1) (3, 2)</div>
+  <div class="box tip"><div class="t">💡 split vs array_split</div><code>split(a, n)</code>은 <strong>정확히 n등분이 안 되면 에러</strong>(ValueError: array split does not result in an equal division)를 내지만, <code>array_split(a, n)</code>은 <strong>불균등 분할을 허용</strong>해요(앞 조각이 하나씩 더 큼). <code>split</code>의 <code>axis=0</code>은 vsplit, <code>axis=1</code>은 hsplit과 동일합니다.</div>
+</section>
+
+<section id="sec8">
+  <h2 class="sec"><span class="n">8</span>복사와 뷰 — 사고 방지 필수 지식</h2>
+  <p>"분명 b만 바꿨는데 a까지 바뀌었어요!" — 넘파이 초보가 가장 많이 겪는 사고예요. 세 가지 경우를 구분하면 해결됩니다.</p>
+  <table>
+    <tr><th>방법</th><th>새 배열 객체?</th><th>데이터 공유?</th><th>한 줄 정리</th></tr>
+    <tr><td><code>b = a</code> (할당)</td><td>✕ (같은 객체)</td><td>당연히 공유</td><td>이름표만 하나 더</td></tr>
+    <tr><td><code>c = a.view()</code>, 슬라이싱</td><td>○</td><td><strong>공유!</strong></td><td>같은 데이터를 보는 다른 창문</td></tr>
+    <tr><td><code>d = a.copy()</code></td><td>○</td><td>✕ (완전 복제)</td><td>완전히 독립된 사본</td></tr>
+  </table>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(12)
+b = a                  # ① 할당: 복사가 아님!
+print(b is a)          # 완전히 같은 객체
+
+c = a.view()           # ② 뷰: 새 객체지만 데이터는 공유
+print(c is a, c.base is a)</code></pre>
+  <div class="output">True
+False True</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(12).reshape(3, 4)
+s = a[:, 1:3]          # 슬라이싱도 뷰!
+s[:, 1] = 10           # 뷰를 수정하면...
+print(a)               # 원본도 바뀐다!</code></pre>
+  <div class="output">[[ 0  1 10  3]
+ [ 4  5 10  7]
+ [ 8  9 10 11]]</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(12).reshape(3, 4)
+d = a.copy()                    # ③ 깊은 복사: 완전 독립
+d[0, :] = [10, 20, 30, 40]
+print(d[0])                     # 사본만 바뀜
+print(a[0])                     # 원본은 안전!</code></pre>
+  <div class="output">[10 20 30 40]
+[0 1 2 3]</div>
+  <div class="box warn"><div class="t">⚠️ 슬라이싱 = 뷰, 꼭 기억하세요</div>리스트의 슬라이싱은 복사본을 만들지만, <strong>넘파이의 슬라이싱은 뷰</strong>예요. 잘라낸 조각을 수정하면 원본이 함께 바뀝니다. 원본을 지키려면 <code>a[:, 1:3].copy()</code>처럼 명시적으로 복사하세요. (뷰의 shape 변경은 원본에 영향 없음 — 공유되는 건 <strong>데이터</strong>입니다)</div>
+</section>
+
+<section id="sec9">
+  <h2 class="sec"><span class="n">9</span>고급 인덱싱</h2>
+  <h3>인덱스 배열로 인덱싱</h3>
+  <p>인덱스 자리에 숫자 하나가 아니라 <strong>배열</strong>을 넣을 수 있어요. 원하는 위치들을 한 번에 골라냅니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(12) ** 2            # 0, 1, 4, 9, 16, ...
+i = np.array([1, 1, 3, 8, 5])
+print(a[i])                        # i의 각 위치 값을 추출
+
+j = np.array([[3, 4], [9, 7]])     # 인덱스가 2차원이면
+print(a[j])                        # 결과도 2차원!</code></pre>
+  <div class="output">[ 1  1  9 64 25]
+[[ 9 16]
+ [81 49]]</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(5)
+a[[1, 3, 4]] = 0        # 인덱스 배열로 값 변경
+print(a)</code></pre>
+  <div class="output">[0 0 2 0 0]</div>
+  <div class="box warn"><div class="t">⚠️ 헷갈림 주의 — 두 가지 함정</div>① <code>a[[1,3,4]]</code>(리스트 = 인덱스 배열)와 <code>a[1,3,4]</code>(콤마 = 축 3개)는 완전히 달라요. 1차원 배열에 <code>a[1,3,4]=10</code>을 하면 <code>IndexError: too many indices</code>! ② 인덱스가 중복되면(<code>a[[0,0,2]]=[10,20,30]</code>) <strong>마지막 값만</strong> 남고, <code>a[[0,0,2]] += 1</code>도 0번이 두 번 더해지지 않고 <strong>한 번만</strong> 적용됩니다.</div>
+
+  <h3>논리(불리언) 배열로 인덱싱 — 조건 필터링</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">a = np.arange(20).reshape(4, 5)
+b = a % 2 == 0        # 조건 → True/False 배열
+print(a[b])           # True 위치의 값만 추출!
+a[b] = 0              # 조건에 맞는 값만 일괄 변경
+print(a)</code></pre>
+  <div class="output">[ 0  2  4  6  8 10 12 14 16 18]
+[[ 0  1  0  3  0]
+ [ 5  0  7  0  9]
+ [ 0 11  0 13  0]
+ [15  0 17  0 19]]</div>
+  <div class="box tip"><div class="t">💡 데이터 분석 단골 패턴</div><code>a[a &gt; a.mean()]</code> — "평균보다 큰 값만"을 이 한 줄로 뽑아요. 조건식이 곧 필터가 되는 이 패턴은 판다스(11장)에서도 똑같이 쓰입니다. 참고로 <code>np.ix_(a, b)</code>는 여러 1차원 배열로 <strong>모든 조합</strong>을 인덱싱할 때 씁니다.</div>
+</section>
+
+<section id="sec10">
+  <h2 class="sec"><span class="n">10</span>선형대수와 유용한 팁</h2>
+  <h3>선형대수 필수 함수</h3>
+  <table>
+    <tr><th>기능</th><th>함수</th><th>기능</th><th>함수</th></tr>
+    <tr><td>행렬 곱</td><td><code>@</code>, <code>np.dot(a, b)</code></td><td>역행렬</td><td><code>np.linalg.inv(x)</code></td></tr>
+    <tr><td>단위행렬</td><td><code>np.eye(n)</code></td><td>대각합</td><td><code>np.trace(x)</code></td></tr>
+    <tr><td>대각행렬</td><td><code>np.diag(x)</code></td><td>연립방정식 풀기</td><td><code>np.linalg.solve(a, b)</code></td></tr>
+  </table>
+  <p>연립방정식 <strong>x + 2y = 5, 3x + 4y = 11</strong>을 행렬로 풀어봅시다. (AX = B 꼴)</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">A = np.array([[1, 2],
+              [3, 4]])
+B = np.array([5, 11])
+X = np.linalg.solve(A, B)     # AX = B의 해
+print(X)                       # x=1, y=2
+print(np.linalg.inv(A) @ B)    # 역행렬 방식도 같은 답</code></pre>
+  <div class="output">[1. 2.]
+[1. 2.]</div>
+
+  <h3>최소제곱법 (Least Square Method) 맛보기</h3>
+  <div class="term">
+    <div class="h">📉 최소제곱법(LSM)</div>
+    <div class="def">데이터에 <b>가장 잘 맞는 모델(예: 직선 f(x)=ax+b)의 파라미터</b>를 찾는 방법. 각 데이터와 모델의 차이인 <b>잔차(residual)</b> r<sub>i</sub> = y<sub>i</sub> − f(x<sub>i</sub>)의 <b>제곱합이 최소</b>가 되는 a, b를 구해요.</div>
+    <div class="anal">🎯 <b>비유</b> — 흩어진 점들 사이로 <b>"모두에게서 가장 덜 억울한" 직선</b>을 긋는 거예요. 각 점에서 직선까지 벗어난 정도(잔차)를 제곱해 더한 총 벌점이 최소가 되게!</div>
+  </div>
+  <p>식 AX = B에서 A가 정방행렬이 아니면 역행렬이 없지만, <strong>의사역행렬(pseudo inverse)</strong> X = (AᵀA)⁻¹AᵀB로 최적 해를 구할 수 있어요. 넘파이는 이걸 <code>lstsq()</code> 한 방으로 제공합니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">x = np.array([0, 1, 2, 3])
+y = np.array([-1, 0.2, 0.9, 2.1])          # 대략 직선을 따르는 데이터
+A = np.vstack([x, np.ones(len(x))]).T      # [[x, 1], ...] 형태
+a, b = np.linalg.lstsq(A, y, rcond=None)[0]
+print(a, b)                                 # y ≈ 1.0x - 0.95
+print(np.linalg.pinv(A) @ y)                # 의사역행렬로도 동일!</code></pre>
+  <div class="output">1.0 -0.9499999999999997
+[ 1.   -0.95]</div>
+
+  <h3>알아두면 좋은 팁</h3>
+  <ul class="plain">
+    <li><strong>shape 자동 지정</strong> — <code>a.shape = 2, -1, 3</code>처럼 <code>-1</code>을 주면 그 차원은 자동 계산 (30개 → (2, 5, 3))</li>
+    <li><strong>히스토그램</strong> — <code>np.histogram(v, bins=50)</code>은 (도수, 구간경계) <strong>데이터만</strong> 계산해요. 그림까지 그리는 <code>matplotlib</code>의 <code>hist()</code>와 구분! (시각화는 12장에서)</li>
+  </ul>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">rng = np.random.default_rng()
+v = rng.normal(2, 0.5, 10000)         # 평균 2, 표준편차 0.5 정규분포
+n, bins = np.histogram(v, bins=50, density=True)
+print(len(n), len(bins))              # 도수 50개, 경계 51개</code></pre>
+  <div class="output">50 51</div>
+</section>
+
+<section id="quiz">
+  <div class="quiz">
+    <div class="qh">📝 연습문제</div>
+    <div class="sub">실습형 — iris 데이터로 배열 다루기</div>
+    <p style="color:var(--ink-soft);font-size:14px;margin:2px 0 8px">다음 코드로 iris 데이터의 독립변수(sepal_length, sepal_width, petal_length, petal_width) 150×4 배열을 준비하고 문제를 풀어보세요.</p>
+    <div class="codelabel">python</div>
+    <pre><code class="language-python">import numpy as np
+from sklearn import datasets
+iris = datasets.load_iris()
+iris_data = iris.data          # shape (150, 4)인 넘파이 배열</code></pre>
+
+    <div class="q">
+      <div class="qq"><span class="num">1</span>각 변수(열)별 평균을 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">iris_data.mean(axis=0)</code></pre>
+        <div class="output">array([5.84333333, 3.05733333, 3.758     , 1.19933333])</div>
+        <div class="lab">해설</div>
+        <p><strong>열별</strong> 집계는 <code>axis=0</code>! (행 방향으로 접어 내려온다고 기억) <code>axis</code>를 빼면 600개 전체의 평균 하나만 나와요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">2</span>처음 다섯 개 행을 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">iris_data[:5]</code></pre>
+        <div class="output">array([[5.1, 3.5, 1.4, 0.2],
+       [4.9, 3. , 1.4, 0.2],
+       [4.7, 3.2, 1.3, 0.2],
+       [4.6, 3.1, 1.5, 0.2],
+       [5. , 3.6, 1.4, 0.2]])</div>
+        <div class="lab">해설</div>
+        <p>슬라이싱 <code>[:5]</code>는 0~4행. <code>iris_data[0:5, :]</code>와 같습니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">3</span>처음 다섯 개 행에서 <strong>마지막 열을 제외한</strong> 나머지 열을 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">arr3 = iris_data[:5, :-1]
+arr3</code></pre>
+        <div class="output">array([[5.1, 3.5, 1.4],
+       [4.9, 3. , 1.4],
+       [4.7, 3.2, 1.3],
+       [4.6, 3.1, 1.5],
+       [5. , 3.6, 1.4]])</div>
+        <div class="lab">해설</div>
+        <p>콤마 뒤가 열 지정. <code>:-1</code>은 "처음부터 마지막 직전까지" — 음수 인덱스와 슬라이싱의 합작입니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">4</span>처음 다섯 개 행에서 <strong>마지막 열만</strong> 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">arr4 = iris_data[:5, -1]
+arr4</code></pre>
+        <div class="output">array([0.2, 0.2, 0.2, 0.2, 0.2])</div>
+        <div class="lab">해설</div>
+        <p><code>-1</code> 하나만 쓰면(슬라이스가 아니라 인덱스) 결과가 <strong>1차원</strong>이 돼요. 2차원 열벡터 (5,1)로 받고 싶다면 <code>iris_data[:5, -1:]</code>처럼 슬라이스로 쓰면 됩니다 — 이 차이가 5번 문제의 열쇠!</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">5</span>3번 배열과 4번 배열을 <strong>원래 모양</strong>이 되도록 합치세요. 실행 결과는 2번의 결과와 같아야 합니다.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답 (세 가지 방법)</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">np.hstack((arr3, arr4[:, np.newaxis]))  # ① newaxis로 (5,1) 만들어 붙이기
+np.c_[arr3, arr4]                        # ② c_는 알아서 열로 붙여줌
+np.column_stack((arr3, arr4))            # ③ column_stack도 동일</code></pre>
+        <div class="output">array([[5.1, 3.5, 1.4, 0.2],
+       [4.9, 3. , 1.4, 0.2],
+       [4.7, 3.2, 1.3, 0.2],
+       [4.6, 3.1, 1.5, 0.2],
+       [5. , 3.6, 1.4, 0.2]])</div>
+        <div class="lab">해설</div>
+        <p>arr4는 1차원 (5,)이라 (5,3)인 arr3에 바로 <code>hstack</code>할 수 없어요. <code>np.newaxis</code>로 (5,1) 열벡터를 만들어 붙이거나, 이를 자동 처리해 주는 <code>np.c_</code>·<code>column_stack</code>을 쓰면 됩니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">6</span>처음 다섯 개 행을 이용해서 <strong>각 열별로 평균보다 큰 값들만</strong> 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">a = iris_data[:5]
+col_mean = a.mean(axis=0)          # 열별 평균 [4.86, 3.28, 1.4, 0.2]
+for i in range(a.shape[1]):
+    col = a[:, i]
+    print(i, "열:", col[col &gt; col_mean[i]])   # 논리 인덱싱!</code></pre>
+        <div class="output">0 열: [5.1 4.9 5. ]
+1 열: [3.5 3.6]
+2 열: [1.5]
+3 열: []</div>
+        <div class="lab">해설</div>
+        <p>9절의 <strong>논리 배열 인덱싱</strong> 종합 문제예요. <code>col &gt; col_mean[i]</code>가 True/False 필터가 되고, 그 필터로 값을 골라냅니다. 3번 열은 값이 모두 0.2(=평균)라 평균보다 큰 값이 없어 빈 배열이 나와요.</p>
+      </div></details>
+    </div>
+
+    <div class="sub">문제풀이형</div>
+    <div class="q">
+      <div class="qq"><span class="num">7</span><code>a = np.arange(12).reshape(3,4)</code>일 때 <code>print(a.sum(0))</code>의 결과는?<br>① 66 &nbsp; ② [ 6 22 38] &nbsp; ③ [12 15 18 21] &nbsp; ④ 0</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>③</strong> [12 15 18 21]</p>
+        <div class="lab">해설</div>
+        <p><code>sum(0)</code>은 <code>axis=0</code>, 즉 <strong>열별 합</strong>이에요. 0+4+8=12, 1+5+9=15, ... ①은 axis 없는 전체 합, ②는 <code>axis=1</code>(행별 합)의 결과입니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">8</span>shape가 (3,4)인 배열 a의 <strong>차원(모양)을 바꿀 수 있는</strong> 방법을 모두 고르세요.<br>① <code>a.ravel()</code> &nbsp; ② <code>a.reshape(6,2)</code> &nbsp; ③ <code>a.resize((2,6))</code> &nbsp; ④ <code>a.T</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>①, ②, ③, ④ 모두</strong></p>
+        <div class="lab">해설</div>
+        <p>네 가지 전부 모양을 바꾸는 방법이에요. 차이는 <strong>원본 처리</strong>: ①②④는 바뀐 <strong>새 배열을 반환</strong>하고(원본 유지), ③ <code>resize</code>만 <strong>배열 자체를</strong> 수정합니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">9</span><code>a = np.arange(12).reshape(3,4)</code>에서 <strong>첫 번째 행과 두 번째 행만</strong> 뽑아 <code>array([[0,1,2,3],[4,5,6,7]])</code>을 얻으려면?<br>① <code>a[:2]</code> &nbsp; ② <code>a[:, :2]</code> &nbsp; ③ <code>a[1,2]</code> &nbsp; ④ <code>a[1][2]</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>①</strong> <code>a[:2]</code></p>
+        <div class="lab">해설</div>
+        <p>행만 자르려면 첫 번째 축 슬라이싱 <code>a[:2]</code>(0~1행). ②는 <strong>열</strong>을 2개 자른 것이고, ③④는 6이라는 <strong>값 하나</strong>를 꺼냅니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">10</span>다음 코드의 실행 결과는?<br><code>a = np.array([1,2,3,4,5])</code> / <code>a[[1,3,4]] = 0</code> / <code>print(a)</code><br>① [0 2 0 0 5] &nbsp; ② [1 0 3 0 0] &nbsp; ③ [1 2 3 4 5] &nbsp; ④ 프로그램 오류. a[1,3,4] = 0으로 수정해야 한다</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>②</strong> [1 0 3 0 0]</p>
+        <div class="lab">해설</div>
+        <p><code>a[[1,3,4]]</code>는 <strong>인덱스 배열</strong> — 1, 3, 4번 <strong>위치</strong>의 값이 0이 됩니다(값 2, 4, 5가 0으로). ④처럼 <code>a[1,3,4]</code>로 바꾸면 오히려 "축이 너무 많다"는 IndexError가 나요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">11</span><code>a = np.array([1,2,3,4,5])</code>, <code>b = np.array([6,7,8,9,10])</code>을 <code>array([[1,6],[2,7],[3,8],[4,9],[5,10]])</code>으로 만들려면?<br>① <code>np.r_[a, b]</code> &nbsp; ② <code>np.c_[a, b]</code> &nbsp; ③ <code>np.ix_(a, b)</code> &nbsp; ④ <code>[[a],[b]]</code></div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <p><strong>②</strong> <code>np.c_[a, b]</code></p>
+        <div class="lab">해설</div>
+        <p>두 1차원 배열을 <strong>열로 세워</strong> 나란히 붙이는 건 <code>c_</code>(column). ①은 [1~10] 한 줄로 이어붙이고, ③은 조합 인덱싱용 도구, ④는 넘파이 배열이 아닌 중첩 리스트일 뿐이에요. <code>np.column_stack((a,b))</code>도 같은 답!</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<div class="pager">
+  <a class="prev" href="ch09_입출력프로그래밍.html"><div class="dir">← 이전</div><div class="ttl">9장. 입출력 프로그래밍</div></a>
+  <a class="next" href="ch11_Pandas.html"><div class="dir">다음 →</div><div class="ttl">11장. 데이터프레임과 시리즈 — Pandas</div></a>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

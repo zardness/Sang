@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11장. 데이터프레임과 시리즈 — Pandas · 쉬운 파이썬</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root{--py-blue:#3776AB;--py-yellow:#FFD43B;--ink:#1a2233;--ink-soft:#4a5568;--line:#e6e9f0;--bg:#f6f8fc;--card:#fff;--accent:#2f6fb0;--green:#2e9e6b;--green-bg:#e9f8f0;--amber:#b9770e;--amber-bg:#fef6e6;--red:#d64545;--purple:#6b4fbb;--purple-bg:#f1ecfb}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(246,248,252,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-weight:600}.topbar .crumb{color:var(--ink-soft)}
+.hero{background:linear-gradient(135deg,#3776AB,#2b5e8c);color:#fff;border-radius:20px;padding:40px 36px;margin:26px 0 22px;box-shadow:0 10px 30px rgba(55,118,171,.25)}
+.hero .tag{display:inline-block;background:var(--py-yellow);color:#3a3300;font-weight:700;font-size:13px;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.hero h1{font-size:31px;line-height:1.3;margin-bottom:10px;letter-spacing:-.5px}.hero p{color:#eaf2fb;font-size:16px;max-width:640px}
+.hero p strong{color:#fff;border-bottom:2px solid var(--py-yellow);padding-bottom:1px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hero .meta span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:12.5px;font-weight:600;padding:4px 13px;border-radius:20px}
+.chapmap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:22px}
+.chapmap h2{font-size:16px;color:var(--accent);margin-bottom:14px}
+.chapmap .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chapmap a{display:flex;gap:11px;align-items:flex-start;background:#fafbfe;border:1px solid var(--line);border-radius:11px;padding:11px 14px;text-decoration:none;color:var(--ink);transition:.15s}
+.chapmap a:hover{border-color:var(--py-blue);background:#f0f6fc;transform:translateY(-1px)}
+.chapmap .no{flex:none;width:25px;height:25px;background:var(--py-blue);color:#fff;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;margin-top:3px}
+.chapmap .no.q{background:var(--purple)}
+.chapmap .tt{font-weight:700;font-size:14.5px;line-height:1.45}
+.chapmap .dd{font-size:12.5px;color:var(--ink-soft);margin-top:2px;line-height:1.5}
+.goals{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:30px}
+.goals h2{font-size:16px;color:var(--accent);margin-bottom:12px}
+.goals ul{list-style:none}.goals li{padding:7px 0 7px 30px;position:relative;font-size:15px}
+.goals li:before{content:"✓";position:absolute;left:0;top:7px;color:var(--green);font-weight:800}
+section{margin:38px 0}
+h2.sec{font-size:23px;letter-spacing:-.4px;padding-bottom:12px;border-bottom:3px solid var(--py-yellow);margin-bottom:22px;display:flex;align-items:center;gap:10px}
+h2.sec .n{background:var(--py-blue);color:#fff;font-size:15px;width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+h3{font-size:18.5px;margin:26px 0 12px;color:var(--ink);letter-spacing:-.3px}
+p{margin:12px 0;color:var(--ink-soft)}p strong,li strong{color:var(--ink);font-weight:700}
+ul.plain{margin:12px 0 12px 4px;padding-left:22px}ul.plain li{margin:7px 0;color:var(--ink-soft)}
+ol.plain{margin:12px 0 12px 4px;padding-left:22px}ol.plain li{margin:7px 0;color:var(--ink-soft)}
+.term{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--py-blue);border-radius:12px;padding:18px 22px;margin:20px 0;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.term .h{font-size:17px;font-weight:800;color:var(--py-blue);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.term .def{font-size:15.5px;color:var(--ink)}
+.term .anal{margin-top:12px;background:var(--purple-bg);border-radius:9px;padding:12px 15px;font-size:14.5px;color:#4a3a7a}
+.term .anal b{color:var(--purple)}
+.box{border-radius:12px;padding:16px 20px;margin:18px 0;font-size:15px}
+.box .t{font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.tip{background:var(--green-bg);border:1px solid #bfe8d4;color:#1f5e42}.tip .t{color:var(--green)}
+.warn{background:var(--amber-bg);border:1px solid #f3ddad;color:#7a5310}.warn .t{color:var(--amber)}
+pre{border-radius:12px;margin:16px 0;overflow:auto;font-size:14px;box-shadow:0 4px 14px rgba(20,30,60,.15)}
+pre code.hljs{padding:18px 20px;line-height:1.65;font-family:'D2Coding','Consolas','Monaco',monospace}
+.codelabel{display:inline-block;background:#2b2f38;color:#9fb4cc;font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+.filelabel{display:inline-block;background:#3a3320;color:var(--py-yellow);font-size:12px;font-weight:700;padding:5px 14px;border-radius:9px 9px 0 0;margin-bottom:-16px;position:relative;z-index:1;font-family:monospace}
+.output{background:#0f1620;color:#6fe08a;border-radius:0 0 12px 12px;padding:12px 20px;margin-top:-16px;font-family:'D2Coding','Consolas',monospace;font-size:13.5px;white-space:pre-wrap;border-top:1px solid #26303f}
+.output:before{content:"▶ 실행결과";display:block;color:#5a7186;font-size:11.5px;margin-bottom:6px;font-weight:700}
+.output.err{color:#ff9e9e}.output.err:before{content:"⚠ 에러 발생"}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(30,50,90,.05)}
+th{background:var(--py-blue);color:#fff;padding:11px 14px;text-align:left;font-weight:700}
+td{padding:10px 14px;border-top:1px solid var(--line);color:var(--ink-soft)}
+td code,p code,li code,.def code,.anal code,.ans code,.qq code{background:#eef1f7;color:#b8336a;padding:2px 7px;border-radius:6px;font-family:'D2Coding',Consolas,monospace;font-size:.9em;font-weight:600}
+tr:nth-child(even) td{background:#fafbfe}
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 24px 24px;margin-top:22px}
+.quiz>.qh{font-size:20px;color:var(--accent);font-weight:800;margin:18px 0 4px;display:flex;align-items:center;gap:9px}
+.quiz .sub{font-size:15px;font-weight:700;color:var(--purple);background:var(--purple-bg);padding:8px 14px;border-radius:8px;margin:18px 0 4px}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}.q:first-of-type{border-top:none}
+.q .qq{font-weight:700;color:var(--ink);font-size:15.5px;margin-bottom:10px}
+.q .qq .num{display:inline-flex;width:26px;height:26px;background:var(--py-yellow);color:#3a3300;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-right:8px}
+details{background:#f3f7fc;border:1px solid #d8e6f2;border-radius:10px;margin-top:8px}
+summary{cursor:pointer;padding:11px 16px;font-weight:700;color:var(--accent);font-size:14.5px;user-select:none;list-style:none}
+summary:before{content:"💡 정답·해설 보기"}details[open] summary:before{content:"🔽 정답·해설 접기"}
+summary::-webkit-details-marker{display:none}
+.ans{padding:4px 18px 16px}.ans .lab{font-weight:800;color:var(--green);margin:10px 0 4px;font-size:14px}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px}
+.pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;text-decoration:none;color:var(--ink);transition:.15s;box-shadow:0 2px 8px rgba(30,50,90,.04)}
+.pager a:hover{border-color:var(--py-blue);transform:translateY(-2px)}
+.pager .dir{font-size:12px;color:var(--ink-soft);font-weight:700}.pager .ttl{font-weight:700;color:var(--accent);margin-top:3px;font-size:14.5px}
+.pager a.next{text-align:right}.pager a.disabled{opacity:.4;pointer-events:none}
+@media(max-width:600px){.hero h1{font-size:24px}.wrap{padding:0 14px 60px}.hero{padding:28px 22px}.chapmap .grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="ch10_Numpy.html">← 이전</a>
+  <span class="crumb">11장 · 데이터프레임과 시리즈 — Pandas</span>
+  <a href="index.html">목차 →</a>
+</div>
+<div class="wrap">
+
+<div class="hero">
+  <span class="tag">CHAPTER 11 · 3부 데이터 분석</span>
+  <h1>데이터프레임과 시리즈 — Pandas</h1>
+  <p>엑셀 시트를 통째로 파이썬으로. 표 형태 데이터를 만들고·조회하고·병합하고·집계하는 <strong>데이터 전처리의 모든 것</strong>을 판다스로 배웁니다.</p>
+  <div class="meta">
+    <span>📚 11개 섹션</span><span>💻 예제 50+</span><span>📝 연습문제 11</span><span>🐼 데이터 분석의 핵심 도구</span>
+  </div>
+</div>
+
+<div class="chapmap">
+  <h2>🗺️ 이번 장 한눈에 보기 <span style="font-weight:400;color:var(--ink-soft);font-size:13px">— 원하는 곳을 눌러 바로 이동하세요</span></h2>
+  <div class="grid">
+    <a href="#sec1"><span class="no">1</span><span><span class="tt">판다스 패키지</span><span class="dd" style="display:block">시리즈와 데이터프레임의 구조</span></span></a>
+    <a href="#sec2"><span class="no">2</span><span><span class="tt">데이터프레임 만들기</span><span class="dd" style="display:block">딕셔너리·리스트·CSV·iris 데이터</span></span></a>
+    <a href="#sec3"><span class="no">3</span><span><span class="tt">이름 지정하기</span><span class="dd" style="display:block">열 이름·행 이름·레벨 이름</span></span></a>
+    <a href="#sec4"><span class="no">4</span><span><span class="tt">부분 데이터 조회</span><span class="dd" style="display:block">loc·iloc·조건으로 골라내기</span></span></a>
+    <a href="#sec5"><span class="no">5</span><span><span class="tt">삭제와 추가</span><span class="dd" style="display:block">drop, 열 추가, 행 추가</span></span></a>
+    <a href="#sec6"><span class="no">6</span><span><span class="tt">병합과 연결</span><span class="dd" style="display:block">merge(조인)와 concat(이어붙이기)</span></span></a>
+    <a href="#sec7"><span class="no">7</span><span><span class="tt">정렬</span><span class="dd" style="display:block">sort_index와 sort_values</span></span></a>
+    <a href="#sec8"><span class="no">8</span><span><span class="tt">기초 통계 분석</span><span class="dd" style="display:block">describe·분산·상관계수</span></span></a>
+    <a href="#sec9"><span class="no">9</span><span><span class="tt">그룹화와 집계</span><span class="dd" style="display:block">groupby로 그룹별 통계 내기</span></span></a>
+    <a href="#sec10"><span class="no">10</span><span><span class="tt">데이터 구조 변경</span><span class="dd" style="display:block">melt(언피벗)와 pivot_table(피벗)</span></span></a>
+    <a href="#sec11"><span class="no">11</span><span><span class="tt">함수 적용하기</span><span class="dd" style="display:block">apply·map으로 일괄 변환, 결측치 처리</span></span></a>
+    <a href="#quiz"><span class="no q">📝</span><span><span class="tt">연습문제</span><span class="dd" style="display:block">iris 데이터 실습 11문제</span></span></a>
+  </div>
+</div>
+
+<div class="goals">
+  <h2>🎯 이 장을 끝내면 이런 걸 할 수 있어요</h2>
+  <ul>
+    <li>딕셔너리·리스트·CSV 파일로 데이터프레임을 만들 수 있다</li>
+    <li><code>loc</code>·<code>iloc</code>·조건식으로 원하는 데이터만 조회할 수 있다</li>
+    <li>행·열을 삭제·추가하고 두 데이터프레임을 병합(merge·concat)할 수 있다</li>
+    <li><code>describe()</code>·<code>corr()</code> 등으로 기초 통계를 낼 수 있다</li>
+    <li><code>groupby()</code>로 그룹별 집계를 할 수 있다</li>
+    <li><code>melt</code>·<code>pivot_table</code>로 데이터 구조를 바꾸고, <code>apply</code>·<code>map</code>으로 일괄 변환·결측치 처리를 할 수 있다</li>
+  </ul>
+</div>
+
+<section id="sec1">
+  <h2 class="sec"><span class="n">1</span>판다스 패키지</h2>
+  <div class="term">
+    <div class="h">🐼 판다스(Pandas)</div>
+    <div class="def">표(테이블) 형태 데이터를 다루는 파이썬의 <b>표준 데이터 분석 도구</b>. 1차원 구조 <b>시리즈(Series)</b>와 2차원 구조 <b>데이터프레임(DataFrame)</b>을 제공하며, 조회·추가/삭제·병합·구조 변경·결측치 처리 등 <b>데이터 전처리의 거의 모든 기능</b>을 갖췄어요.</div>
+    <div class="anal">📊 <b>비유</b> — <b>데이터프레임은 엑셀 시트 한 장</b>, <b>시리즈는 그 시트의 한 열(column)</b>이에요. 엑셀에서 마우스로 하던 필터·정렬·피벗을 코드로, 그것도 수백만 행에서 순식간에 해냅니다.</div>
+  </div>
+  <p>데이터프레임의 구조부터 눈에 익히세요. <strong>행(row)</strong>과 <strong>열(column)</strong>마다 <strong>이름</strong>과 <strong>인덱스(위치)</strong>가 있습니다.</p>
+  <table>
+    <tr><th></th><th>EMPNO</th><th>ENAME</th><th>SALARY</th><th>DEPTNO</th></tr>
+    <tr><td><strong>0</strong></td><td>7369</td><td>SMITH</td><td>5500.0</td><td>10</td></tr>
+    <tr><td><strong>1</strong></td><td>7499</td><td>ALLEN</td><td>8900.0</td><td>30</td></tr>
+    <tr><td><strong>2</strong></td><td>7521</td><td>WARD</td><td>NaN</td><td>10</td></tr>
+    <tr><td><strong>3</strong></td><td>7566</td><td>JONES</td><td>9500.0</td><td>20</td></tr>
+  </table>
+  <ul class="plain">
+    <li><strong>행(Row)</strong> — 데이터 1건. 서로 다른 타입의 값을 가질 수 있음. 세로 방향이 <code>axis=0</code></li>
+    <li><strong>열(Column)</strong> — 하나의 변수. <strong>열 안의 데이터는 모두 같은 타입</strong>. 가로 방향이 <code>axis=1</code>. 열 하나를 꺼내면 그게 시리즈!</li>
+    <li><strong>NaN</strong> — 비어 있는 값(결측치). 판다스는 결측치 처리 기능이 잘 갖춰져 있어요 (11절에서!)</li>
+  </ul>
+  <div class="box tip"><div class="t">💡 판다스 파일 입출력 — read_○○ / to_○○ 짝 외우기</div>CSV는 <code>read_csv()</code> ↔ <code>to_csv()</code>, 엑셀은 <code>read_excel()</code> ↔ <code>to_excel()</code>, JSON은 <code>read_json()</code> ↔ <code>to_json()</code>, HTML 표는 <code>read_html()</code> ↔ <code>to_html()</code>, HDF5는 <code>read_hdf()</code> ↔ <code>to_hdf()</code>, 피클은 <code>read_pickle()</code> ↔ <code>to_pickle()</code>. 9장에서 모듈별로 하던 일을 판다스는 <strong>일관된 함수 이름</strong>으로 통일해 줍니다.</div>
+  <div class="box tip"><div class="t">💡 출력이 ...으로 잘릴 때 — 디스플레이 옵션</div>행·열이 많으면 일부만 표시되고 가운데가 <code>...</code>이 돼요. <code>pd.options.display.max_columns = 999</code>처럼 <code>max_rows</code>·<code>max_columns</code>·<code>max_colwidth</code>·<code>precision</code>(소수 자릿수) 옵션으로 조절할 수 있습니다.</div>
+</section>
+
+<section id="sec2">
+  <h2 class="sec"><span class="n">2</span>데이터프레임 만들기</h2>
+  <h3>딕셔너리로 만들기 — 키가 열 이름이 된다</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import pandas as pd     # pd 별칭은 만국 공통 관례!
+
+d = {'col1': [1, 2], 'col2': [3, 4]}
+df = pd.DataFrame(data=d)
+df</code></pre>
+  <div class="output">   col1  col2
+0     1     3
+1     2     4</div>
+  <p>"행별 딕셔너리"의 리스트로도 만들 수 있어요. 이때 <strong>빠진 키는 NaN</strong>이 됩니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">d = [{'col1': 1, 'col2': 3}, {'col1': 2, 'col2': 4}, {'col1': 2}]
+pd.DataFrame(data=d)</code></pre>
+  <div class="output">   col1  col2
+0     1   3.0
+1     2   4.0
+2     2   NaN</div>
+
+  <h3>리스트로 만들기</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import numpy as np
+a = [1, 2, 3, 4, 5]
+b = [6, 7, 8, 9, 10]
+pd.DataFrame({"col1": a, "col2": b})           # ① 딕셔너리의 값으로
+pd.DataFrame(np.c_[a, b], columns=["col1", "col2"])  # ② np.c_로 열 결합 (10장!)</code></pre>
+  <div class="output">   col1  col2
+0     1     6
+1     2     7
+2     3     8
+3     4     9
+4     5    10</div>
+
+  <h3>read_csv() — CSV 파일에서 만들기</h3>
+  <div class="filelabel">📄 member_data.csv</div>
+  <pre><code class="language-text">Name,Age,Email,Address
+홍길동,20,kildong@hong.com,서울시 강동구
+홍길서,25,kilseo@hong.com,서울시 강서구
+홍길남,26,south@hong.com,서울시 강남구
+홍길북,27,book@hong.com,서울시 강북구
+#홍흉동,30,bad@hong.com,주소 없음</code></pre>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">member_df = pd.read_csv("member_data.csv", comment='#')  # #줄은 주석으로 무시
+member_df</code></pre>
+  <div class="output">   Name  Age             Email    Address
+0  홍길동   20  kildong@hong.com  서울시 강동구
+1  홍길서   25   kilseo@hong.com  서울시 강서구
+2  홍길남   26    south@hong.com  서울시 강남구
+3  홍길북   27     book@hong.com  서울시 강북구</div>
+  <div class="box tip"><div class="t">💡 read_csv의 자주 쓰는 옵션</div><code>sep=','</code> 구분자 지정 · <code>skiprows=[0,2]</code> 특정 행 건너뛰기 · <code>comment='#'</code> 주석 행 무시 · <code>header=None</code> 헤더 없는 파일 · <code>encoding='UTF8'</code> 한글 인코딩. <strong>주의:</strong> <code>skiprows</code>에 0(헤더 행!)을 포함하면 데이터 첫 줄이 열 이름이 되어버려요.</div>
+
+  <h3>iris 데이터 불러오기 — 세 가지 길</h3>
+  <p>9장에서 본 붓꽃(iris) 데이터셋(3종 × 50개, 꽃받침·꽃잎의 길이/너비)을 이 장의 주력 데이터로 씁니다. 가져오는 방법이 여럿이에요.</p>
+  <div class="codelabel">python — ① seaborn (가장 간단)</div>
+  <pre><code class="language-python">import seaborn as sns
+iris = sns.load_dataset("iris")      # 열 이름: sepal_length, ... species
+iris.head()</code></pre>
+  <div class="output">   sepal_length  sepal_width  petal_length  petal_width species
+0           5.1          3.5           1.4          0.2  setosa
+1           4.9          3.0           1.4          0.2  setosa
+2           4.7          3.2           1.3          0.2  setosa
+3           4.6          3.1           1.5          0.2  setosa
+4           5.0          3.6           1.4          0.2  setosa</div>
+  <div class="codelabel">python — ② sklearn (배열 → 데이터프레임 변환 연습)</div>
+  <pre><code class="language-python">from sklearn import datasets
+iris_raw = datasets.load_iris()               # 딕셔너리 형식
+x = pd.DataFrame(iris_raw.data, columns=iris_raw.feature_names)
+y = pd.DataFrame(iris_raw['target_names'][iris_raw['target']],
+                 columns=["species"])          # 0,1,2를 종 이름으로
+iris_df = pd.concat([x, y], axis=1)            # 옆으로 합치기</code></pre>
+  <div class="codelabel">python — ③ statsmodels (R 데이터셋, 열 이름: Sepal.Length ...)</div>
+  <pre><code class="language-python">import statsmodels.api as sm
+iris_data = sm.datasets.get_rdataset("iris", package="datasets")
+iris_df = iris_data.data       # .data 속성이 데이터프레임</code></pre>
+  <div class="box tip"><div class="t">💡 어느 것을 쓰든 같은 데이터</div>차이는 <strong>열 이름 스타일</strong>뿐이에요. seaborn·sklearn은 <code>sepal_length</code>(소문자+밑줄), statsmodels(R)는 <code>Sepal.Length</code>(대문자+점). 이름은 <code>iris_df.columns = [...]</code>로 언제든 바꿀 수 있습니다 — 바로 다음 절에서!</div>
+</section>
+
+<section id="sec3">
+  <h2 class="sec"><span class="n">3</span>이름 지정하기</h2>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">member_df.columns = ["이름", "나이", "이메일", "주소"]   # 열 이름 변경
+member_df.index = ["동", "서", "남", "북"]               # 행 이름 변경
+member_df</code></pre>
+  <div class="output">    이름  나이            이메일       주소
+동  홍길동  20  kildong@hong.com  서울시 강동구
+서  홍길서  25   kilseo@hong.com  서울시 강서구
+남  홍길남  26    south@hong.com  서울시 강남구
+북  홍길북  27     book@hong.com  서울시 강북구</div>
+  <p>열·행 이름을 <strong>2차원 리스트</strong>로 주면 <strong>다중 레벨</strong>(계층) 구조가 되고, <code>names</code> 속성으로 각 레벨에 이름을 붙일 수 있어요.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">member_df = pd.read_csv("member_data.csv", comment='#')
+member_df.columns = [["기본정보", "기본정보", "추가정보", "추가정보"],
+                     ["이름", "나이", "이메일", "주소"]]
+member_df.columns.names = ["정보구분", "상세정보"]
+member_df.index = [["좌우", "좌우", "상하", "상하"],
+                   ["동", "서", "남", "북"]]
+member_df.index.names = ["위치구분", "상세위치"]
+member_df</code></pre>
+  <div class="output">정보구분            기본정보                 추가정보
+상세정보             이름  나이             이메일       주소
+위치구분 상세위치
+좌우    동         홍길동  20  kildong@hong.com  서울시 강동구
+      서         홍길서  25   kilseo@hong.com  서울시 강서구
+상하    남         홍길남  26    south@hong.com  서울시 강남구
+      북         홍길북  27     book@hong.com  서울시 강북구</div>
+  <div class="box tip"><div class="t">💡 레벨은 어디에 쓰나요?</div>"기본정보/추가정보"처럼 <strong>열들을 묶어 관리</strong>하거나, 7절의 <strong>레벨 정렬</strong>, 10절의 <strong>피벗 결과</strong>(다중 인덱스)에서 만나게 돼요. 지금은 "이름을 계층으로 붙일 수 있다" 정도로 이해하면 충분합니다.</div>
+</section>
+
+<section id="sec4">
+  <h2 class="sec"><span class="n">4</span>부분 데이터 조회 — 판다스의 꽃</h2>
+  <h3>단일 열 조회 → 시리즈</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">member_df.Name          # 방법 ① 점 표기
+member_df["Name"]       # 방법 ② 대괄호 — 열 이름에 공백·점이 있으면 필수</code></pre>
+  <div class="output">0    홍길동
+1    홍길서
+2    홍길남
+3    홍길북
+Name: Name, dtype: object</div>
+
+  <h3>loc — 이름으로 / iloc — 위치(정수)로</h3>
+  <div class="term">
+    <div class="h">🎯 loc[행이름, 열이름] vs iloc[행위치, 열위치]</div>
+    <div class="def"><code>loc</code>은 <b>이름(라벨)</b> 기준, <code>iloc</code>은 <b>정수 인덱스</b> 기준으로 찾아요. 이름 하나·리스트·슬라이스 모두 쓸 수 있고, 열 지정은 생략 가능(행 전체).</div>
+    <div class="anal">🏠 <b>비유</b> — <code>loc</code>은 "<b>'홍길동 씨' 댁</b>이요"(문패로 찾기), <code>iloc</code>은 "<b>3번째 집</b>이요"(순번으로 찾기). 같은 집을 두 방식으로 찾을 수 있죠.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">member_df.loc[0:2]                        # 행 이름 0~2 (loc은 끝 포함!)
+member_df.loc[0:2, "Name":"Email"]        # 슬라이싱으로
+member_df.loc[[0, 2], ["Name", "Email"]]  # 리스트로 콕 집어</code></pre>
+  <div class="output">   Name             Email
+0  홍길동  kildong@hong.com
+2  홍길남    south@hong.com</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">member_df.iloc[1:3, 1:3]     # 1~2행, 1~2열 (iloc은 끝 미포함!)
+member_df.iloc[::-1]          # 행 역순
+member_df.iloc[0::2, [1, 3]]  # 짝수 행의 1·3열</code></pre>
+  <div class="output">   Age            Email
+1   25  kilseo@hong.com
+2   26   south@hong.com</div>
+  <div class="box warn"><div class="t">⚠️ loc은 끝을 포함, iloc은 미포함</div><code>loc[0:2]</code>는 <strong>3행</strong>(0,1,2), <code>iloc[0:2]</code>는 <strong>2행</strong>(0,1)이에요. loc은 "이름 슬라이싱"이라 양 끝을 포함한다고 기억하세요. 시험·실무 모두에서 단골 함정!</div>
+
+  <h3>조건으로 조회 — loc[행조건, 열리스트]</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python"># statsmodels iris (열 이름: Sepal.Length ... Species)
+iris_df.loc[iris_df['Species'] == 'versicolor'].head()   # 조건에 맞는 행 전체</code></pre>
+  <div class="output">    Sepal.Length  Sepal.Width  Petal.Length  Petal.Width     Species
+50           7.0          3.2           4.7          1.4  versicolor
+51           6.4          3.2           4.5          1.5  versicolor
+52           6.9          3.1           4.9          1.5  versicolor
+53           5.5          2.3           4.0          1.3  versicolor
+54           6.5          2.8           4.6          1.5  versicolor</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python"># 조건 + 원하는 열만
+iris_df.loc[iris_df['Species'] == 'versicolor',
+            ['Sepal.Length', 'Species']].head(3)
+
+# 중복(복합) 조건: 각 조건을 ()로 감싸고 &(그리고) |(또는)로 연결
+iris_df.loc[(iris_df['Species'] == 'versicolor') &
+            (iris_df['Sepal.Length'] &gt; 6.5)].head(3)</code></pre>
+  <div class="output">    Sepal.Length  Sepal.Width  Petal.Length  Petal.Width     Species
+50           7.0          3.2           4.7          1.4  versicolor
+52           6.9          3.1           4.9          1.5  versicolor
+58           6.6          2.9           4.6          1.3  versicolor</div>
+  <div class="box warn"><div class="t">⚠️ and/or가 아니라 &amp;와 |</div>복합 조건은 파이썬의 <code>and</code>·<code>or</code>가 아니라 <strong><code>&amp;</code>·<code>|</code></strong>를 쓰고, <strong>각 조건을 반드시 괄호로</strong> 감싸야 해요. 10장의 논리 배열 인덱싱과 같은 원리 — 조건식이 True/False 시리즈가 되어 필터로 작동합니다.</div>
+</section>
+
+<section id="sec5">
+  <h2 class="sec"><span class="n">5</span>데이터 삭제와 추가</h2>
+  <h3>drop() — 행·열 삭제</h3>
+  <div class="codelabel">구문</div>
+  <pre><code class="language-python">DataFrame.drop(labels, axis=0, inplace=False)
+# labels : 삭제할 행/열 이름 (리스트 가능)
+# axis   : 0이면 행에서, 1(또는 'columns')이면 열에서 찾아 삭제
+# inplace: True면 원본을 직접 수정(반환 None), False면 결과를 반환</code></pre>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">member_df.drop('북')                              # 행 '북' 삭제 (axis=0 기본)
+member_df.drop('주소', axis=1)                     # 열 '주소' 삭제
+member_df.drop(labels=["Email", "Address"], axis=1)  # 여러 열 한 번에
+member_df.drop("Address", axis=1, inplace=True)    # 원본에서 바로 삭제</code></pre>
+  <div class="output">   Name  Age             Email
+0  홍길동   20  kildong@hong.com
+1  홍길서   25   kilseo@hong.com
+2  홍길남   26    south@hong.com
+3  홍길북   27     book@hong.com</div>
+  <div class="box tip"><div class="t">💡 drop은 기본적으로 "새 결과를 반환"</div><code>inplace=False</code>(기본값)면 원본은 그대로고 삭제된 <strong>결과가 반환</strong>돼요. 그래서 <code>member_df = member_df.drop('북')</code>처럼 재할당하거나 <code>inplace=True</code>를 쓰는 두 가지 스타일이 있습니다.</div>
+
+  <h3>열 추가</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">member_df["BirthYear"] = 2000                       # 모든 행에 같은 값
+member_df["BirthYear"] = [2001, 2002, 2003, None]   # 행 수와 같은 리스트
+member_df["BirthYear"] = pd.Series([2001, 2002, 2004],
+                                   index=[0, 1, 3])  # 시리즈: 인덱스로 짝 맞춤
+member_df</code></pre>
+  <div class="output">   Name  Age             Email    Address  BirthYear
+0  홍길동   20  kildong@hong.com  서울시 강동구     2001.0
+1  홍길서   25   kilseo@hong.com  서울시 강서구     2002.0
+2  홍길남   26    south@hong.com  서울시 강남구        NaN
+3  홍길북   27     book@hong.com  서울시 강북구     2004.0</div>
+  <p>시리즈로 추가하면 <strong>인덱스가 같은 행끼리</strong> 짝을 맞춰요. 인덱스 2가 없으니 그 행은 NaN!</p>
+
+  <h3>행 추가</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">new_member = {"Name": "이순신", "Age": 30,
+              "Email": "lee@abc.com", "Address": "서울시 마포구"}
+
+# 방법 ① concat (표준) — 딕셔너리를 1행짜리 데이터프레임으로 만들어 연결
+new_df = pd.concat([member_df, pd.DataFrame([new_member])],
+                   ignore_index=True)     # 인덱스를 0부터 다시 매김
+
+# 방법 ② loc으로 맨 끝에 직접 대입
+member_df.loc[len(member_df)] = ["파이썬", 23, "python@hong.com", "서울시 마포구"]</code></pre>
+  <div class="output">   Name  Age             Email    Address
+0  홍길동   20  kildong@hong.com  서울시 강동구
+1  홍길서   25   kilseo@hong.com  서울시 강서구
+2  홍길남   26    south@hong.com  서울시 강남구
+3  홍길북   27     book@hong.com  서울시 강북구
+4  이순신   30       lee@abc.com  서울시 마포구</div>
+  <div class="box warn"><div class="t">⚠️ 옛 교재의 append()는 사라졌어요</div>예전 판다스의 <code>df.append(new_member, ignore_index=True)</code>는 <strong>pandas 2.0에서 제거</strong>되어 이제 AttributeError가 납니다. 교재·인터넷 예제에서 <code>append</code>를 보면 위의 <strong><code>pd.concat</code> 방식으로 바꿔</strong> 쓰세요.</div>
+</section>
+
+<section id="sec6">
+  <h2 class="sec"><span class="n">6</span>데이터프레임 병합과 연결</h2>
+  <h3>merge() — 공통 열(키)을 기준으로 합치기 (조인)</h3>
+  <div class="term">
+    <div class="h">🔗 merge()</div>
+    <div class="def">두 데이터프레임의 <b>공통 열(또는 인덱스)을 기준으로</b> 옆으로 합쳐요. 데이터베이스의 <b>조인(join)</b>과 같은 개념입니다.</div>
+    <div class="anal">🧩 <b>비유</b> — '학번'이 적힌 <b>성적표</b>와 '학번'이 적힌 <b>주소록</b>을 학번 기준으로 맞춰 한 장으로 만드는 것. 어느 쪽에만 있는 학생을 남길지(how)가 선택 포인트예요.</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">df1 = pd.DataFrame({'key': ['a', 'b', 'c', 'f'], 'c1': [1, 2, 3, 5]})
+df2 = pd.DataFrame({'key': ['a', 'b', 'd', 'f'], 'c2': [5, 6, 7, 8]})
+
+df1.merge(df2)                 # 기본 how='inner': 양쪽에 다 있는 키만
+df1.merge(df2, how="left")     # 왼쪽(df1) 키는 전부 유지
+df1.merge(df2, how="outer")    # 양쪽 키 전부 (없는 곳은 NaN)</code></pre>
+  <div class="output">  key  c1  c2          key  c1   c2          key   c1   c2
+0   a   1   5       0   a   1  5.0       0   a  1.0  5.0
+1   b   2   6       1   b   2  6.0       1   b  2.0  6.0
+2   f   5   8       2   c   3  NaN       2   c  3.0  NaN
+   (inner)          3   f   5  8.0       3   d  NaN  7.0
+                       (left)            4   f  5.0  8.0
+                                            (outer)</div>
+  <table>
+    <tr><th>how</th><th>남기는 키</th><th>비유</th></tr>
+    <tr><td><code>inner</code> (기본)</td><td>양쪽 모두에 있는 키</td><td>교집합</td></tr>
+    <tr><td><code>left</code> / <code>right</code></td><td>왼쪽/오른쪽 키 전부</td><td>한쪽 기준</td></tr>
+    <tr><td><code>outer</code></td><td>양쪽 키 전부</td><td>합집합 (빈 곳 NaN)</td></tr>
+  </table>
+  <p>기준 열의 <strong>이름이 서로 다르면</strong> <code>left_on</code>·<code>right_on</code>으로 지정합니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">df3 = pd.DataFrame({'key3': ['a', 'b', 'c', 'f'], 'c1': [1, 2, 3, 5]})
+df4 = pd.DataFrame({'key4': ['a', 'b', 'd', 'f'], 'c2': [5, 6, 7, 8]})
+df3.merge(df4, left_on="key3", right_on="key4")</code></pre>
+  <div class="output">  key3  c1 key4  c2
+0    a   1    a   5
+1    b   2    b   6
+2    f   5    f   8</div>
+
+  <h3>concat() — 그냥 이어붙이기</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">df1 = pd.DataFrame({'c1': [1, 2, 3, 4], 'c2': [5, 6, 7, 8]})
+df2 = pd.DataFrame({'c3': ['a', 'b', 'c', 'd'], 'c4': [1.2, 3.4, 5.5, 7.6]})
+pd.concat([df1, df2], axis=1)     # axis=1: 옆으로 / axis=0: 아래로(기본)</code></pre>
+  <div class="output">   c1  c2 c3   c4
+0   1   5  a  1.2
+1   2   6  b  3.4
+2   3   7  c  5.5
+3   4   8  d  7.6</div>
+  <div class="box warn"><div class="t">⚠️ concat의 두 가지 주의점</div>① <code>axis=0</code>(아래로)일 때 <strong>열 이름이 다르면</strong> 없는 곳이 전부 NaN이 돼요. ② 연결은 <strong>인덱스를 기준으로 짝을 맞추므로</strong>, 두 데이터프레임의 인덱스가 다르면(예: 0,2,4,6 vs 0,1,2,3) 결과가 어긋납니다. 이럴 땐 <code>df.reset_index(drop=True)</code>로 인덱스를 0부터 초기화한 뒤 연결하세요.</div>
+  <div class="box tip"><div class="t">💡 merge vs concat 선택법</div><strong>공통 키로 맞춰 합친다</strong> → merge. <strong>구조가 같은(또는 이어붙일) 데이터를 단순 연결</strong> → concat. "월별 판매 파일 12개를 아래로 잇기"는 concat, "고객정보에 구매정보 붙이기"는 merge입니다.</div>
+</section>
+
+<section id="sec7">
+  <h2 class="sec"><span class="n">7</span>정렬</h2>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">member_df.sort_index()               # ① 행 이름(인덱스) 순 정렬
+member_df.sort_index(axis=1)         # ② 열 이름 순으로 열 순서 바꾸기
+member_df.sort_values(by=["Email"])  # ③ 값(Email 열) 기준 정렬</code></pre>
+  <div class="output">    Name  Age             Email    Address
+북  홍길북   27     book@hong.com  서울시 강북구
+동  홍길동   20  kildong@hong.com  서울시 강동구
+서  홍길서   25   kilseo@hong.com  서울시 강서구
+남  홍길남   26    south@hong.com  서울시 강남구
+  (③ Email 알파벳순)</div>
+  <ul class="plain">
+    <li><code>sort_index()</code> — <strong>이름(인덱스)</strong>으로 정렬. <code>axis=1</code>이면 열 이름 순으로 <strong>열 순서</strong>를 바꿈</li>
+    <li><code>sort_values(by=열)</code> — <strong>값</strong>으로 정렬. <code>ascending=False</code>로 내림차순, <code>by=["A","B"]</code>로 다중 기준</li>
+    <li>다중 레벨 인덱스라면 <code>sort_index(level=["위치구분"])</code>처럼 <strong>레벨 기준</strong> 정렬도 가능</li>
+  </ul>
+</section>
+
+<section id="sec8">
+  <h2 class="sec"><span class="n">8</span>기초 통계 분석</h2>
+  <p>판다스는 기술통계 함수를 내장하고 있어요: <code>count</code>(NA 제외 개수)·<code>min</code>·<code>max</code>·<code>sum</code>·<code>cumsum</code>(누적합)·<code>mean</code>·<code>median</code>(중앙값)·<code>quantile</code>(분위수)·<code>var</code>(분산)·<code>std</code>(표준편차)·<code>corr</code>(상관관계). <strong>열(시리즈) 단위로 계산</strong>됩니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">iris_df.mean(numeric_only=True)    # 숫자 열만 골라 평균</code></pre>
+  <div class="output">Sepal.Length    5.843333
+Sepal.Width     3.057333
+Petal.Length    3.758000
+Petal.Width     1.199333
+dtype: float64</div>
+  <div class="box warn"><div class="t">⚠️ 문자 열이 섞여 있으면 numeric_only=True</div>Species처럼 문자 열이 있는 데이터프레임에 <code>mean()</code>을 그냥 부르면 최신 판다스에서는 에러가 나요. <code>numeric_only=True</code>를 붙이거나 <code>iris_df.iloc[:, :-1].mean()</code>처럼 숫자 열만 골라 계산하세요.</div>
+
+  <h3>describe() — 요약 통계량 한 방에</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">iris_df.describe()      # 숫자 열의 8가지 요약 통계</code></pre>
+  <div class="output">       Sepal.Length  Sepal.Width  Petal.Length  Petal.Width
+count    150.000000   150.000000    150.000000   150.000000
+mean       5.843333     3.057333      3.758000     1.199333
+std        0.828066     0.435866      1.765298     0.762238
+min        4.300000     2.000000      1.000000     0.100000
+25%        5.100000     2.800000      1.600000     0.300000
+50%        5.800000     3.000000      4.350000     1.300000
+75%        6.400000     3.300000      5.100000     1.800000
+max        7.900000     4.400000      6.900000     2.500000</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">iris_df.Species.describe()   # 문자(객체) 열은 다른 4가지 통계</code></pre>
+  <div class="output">count        150
+unique         3
+top       setosa
+freq          50
+Name: Species, dtype: object</div>
+  <div class="box tip"><div class="t">💡 describe 읽는 법 + 옵션</div>숫자 열은 개수·평균·표준편차·최소/최대·<strong>사분위수</strong>(25%·50%·75%, 50%는 중앙값), 문자 열은 개수·<strong>고유값 수(unique)·최빈값(top)·최빈값 빈도(freq)</strong>가 나와요. iris는 세 종이 50개씩이라 top은 셋 중 아무거나 나올 수 있습니다. 옵션: <code>include='all'</code>(모든 열), <code>include=["int64"]</code>·<code>exclude=["bool"]</code>(타입 선택), <code>percentiles=[.1, .9]</code>(분위수 변경).</div>
+
+  <h3>분산·표준편차, 공분산·상관계수</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">num_df = iris_df.iloc[:, :-1]   # 숫자 열만
+num_df.var()      # 분산
+num_df.std()      # 표준편차
+num_df.cov()      # 공분산 행렬
+num_df.corr()     # 상관계수 행렬 (-1 ~ +1)</code></pre>
+  <div class="output">              Sepal.Length  Sepal.Width  Petal.Length  Petal.Width
+Sepal.Length      1.000000    -0.117570      0.871754     0.817941
+Sepal.Width      -0.117570     1.000000     -0.428440    -0.366126
+Petal.Length      0.871754    -0.428440      1.000000     0.962865
+Petal.Width       0.817941    -0.366126      0.962865     1.000000
+  (corr 결과)</div>
+  <div class="box tip"><div class="t">💡 상관계수 해석</div>+1에 가까울수록 같이 커지는 관계, −1에 가까울수록 반대로 움직이는 관계. 꽃잎 길이·너비의 상관계수 0.96은 "꽃잎이 길수록 너비도 넓다"는 강한 양의 관계를 뜻해요. 대각선은 자기 자신과의 상관이라 항상 1!</div>
+</section>
+
+<section id="sec9">
+  <h2 class="sec"><span class="n">9</span>데이터 그룹화 및 집계</h2>
+  <div class="term">
+    <div class="h">👥 groupby()</div>
+    <div class="def">특정 열의 값으로 데이터를 <b>그룹으로 나눈 뒤</b>, 그룹마다 통계 함수를 적용해요. <b>분할(split) → 적용(apply) → 결합(combine)</b>의 3단계로 동작합니다.</div>
+    <div class="anal">🗂️ <b>비유</b> — 반 전체 성적표를 <b>분단별로 나눠 쌓아 놓고</b>, 분단마다 평균을 낸 다음, 결과를 한 표로 모으는 것과 같아요. "~별 평균/합계"가 필요하면 무조건 groupby!</div>
+  </div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">iris_grouped = iris_df.groupby("Species")   # 종별로 그룹화
+iris_grouped.mean()                          # 그룹별 평균</code></pre>
+  <div class="output">            Sepal.Length  Sepal.Width  Petal.Length  Petal.Width
+Species
+setosa             5.006        3.428         1.462        0.246
+versicolor         5.936        2.770         4.260        1.326
+virginica          6.588        2.974         5.552        2.026</div>
+  <p>150개 데이터가 종별 3행으로 요약됐어요! 여러 열로 그룹화하려면 리스트로 지정합니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">iris_df.groupby(["Species", "Sepal.Length"]).mean().head()</code></pre>
+  <div class="output">                      Sepal.Width  Petal.Length  Petal.Width
+Species Sepal.Length
+setosa  4.3              3.000000      1.100000        0.100
+        4.4              3.033333      1.333333        0.200
+        4.5              2.300000      1.300000        0.300
+        4.6              3.325000      1.325000        0.225
+        4.7              3.200000      1.450000        0.200</div>
+  <p>그룹을 <strong>반복문으로</strong> 하나씩 처리할 수도 있어요. (그룹 이름, 그룹 데이터프레임) 쌍이 나옵니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">for name, group in iris_grouped:
+    print(name, group.shape)</code></pre>
+  <div class="output">setosa (50, 5)
+versicolor (50, 5)
+virginica (50, 5)</div>
+</section>
+
+<section id="sec10">
+  <h2 class="sec"><span class="n">10</span>데이터 구조 변경 — melt와 pivot</h2>
+  <p>같은 데이터도 <strong>두 가지 모양</strong>으로 표현할 수 있어요.</p>
+  <table>
+    <tr><th></th><th>와이드 포맷 (wide)</th><th>롱 포맷 (long)</th></tr>
+    <tr><td>모양</td><td>가로로 긴 구조 (열 단위)</td><td>세로로 긴 구조 (행 단위)</td></tr>
+    <tr><td>다른 이름</td><td>피벗 테이블</td><td>언피벗·몰튼(molten) 테이블</td></tr>
+    <tr><td>변환</td><td><code>pivot_table()</code>로 만들기</td><td><code>melt()</code>로 만들기</td></tr>
+  </table>
+  <p>실습 데이터는 뉴욕의 대기질 측정 데이터 <strong>airquality</strong>(Ozone·Solar.R·Wind·Temp·Month·Day)입니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import statsmodels.api as sm
+airquality = sm.datasets.get_rdataset("airquality").data
+airquality.head(3)</code></pre>
+  <div class="output">   Ozone  Solar.R  Wind  Temp  Month  Day
+0   41.0    190.0   7.4    67      5    1
+1   36.0    118.0   8.0    72      5    2
+2   12.0    149.0  12.6    74      5    3</div>
+
+  <h3>melt() — 와이드 → 롱 (언피벗)</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">melted = airquality.melt(id_vars=["Month", "Day"])   # Month·Day는 고정
+melted.head()</code></pre>
+  <div class="output">   Month  Day variable  value
+0      5    1    Ozone   41.0
+1      5    2    Ozone   36.0
+2      5    3    Ozone   12.0
+3      5    4    Ozone   18.0
+4      5    5    Ozone    NaN</div>
+  <p>Ozone·Solar.R·Wind·Temp 4개 열이 <strong>variable(열 이름)·value(값)</strong> 두 열로 녹아내렸어요(melt). 시각화·통계 도구가 좋아하는 "깔끔한(tidy)" 형태입니다.</p>
+
+  <h3>pivot_table() — 롱 → 와이드 (피벗)</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">wide = melted.pivot_table(index=["Month", "Day"],
+                          columns="variable", values="value")
+wide = wide.reset_index()      # 다중 인덱스를 일반 열로
+wide.columns.name = None       # 열 축 이름 제거
+wide.head(3)</code></pre>
+  <div class="output">   Month  Day  Ozone  Solar.R  Temp  Wind
+0      5    1   41.0    190.0  67.0   7.4
+1      5    2   36.0    118.0  72.0   8.0
+2      5    3   12.0    149.0  74.0  12.6</div>
+
+  <h3>따라해보기 — 커피 판매 데이터로 왕복 연습</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">coffee = pd.DataFrame({
+    "year":      [2020, 2020, 2020, 2021, 2021, 2021],
+    "mon":       [1, 2, 3, 1, 2, 3],
+    "latte":     [410, 401, 402, 400, 404, 405],
+    "americano": [500, 483, 484, 470, 486, 488],
+    "mocha":     [350, 299, 300, 301, 302, 300]})
+
+melted = coffee.melt(id_vars=["year", "mon"],
+                     var_name="menu", value_name="qty")   # 이름도 지정 가능
+melted.head(3)</code></pre>
+  <div class="output">   year  mon   menu  qty
+0  2020    1  latte  410
+1  2020    2  latte  401
+2  2020    3  latte  402</div>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python"># 다시 와이드로 복원
+melted.pivot_table(index=["year", "mon"], columns="menu", values="qty")</code></pre>
+  <div class="output">menu      americano  latte  mocha
+year mon
+2020 1        500.0  410.0  350.0
+     2        483.0  401.0  299.0
+     3        484.0  402.0  300.0
+2021 1        470.0  400.0  301.0
+     2        486.0  404.0  302.0
+     3        488.0  405.0  300.0</div>
+  <div class="box tip"><div class="t">💡 pivot() vs pivot_table()</div><code>pivot()</code>은 <strong>단순 재배치</strong>만 해요 — (index, columns) 조합이 중복되면 에러! <code>pivot_table()</code>은 중복을 <strong>집계 함수(aggfunc, 기본 mean)로 요약</strong>해 처리합니다. 중복 가능성이 있으면 pivot_table이 안전해요.</div>
+</section>
+
+<section id="sec11">
+  <h2 class="sec"><span class="n">11</span>데이터프레임에 함수 적용하기</h2>
+  <h3>apply() — 열별/행별로 함수 적용</h3>
+  <div class="codelabel">구문</div>
+  <pre><code class="language-python">DataFrame.apply(func, axis=0)
+# axis=0 (기본): 각 "열"이 함수에 전달  /  axis=1: 각 "행"이 전달</code></pre>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">iris_num = iris_df.iloc[:, :-1]        # 숫자 열만
+iris_num.apply(np.round).head(3)       # round: 항목별로 동작하는 함수
+iris_num.apply(np.sum)                 # sum: 축별로 동작 → 열 합계</code></pre>
+  <div class="output">Sepal.Length    876.5
+Sepal.Width     458.6
+Petal.Length    563.7
+Petal.Width     179.9
+dtype: float64</div>
+  <p>람다와 시리즈를 조합하면 <strong>"각 행에서 열별 평균 빼기"</strong> 같은 계산이 한 줄이 됩니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">iris_avg = iris_num.apply(np.average)          # 열별 평균 시리즈
+iris_num.apply(lambda x: x - iris_avg, axis=1).head(3)   # 행마다 평균 차감</code></pre>
+  <div class="output">   Sepal.Length  Sepal.Width  Petal.Length  Petal.Width
+0     -0.743333     0.442667        -2.358    -0.999333
+1     -0.943333    -0.057333        -2.358    -0.999333
+2     -1.143333     0.142667        -2.458    -0.999333</div>
+  <div class="box tip"><div class="t">💡 result_type='broadcast'</div>적용한 함수가 리스트를 반환하면 결과가 "리스트가 든 시리즈"로 뭉개질 수 있어요. <code>apply(..., axis=1, result_type='broadcast')</code>를 쓰면 <strong>원본의 열 이름·구조를 유지</strong>한 데이터프레임으로 돌려줍니다.</div>
+
+  <h3>요소별 적용 — map</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">iris_num.map(lambda x: x ** 2).head(3)   # 데이터프레임의 모든 요소에 적용</code></pre>
+  <div class="output">   Sepal.Length  Sepal.Width  Petal.Length  Petal.Width
+0         26.01        12.25          1.96         0.04
+1         24.01         9.00          1.96         0.04
+2         22.09        10.24          1.69         0.04</div>
+  <div class="box warn"><div class="t">⚠️ applymap()도 이름이 바뀌었어요</div>교재의 <code>df.applymap(함수)</code>는 pandas 2.1부터 <strong><code>df.map(함수)</code>로 개명</strong>되었고 3.0에서 옛 이름이 제거됐어요. 기능은 같으니 이름만 바꿔 쓰면 됩니다.</div>
+  <p><strong>시리즈의 map()</strong>은 함수뿐 아니라 <strong>딕셔너리·시리즈</strong>도 받아요 — "값 바꿔치기(치환)"에 최고입니다.</p>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">x = pd.Series(['Hello', 'Python', 'World'], index=[1, 2, 3])
+x.map(lambda s: (s, len(s)))                     # ① 함수 적용
+x.map({"Hello": 'A', "Python": 'B', "World": 'C'})  # ② 딕셔너리로 치환
+s = pd.Series([1, 2, 3, None])
+s.map(lambda v: v * 10, na_action='ignore')       # ③ NaN은 건너뛰기</code></pre>
+  <div class="output">1    A
+2    B
+3    C
+dtype: object
+0    10.0
+1    20.0
+2    30.0
+3     NaN
+dtype: float64</div>
+
+  <h3>따라해보기 — 결측치를 열 평균으로 채우기 (3단계)</h3>
+  <div class="codelabel">python</div>
+  <pre><code class="language-python">import random
+iris_na = iris.copy()                     # seaborn iris (원본 보존!)
+for col in iris_na.columns[:-1]:          # 1단계: 열마다 20개씩
+    idx = random.sample(range(150), 20)   #   무작위 행을 골라
+    iris_na.loc[idx, col] = np.nan        #   결측치로 만들기
+
+print(iris_na.isna().sum())               # 2단계: 결측치 확인
+
+iris_filled = iris_na.fillna(iris_na.iloc[:, :-1].mean())  # 3단계: 열 평균 대체
+print(iris_filled.isna().sum().sum())     # 결측치 0!</code></pre>
+  <div class="output">sepal_length    20
+sepal_width     20
+petal_length    20
+petal_width     20
+species          0
+dtype: int64
+0</div>
+  <div class="box tip"><div class="t">💡 결측치 도구 상자</div><code>isna()</code>(결측 여부) · <code>isna().sum()</code>(열별 결측 개수) · <code>dropna()</code>(결측 행 제거) · <code>fillna(값)</code>(채우기). <code>fillna</code>에 <strong>시리즈(열별 평균)</strong>를 주면 열마다 자기 평균으로 채워져요 — 데이터 분석 전처리의 단골 패턴!</div>
+</section>
+
+<section id="quiz">
+  <div class="quiz">
+    <div class="qh">📝 연습문제</div>
+    <p style="color:var(--ink-soft);font-size:14px;margin:2px 0 8px">seaborn의 iris 데이터프레임(<code>iris = sns.load_dataset("iris")</code> — 열: sepal_length, sepal_width, petal_length, petal_width, species)으로 풀어보세요.</p>
+    <div class="sub">기본 다루기 (1~6)</div>
+
+    <div class="q">
+      <div class="qq"><span class="num">1</span>iris 데이터에서 처음 다섯 개 행만 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">iris.head()      # 또는 iris.iloc[:5], iris.head(5)</code></pre>
+        <div class="output">   sepal_length  sepal_width  petal_length  petal_width species
+0           5.1          3.5           1.4          0.2  setosa
+1           4.9          3.0           1.4          0.2  setosa
+2           4.7          3.2           1.3          0.2  setosa
+3           4.6          3.1           1.5          0.2  setosa
+4           5.0          3.6           1.4          0.2  setosa</div>
+        <div class="lab">해설</div>
+        <p><code>head()</code>의 기본값이 5행이에요. 데이터를 받으면 <code>head()</code>로 생김새부터 확인하는 게 분석의 첫 습관!</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">2</span>iris 데이터를 독립변수 <code>X</code>와 종속변수 <code>y</code>(species 열)로 나누세요. (둘 다 데이터프레임)</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">X = iris.drop("species", axis=1)   # species를 뺀 나머지 (= iris.iloc[:, :-1])
+y = iris[["species"]]              # 대괄호 두 겹 → 데이터프레임!</code></pre>
+        <div class="lab">해설</div>
+        <p>포인트는 <code>iris[["species"]]</code>의 <strong>이중 대괄호</strong> — <code>iris["species"]</code>는 시리즈, <code>iris[["species"]]</code>는 <strong>데이터프레임</strong>이에요. 머신러닝에서 X(입력)/y(정답) 분리는 늘 하는 준비 동작입니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">3</span>iris 데이터에서 처음 50개 행을 빼내 <code>temp</code> 변수에 저장하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">temp = iris.iloc[:50]     # 또는 iris.head(50), iris.loc[0:49]
+temp.shape</code></pre>
+        <div class="output">(50, 5)</div>
+        <div class="lab">해설</div>
+        <p><code>iloc[:50]</code>은 0~49행. <code>loc[0:49]</code>로 써도 같지만 <strong>loc은 끝(49)을 포함</strong>한다는 차이를 다시 확인하세요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">4</span>3번 데이터프레임의 요약정보를 출력하세요. <strong>모든 열</strong>에 대해 출력되어야 합니다.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">temp.describe(include="all")</code></pre>
+        <div class="output">        sepal_length  sepal_width  petal_length  petal_width species
+count       50.00000    50.000000     50.000000    50.000000      50
+unique           NaN          NaN           NaN          NaN       1
+top              NaN          NaN           NaN          NaN  setosa
+freq             NaN          NaN           NaN          NaN      50
+mean         5.00600     3.428000      1.462000     0.246000     NaN
+std          0.35249     0.379064      0.173664     0.105386     NaN
+...</div>
+        <div class="lab">해설</div>
+        <p>그냥 <code>describe()</code>는 숫자 열만 나와요. <strong><code>include="all"</code></strong>을 줘야 문자 열(species)의 unique·top·freq까지 포함됩니다. 처음 50행은 전부 setosa라 unique가 1!</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">5</span>versicolor 종의 데이터만 <code>iris_versicolor</code> 변수에 저장하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">iris_versicolor = iris.loc[iris["species"] == "versicolor"]
+iris_versicolor.head(3)</code></pre>
+        <div class="output">    sepal_length  sepal_width  petal_length  petal_width     species
+50           7.0          3.2           4.7          1.4  versicolor
+51           6.4          3.2           4.5          1.5  versicolor
+52           6.9          3.1           4.9          1.5  versicolor</div>
+        <div class="lab">해설</div>
+        <p>4절의 <strong>조건 조회</strong> 그대로예요. 조건식이 True/False 시리즈가 되고 loc이 True 행만 골라냅니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">6</span>2번의 X와 y를 합해서 <code>iris_df</code> 데이터프레임으로 만드세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">iris_df = pd.concat([X, y], axis=1)   # 옆으로(열 방향) 연결</code></pre>
+        <div class="lab">해설</div>
+        <p><code>axis=1</code>이 핵심 — 같은 인덱스끼리 옆으로 붙어 원래 iris와 같은 모양이 됩니다. axis=0으로 하면 아래로 붙어 NaN투성이가 돼요!</p>
+      </div></details>
+    </div>
+
+    <div class="sub">통계와 그룹 (7~11)</div>
+    <div class="q">
+      <div class="qq"><span class="num">7</span>iris 데이터의 각 열 평균값을 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">iris.mean(numeric_only=True)   # 또는 iris.iloc[:, :-1].mean()</code></pre>
+        <div class="output">sepal_length    5.843333
+sepal_width     3.057333
+petal_length    3.758000
+petal_width     1.199333
+dtype: float64</div>
+        <div class="lab">해설</div>
+        <p>species(문자 열)가 섞여 있으니 <code>numeric_only=True</code>로 숫자 열만 계산해요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">8</span>iris 데이터의 각 열들 사이의 상관계수를 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">iris.iloc[:, :-1].corr()</code></pre>
+        <div class="output">              sepal_length  sepal_width  petal_length  petal_width
+sepal_length      1.000000    -0.117570      0.871754     0.817941
+sepal_width      -0.117570     1.000000     -0.428440    -0.366126
+petal_length      0.871754    -0.428440      1.000000     0.962865
+petal_width       0.817941    -0.366126      0.962865     1.000000</div>
+        <div class="lab">해설</div>
+        <p>꽃잎 길이↔너비(0.96), 꽃받침 길이↔꽃잎 길이(0.87)가 강한 양의 상관 — 시각화(12장)하면 더 뚜렷하게 보입니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">9</span>iris 데이터에서 각 요소들과 변수별 평균과의 차이를 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">num = iris.iloc[:, :-1]
+num - num.mean()                    # 브로드캐스팅으로 한 방!
+# apply 버전: num.apply(lambda x: x - num.mean(), axis=1)</code></pre>
+        <div class="output">   sepal_length  sepal_width  petal_length  petal_width
+0     -0.743333     0.442667        -2.358    -0.999333
+1     -0.943333    -0.057333        -2.358    -0.999333
+2     -1.143333     0.142667        -2.458    -0.999333
+3     -1.243333     0.042667        -2.258    -0.999333
+4     -0.843333     0.542667        -2.358    -0.999333
+...</div>
+        <div class="lab">해설</div>
+        <p><code>데이터프레임 - 시리즈</code>는 10장의 <strong>브로드캐스팅</strong>이 작동해 모든 행에서 열별 평균이 빠져요. apply+람다로도 같은 결과(11절 예제 그대로)입니다.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">10</span>iris 데이터의 종별 평균을 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">iris.groupby("species").mean()</code></pre>
+        <div class="output">            sepal_length  sepal_width  petal_length  petal_width
+species
+setosa             5.006        3.428         1.462        0.246
+versicolor         5.936        2.770         4.260        1.326
+virginica          6.588        2.974         5.552        2.026</div>
+        <div class="lab">해설</div>
+        <p>"~별"이 나오면 groupby! 종별로 나눠(split) 평균 내고(apply) 한 표로 모은(combine) 결과예요.</p>
+      </div></details>
+    </div>
+
+    <div class="q">
+      <div class="qq"><span class="num">11</span>각 요소들과 <strong>자기 종의</strong> 변수별 평균과의 차이를 구해, 각 종별로 3개씩 출력하세요.</div>
+      <details><summary></summary><div class="ans">
+        <div class="lab">정답</div>
+        <div class="codelabel">python</div>
+        <pre><code class="language-python">dev = iris.groupby("species").transform(lambda x: x - x.mean())
+dev.groupby(iris["species"]).head(3)     # 종별로 3개씩</code></pre>
+        <div class="output">     sepal_length  sepal_width  petal_length  petal_width
+0           0.094        0.072        -0.062       -0.046
+1          -0.106       -0.428        -0.062       -0.046
+2          -0.306       -0.228        -0.162       -0.046
+50          1.064        0.430         0.440        0.074
+51          0.464        0.430         0.240        0.174
+52          0.964        0.330         0.640        0.174
+100         0.448        0.474        -0.288        0.326
+101        -0.788       -0.274        -0.452       -0.126
+102         0.512        0.026         0.348        0.074</div>
+        <div class="lab">해설</div>
+        <p>9번과의 차이는 "전체 평균"이 아니라 <strong>자기 그룹(종)의 평균</strong>을 빼는 것. <code>transform()</code>은 그룹별 계산 결과를 <strong>원래 행 위치에 그대로 펼쳐</strong> 돌려줘요(150행 유지). 검산: 0번 행 sepal_length 5.1 − setosa 평균 5.006 = 0.094 ✓</p>
+      </div></details>
+    </div>
+  </div>
+</section>
+
+<div class="box tip" style="margin-top:40px"><div class="t">🎉 데이터 전처리 완전 정복!</div>넘파이(10장)로 배열을, 판다스(11장)로 표 데이터를 다루게 됐어요. 만들기 → 조회 → 추가/삭제 → 병합 → 통계 → 그룹화 → 구조 변경 → 함수 적용까지, 실무 데이터 전처리의 뼈대가 모두 갖춰졌습니다. 다음은 이 데이터를 <strong>그림으로 보여주는 데이터 시각화(12장)</strong>입니다!</div>
+
+<div class="pager">
+  <a class="prev" href="ch10_Numpy.html"><div class="dir">← 이전</div><div class="ttl">10장. N차원 배열 다루기 — Numpy</div></a>
+  <a class="next" href="index.html"><div class="dir">목차 →</div><div class="ttl">전체 목차로 돌아가기</div></a>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

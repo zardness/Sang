@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    
+    <script>
+        //콜백함수(매개변수로 들어온 함수)
+        function calltentimes(callback){
+            for(var i=0 ; i<10 ; i++){
+                callback();
+            }//for
+        }//function
+        let fun = ()=>document.write(new Date().toLocaleString() + '<br>');
+        // fun();
+        calltentimes(function(){
+            document.write(new Date().toLocaleString() + '<br>');
+        });
+        calltentimes(()=>document.write(new Date().toLocaleString()+'<br>'));
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
