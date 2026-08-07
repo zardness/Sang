@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>   
+    <script>
+        //객체를 반환하는 일반함수
+        function makeStudent(name,kor,mat,eng){
+            let resultObj = {
+                'name' : name, 
+                'kor' : kor,
+                'mat' : mat,
+                'eng' : eng,
+                'getSum' : function(){
+                    return this.kor + this.mat + this.eng;
+                },
+                'getAvg' : function(){
+                    return Math.round(this.getSum() / 3*10)/10;
+                },
+                'toString' : function(){
+                    let output = '';
+                    for(let key in this){
+                        if(key!='getSum'&& key!='getAvg' && key!='toString'){
+                            output += key + ':' + this[key] + '&nbsp;';
+                    }else if(key=='getSum' || key=='getAvg'){
+                        output += key.substring(3).toUpperCase()+':'+this[key]()+'&nbsp;';
+                    }//if
+                }//for
+                return output;
+                },//toString 메소드
+            }; //resultObj 객체
+            return resultObj;
+        }//makeStudent함수
+        let students = [];
+        students.push(makeStudent('홍길동',99,98,97));
+        students.push(makeStudent('마길동',95,90,90));
+        students.push(makeStudent('홍길동',59,92,92));
+        students.push(makeStudent('홍길동',91,60,77));
+        students.push(makeStudent('홍길동',88,77,97));
+        students.forEach(element => document.write(element + '<br>'));         
+        
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

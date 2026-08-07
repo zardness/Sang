@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>   
+    <script>
+        let str = "    abc @ ABC ";
+        document.write('원본:' + str.replaceAll(' ','&nbsp') + '<br>');
+        document.write('글자수:' + str.length + '<br>');
+        document.write('글자연결:' +str.concat('뒤에연결')+'<br>');
+        //str.substring(a) : a 번째부터 끝까지 추출 str[a:]와 동일
+        //str.substring(a,b) : a번째부터 b번째 앞까지 추출 str[a:b]와 동일
+        //str.substr(a,b) : a번째부터 b글자 추출
+        document.write('3~6번째 문자 : ' + str.substring(3,6)+'<br>');
+        document.write('3~끝까지 문자 : [' + str.substring(3) +']<br>');
+        document.write('3번째~5글자 : '+ str.substr(3,5)+'<br>');
+        document.write('처음부터 @가있는 위치:' + str.indexOf('@') + '<br>');
+        document.write('처음부터 !가있는 위치:' + str.indexOf('!') + '<br>');//-1
+        document.write('뒤부터 @가있는 위치:' + str.lastIndexOf('@') + '<br>');
+        document.write('앞뒤space제거:' + str.trim() + '<br>');
+        document.write('대문자로:' + str.toUpperCase() + '<br>');
+        document.write('소문자로:' + str.toLowerCase() + '<br>');
+        document.write('첫번째@를 #으로수정:' + str.replace('@','#') + '<br>');
+        document.write('@를 #으로수정:' + str.replaceAll('@','#') + '<br>');
+        document.write('모든space제거:' + str.replaceAll(' ','') + '<br>');       
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

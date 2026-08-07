@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    
+    <script>
+        let students =[{'name':'김','kor':99,'mat':98,'eng':90},
+                        {'name':'이','kor':90,'mat':80,'eng':91},
+                        {'name':'박','kor':95,'mat':89,'eng':55},
+                        {'name':'정','kor':78,'mat':58,'eng':88},
+                        {'name':'윤','kor':60,'mat':98,'eng':77},];
+        for(let idx in students){
+            students[idx].getSum = function(){
+                return this.kor + this.mat + this.eng;
+            };
+            students[idx].getAvg = function(){
+                return Math.round(this.getSum() / 3*10)/10; //소수점에서 첫번째 자리에서반올림
+            };
+            students[idx].toString = function(){
+                let output = '';
+                for(let key in this){
+                    if(key!='getSum'&& key!='getAvg' && key!='toString'){
+                        output += key + ':' + this[key] + '&nbsp;';
+                    }else if(key=='getSum' || key=='getAvg'){
+                        output += key.substring(3).toUpperCase()+':'+this[key]()+'&nbsp;';
+                    }//if
+                }//for
+                return output;
+            };//toString
+        }//for    
+        document.write('<h4>1. 일반 for문</h4>');
+        for(let idx=0 ; idx<students.length ; idx++){
+            document.write(`${idx}번째 ${students[idx]}<br>`);
+        }
+        document.write('<h4>2. 일반 for-in문</h4>');
+        for(let idx in students){
+            document.write(`${idx}번째 ${students[idx]}<br>`);
+        }
+        document.write('<h4>3. 일반 for-of문</h4>');
+        for(let student of students){
+            document.write(`${student}<br>`);
+        }
+        document.write('<h4>4. 일반 forEach문</h4>');
+        students.forEach((element,idx)=>{
+            document.write(`${element}<br>`);
+        }) 
+            
+        
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

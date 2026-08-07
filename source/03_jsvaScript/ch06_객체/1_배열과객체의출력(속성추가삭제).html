@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>    
+    <script>
+        var arr = [1,'홍길동'];//arr = {0:1, 1:'홍길동'} 처럼 인식. 배열에서는 key가 index
+        arr.push('새로운값'); //배열의 추가
+        arr.pop(); //배열의 값 삭제
+        for(let idx in arr){
+            document.write(`${idx}(index타입:${typeof(idx)}) - ${arr[idx]}<br>`);
+        }
+        arr[0],arr[1]
+        var obj = {'name':'홍길동','age':20}; //객체에서는 key가 속성변수 
+        for(let key in obj){
+            document.write(`${key}(key의 타입은${typeof(key)}) : ${obj[key]}<br>`);//obj['name']
+        }
+        obj.address = '신림동'; // 객체 속성 추가
+        obj.hobby = '공부하기';
+        document.write('<h3>객체에 속성 추가 후</h3>');
+        for(let key in obj){
+            document.write(`${key} : ${obj[key]}<br>`);//obj['name']
+        }
+        delete(obj.age); //객체 속성 제거
+        document.write('<h3>객체에 속성 제거 후</h3>');
+        for(let key in obj){
+            document.write(`${key} : ${obj[key]}<br>`);//obj['name']
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
