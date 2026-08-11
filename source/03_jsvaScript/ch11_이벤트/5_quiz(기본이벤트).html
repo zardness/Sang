@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        
+    </style>
+    <script>
+        window.onload = function(){
+            var img = document.getElementsByTagName('img')[0];
+            img = document.querySelector('img');
+            img.onmousedown = function(){
+                this.setAttribute('src','ch11_img/but2.gif');
+                this.setAttribute('alt','mouse down');
+            };
+            img.onmouseup = ()=>{
+                img.setAttribute('src','ch11_img/but1.gif');
+                img.setAttribute('alt','mouse up');
+            };
+        };
+    </script>
+</head>
+<body>
+    <img src="ch11_img/but1.gif" alt="mouse up">
+</body>
+</html>

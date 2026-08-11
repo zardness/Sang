@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        h1{cursor: pointer;}
+    </style>
+    <script>
+        window.onload = ()=>{
+            var header = document.querySelectorAll('h1.header');
+            for(var idx in header){
+                header[idx].onclick = function(){
+                    this.innerHTML = 'click 했네';
+                    this.style.color = 'red';
+                };
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1 class="header">click해봐</h1>
+    <h1 class="header">click해봐</h1>
+    <h1 class="header">click해봐</h1>
+    <h1 class="header">click해봐</h1>
+    <h1 class="header">click해봐</h1>
+</body>
+</html>

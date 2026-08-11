@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        
+    </style>
+    <script>
+        window.onload = ()=>{
+            document.querySelector('form').onsubmit = function(){// 디폴트 이벤트 제한
+                let pw = document.querySelector('input[name=pw]').value;
+                let pw1 = document.querySelector('input[name=pw1]').value;
+                if(!pw){
+                    alert('비밀번호를 입력하세요');
+                    pw.focus();
+                    return false; //디폴트 이벤트 제한
+                }else if(pw.value !=pw1.value){
+                    alert('비밀번호가 다릅니다.');
+                    pw.focus();
+                    return false;
+                }
+                return false;
+            };
+        };
+    </script>
+</head>
+<body>
+    <form>
+        PW <input type="password" name="pw"><br>        
+        PW <input type="password" name="pw1">
+        <input type="submit">                
+    </form>
+</body>
+</html>

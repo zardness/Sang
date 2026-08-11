@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        
+    </style>
+    <script>
+        // DOM 트리가 완성되자 마자 바로 실행
+        document.addEventListener('DOMContentLoaded', ()=>{
+            document.querySelector('button').addEventListener('click', ()=>{
+                let id = document.querySelector('input[name=id]').value;
+                console.log(`midConfirmNonExists.html?id=`+id);
+                console.log(`midConfirmNonExists.html?id=${id}`);
+                let params = new URLSearchParams({id:id});
+                console.log(`midConfirmNonExists.html?${params}`);
+                //비동기 작업의 결과를 약속하는 함수 : fetch
+                fetch(`midConfirmNonExists.html?${params}`,{method:'get'})
+                .then(function(response){
+                     //document.body.innerHTML += `${response.ok} / ${response.status} / ${response.statusText}`;
+                    if(!response.ok){
+                        throw new Error(`오류:${response.status}/${response.statusText}`)
+                    }
+                    return response.text(); // response에서 html text만 반환
+                })
+                .catch(function(error){
+                    alert(error.message);
+                });
+            });//click
+        });//DOMContentLoaded
+        // document.addEventListener('DOMContentLoaded',()=>{
+        //     document.querySelector('button').addEventListener('click',()=>{
+        //         let id = document.querySelector('input[name=id]').value;
+        //         console.log('midConfirmNonExists.html?id='+id);
+        //         console.log(`midConfirmNonExists.html?id=${id}`);
+        //         let params = new URLSearchParams({id:id});
+        //         console.log(`midConfirmNonExists.html?${params}`);
+        //         // 비동기 작업의 결과를 약속하는 함수 : fetch
+        //         fetch(`midConfirmNonExists.html?${params}`,{method:'get'})
+        //         .then(function(response){
+        //             // document.body.innerHTML +=`${response.status}/${response.statusText}`;
+        //             if(!response.ok){
+        //                 throw new Error(`오류: ${response.status}/${response.statusText}`)
+        //             }
+        //             return response.text(); //response에서 html text만 반환
+        //             })                              
+        //         .then(function(data){
+        //             document.querySelector('span#idConfirmResult').innerHTML = data;
+        //         });                  
+        //         .catch(function(error){
+        //             alert(error.message)
+        //         });
+        //     });//click
+        // });//DOMContentLoaded
+    </script>
+</head>
+<body>
+    아이디<input type="text" name="id" autocomplete="off" autofocus="autofocus"> <button>중복체크</button>
+    <br>
+    <span id="idConfirmResult"></span>
+</body>
+</html>

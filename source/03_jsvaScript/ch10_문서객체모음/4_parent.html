@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        #wrap{width:300px; margin: 50px auto;}
+        #wrap h1{width:250px; padding:20px 10px;
+                margin:30px 15px; border:1px solid red;
+                background-color: lightpink;
+                border-radius: 10px 40px;
+                text-align:center;
+                font-size:0.9em;
+        }
+        #wrap input, #wrap span {width:150px; height:20px;display:inline-block; 
+                border:1px solid pink;
+        }
+        #wrap p {text-align:center;}
+
+    </style>
+    <script>
+        window.onload = ()=>{
+            var insa = document.querySelector('#insa');
+            insa.onclick = function(){
+                open('4_child.html','','width=500, height=600,left=600');
+                if(!child){
+                    alert('팝업해제');
+                }
+            };
+        };
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <p>사원이름<input type="text" name="name" id="name"></p>
+        <p>파트명칭<span id="part"></span></p>
+        <p>결제일자<input type="date" name="date" id="date"></p>
+        <h1 id="insa">인사정보 파트 선택</h1>
+    </div>
+</body>
+</html>

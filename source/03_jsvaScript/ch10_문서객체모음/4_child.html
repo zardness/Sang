@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        #wrap {width:450px; margin: 0 auto;}
+        #wrap h1{color:red; margin-top:50px; text-align:center;}
+        #wrap h3{
+                padding:20px; margin:10px; border:1px solid red;
+                text-align:center; border-radius: 10px;
+                font-size: .9em;
+        }
+
+    </style>
+    <script>
+        var modifyName;
+        window.onload = () =>{
+            // parent와 child간의 데이터 통신
+            // opener : 이 화면을 호출한 창(parent창)
+            var openerName = opener.document.getElementById('name').value;
+            var openerDate = opener.document.getElementById('date').value;
+            //문서객체가져오기
+            var showName = document.querySelector('h2#showName');
+            modifyName = document.querySelector('input[type=text]');
+            // opner에서 받은 데이터 내 화면에 출력하기
+            showName.innerHTML += "넘어온 이름:"+openerName;
+            if(openerDate){
+                showName.innerHTML +='날씨:'+openerDate;            
+            }else{
+                showName.innerHTML += '날짜 안넘어옴'
+            };
+            modifyName.value = openerName;
+        };
+        const sendData = part =>{
+            // part는 opener의 #part에 보내고, modifyName.value는 opener의  #name에 보내기
+            opener.document.getElementById('part').innerHTML = part;
+            opener.document.getElementById('name').value = modifyName.value;
+            this.close(); //화살표 함수내에서의 this는 window
+        }
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <h1>인사정보 시스템</h1>
+        <hr>
+        <h2 id="showName"></h2>
+        <h2>이름 수정 가능<input type="text" id="modifyName"></h2>
+        <hr>
+        <h3 onclick="sendData('인사')">인사로 하고 닫기</h3>
+        <h3 onclick="sendData('재무')">재무로 하고 닫기</h3>
+        <h3 onclick="sendData('총무')">총무로 하고 닫기</h3>
+        <h3 onclick="sendData('개발')">개발로 하고 닫기</h3>
+    </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <title></title>
+    <style>
+        #wrap{width:300px; margin: 50px auto;}
+        #wrap h1{width:250px; padding:20px 10px;
+                margin:30px 15px; border:1px solid red;
+                background-color: lightpink;
+                border-radius: 10px 40px;
+                text-align:center;
+                font-size:0.9em;
+                }
+        #wrap input, #wrap span {width:150px; height:20px;display:inline-block; 
+                border:1px solid pink;
+                }
+        #wrap p {text-align:center;}
+        #wrap input[type="button"],
+        #wrap input[type="submit"]{
+            height: 35px;
+            font-size: 18px;        
+        }
+        #wrap p {
+            text-align:center;
+            font-size: 20px;
+            }
+    </style>
+    <script>
+        window.onload = ()=>{
+            var insa = document.querySelector('#insa');
+            insa.onclick = function(){
+                open('5_confirm.html','','width=500, height=600,left=600');
+                if(!child){
+                    alert('팝업해제');
+                }
+            };
+        };
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <p>아이디<input type="text" name="name" id="name"></p>
+        
+        <p><input type="button" value="중복확인" onclick="openConfirm()"></p>
+    </div>
+</body>
+</html>
