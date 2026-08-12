@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const openWin = function(){
+            //childWin이라는 이름이 새창을 열기
+            var child = open('','childWin','width=700, height=500');
+            if(!child){
+                alert('팝업 해체 요청');
+            }
+        };
+    </script>
+</head>
+<body>
+    <botton onclick="openWin()">새창열기</botton>
+    <br>
+    <a href="http://www.daum.net" target="childWin">다음(childWin</a>
+</body>
+</html>

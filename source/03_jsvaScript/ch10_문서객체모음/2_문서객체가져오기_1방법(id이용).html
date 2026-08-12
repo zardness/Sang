@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        var clock,btn;//문서객체
+        var timerId; //타이머 id
+        var timerToggle = 1; //타이머 가동중
+        window.onload = ()=>{
+            //#clock에 1초마다 시간 출력(타이머가동중)
+            clock = document.getElementById('clock');
+            btn = document.getElementById('btn');
+            clock.innerHTML = new Date().toLocaleString();
+            timerId = setInterval(()=>{
+                clock.innerHTML = new Date().toLocaleString();
+            },1000)
+        };
+        const togglefunction=()=>{
+            //타이머가 가동중이면 멈추고, 타이머가 멈춰있으면 가동시키기
+            if(timerToggle){
+                timerToggle = 0;
+                btn.innerHTML = '타이머 멈춤';
+                // 타이머 멈춤
+                clearInterval(timerId);
+                // document.body.style = 'background-color:yellow;color:red';
+                // document.body.style.backgroundColor = 'yellow';
+                // document.body.style.cssText = 'background-color:yellow;color:red';
+                // clock.style = 'background-color:yellow;color:red';
+                //clock.style.cssText = 'background-color:yellow;color:red';
+                clock.style.backgroundColor = 'yellow';
+                clock.style.color = 'red';
+            }else{
+                timerToggle = 1;
+                btn.innerHTML = '타이머 가동중';
+                //타이머 재가동
+                clock.style.backgroundColor='white';
+                clock.style.color = 'black';
+                clock.innerHTML = new Date().toLocaleString();
+                timerId = setInterval(()=>{
+                    clock.innerHTML = new Date().toLocaleString();
+                },1000)
+            } 
+        };
+    </script>
+</head>
+<body>
+    <h1>날짜와시간</h1>
+    <h1 id="clock">날짜와 시간을 출력할 공간</h1>
+    <button id="btn" onclick="togglefunction()">타이머 가동중</button>
+</body>
+</html>

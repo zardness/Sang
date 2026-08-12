@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload=()=>{
+            //문서객체 생성방법1
+            var h1 = document.createElement('h1');
+            var textNote = document.createTextNode('방법1로 추가한 h1태그');
+            h1.appendChild(textNode);
+            document.body.appendChild(h1);
+            //문서 객체 생성방법2. img생성->img태그의 src속성을 변경->body에 img추가
+            var img = document.createElement('img');
+            img.setAttribute('src','ch10_img/red.jpg');
+            img.setAttribute('alt','체리');
+            document.body.appendChild(img);
+            //문서 객체 생성 방법3.body.innerHTML을 이용(body에 html추가)
+            document.body.innerHTML +='<h1>방법3으로 추가</h1>';
+        };
+    </script>
+</head>
+<body>
+    <h1>TEXT NODE</h1>
+    <img src="ch10_img/orange.jpg" alt="오렌지"/>
+</body>
+</html>

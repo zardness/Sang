@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        //let obj = {'name':홍,'age':20,'call':null};
+        //obj.call = function(){alert(this.name+'님');};
+        var cnt = 0; //속성갯수를 셀 변수
+        for(let key in window){//alert, confirm등 우리가 일반 함수처럼 사용한 함수는 window객체안의 메소드
+            if(key.substr(0,2)=='on'||key=='cnt'||key=='chk'){
+                // document.write(++cnt + key + ':'+window[key]+'<br>');
+                document.write(`${++cnt}.${key} : ${window[key]}<br>`);                
+            }//if
+        }//for
+        document.write('<hr>');
+        window.onclick=()=>{// onload(이벤트 속성 변수)에 함수를 할당하면 해당 이벤트 발생시 자동호출
+            alert('윈도우가 클릭됨');
+        };
+        var chk = function(){};//일반함수(window객체내)
+        for(let key in window){//alert,confirm등 우리가 일반함수처럼 사용한 함수는 window객체안의 메소드
+            if(key=='onclick'||key=='cnt'||key=='chk'){
+                // document.write(++cnt + key +':'+window[key] +'<br>');
+                document.write(`${key}:${window[key]}<br>`);
+            }//if
+        }//for            
+    </script>
+</head>
+
+<body>
+    
+</body>
+</html>
