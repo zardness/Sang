@@ -1,0 +1,14 @@
+SELECT [DISTINCT] {*, column [Alias], ….}
+FROM 데이블명
+[WHERE condition]
+[ORDER BY {column, expression} [ASC|DESC]] ;
+
+SELECT : 원하는 컬럼 선택
+*	: 테이블의 모든 column 출력
+alias	: 해당 column에 대한 다른 이름 부여
+DISTINCT: 중복 행 제거 옵션
+FROM  : 원하는 데이터가 저장된 테이블 명을 기술
+WHERE : 조회되는 행을 제한하기 위한 조건 추가
+condition : column, 표현식, 상수 및 비교연산자
+ORDER BY:정렬을 위한 옵션 (ASC :오름차순이며 default, DECS 내림차순)
+
