@@ -1,0 +1,26 @@
+※ 가상환경 만들기(mi-dl-nip/llm)
+
+(현제 존재하는 가상환경 목록 확인) conda env list
+						 conda info --envs
+
+(가상환경 생성;n은 --name) conda creat -n ml-dl-nlp python=3.10
+(생성한 가상환경으로 전환) conda activate ml-dl-nlp
+(PIP최신 버전 업그래이드)python -m pip install --upgrade pip
+
+pip install jupyter numpy==1.23.5 pandas==1.5.3 matplotlib==3.7.0 seaborn==0.12.2 scikit-learn==1.2.1
+pip install tensorflow==2.10.0
+
+가상환경을 jupyter에서 선택가능한 커널로 등록
+conda install ipykernel
+python -m ipykernel install --user --name ml-dl-nlp --display-name "ml-dl-nlp(ipykernel)"
+
+Jupyter 커널 목록 확인 ==>jupyter kernelspec list
+
+ 가상환경을 Jupter 커널 목록에서 삭제==>jupyter kernelspec remove "ml-dl-nlp(ipykernel)"
+
+
+(가상환경 삭제)conda env remove --name ml-dl-nlp
+
+※ 딥러닝에서 엑셀데이터 불러오기
+
+pip install openpyxl(3.1.5)

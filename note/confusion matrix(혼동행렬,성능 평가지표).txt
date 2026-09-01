@@ -1,0 +1,2 @@
+confusion matrix(혼동행렬,성능 평가지표)
+
