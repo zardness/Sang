@@ -24,3 +24,7 @@ Jupyter 커널 목록 확인 ==>jupyter kernelspec list
 ※ 딥러닝에서 엑셀데이터 불러오기
 
 pip install openpyxl(3.1.5)
+
+※ 자연어처리에 설치한 것
+
+pip install nltk==3.7 --no-warn-script-locationpip show #영어권 자연어처리
