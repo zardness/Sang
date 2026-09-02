@@ -28,3 +28,7 @@ pip install openpyxl(3.1.5)
 ※ 자연어처리에 설치한 것
 
 pip install nltk==3.7 --no-warn-script-locationpip show #영어권 자연어처리
+
+pip install konlpy   # 한글 자연어 전처리 (java필요)
+
+pip install python-mecab-ko
