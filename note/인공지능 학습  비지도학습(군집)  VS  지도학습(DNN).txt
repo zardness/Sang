@@ -1,0 +1,18 @@
+인공지능 학습 : 비지도학습(군집)  VS  지도학습(DNN)
+
+DNN,자연어처리, RNN, LSTM,Seq2Seq
+
+스케일 조정(정규화, 표준화)하는게 목적 계산이 안정적으로 향상
+
+Sequential모델 : 순차적 레이어 모델
+  -모델 생성
+	model = Sequential( )순차적 레이어 모델 / model(inputs=XX,outputs=XX)병렬모델
+
+	-이진분류(로지스틱스 회귀분석) 출력층 : model.add(Dense(1,activation='sigmoid'))
+	-다중분류 출력층 : model.add(Dense(units, activation='softmax'))
+
+
+- 학습과정 설정
+
+	-손실함수(다중분류 : categorical_crossentropy / sparse_categorical_crossentropy)
+		      (	
