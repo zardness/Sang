@@ -42,3 +42,9 @@ pip install python-dotenv # .env읽어들이기(강추)
 pip install python-decouple #.env읽어들이기 (주피터 환경에서 안될수도있음)
 
 pip install apyori
+
+pip install statsmodels==0.13.5 통계패키지 중 시계열
+
+pip install prophet #facebook에서 개발한 시계열 분석예측
+
+pip install plotly(선택,prophet에서 경고, 경고 무시해도됨)
