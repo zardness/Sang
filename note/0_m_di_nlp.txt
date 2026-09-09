@@ -3,7 +3,7 @@
 (현제 존재하는 가상환경 목록 확인) conda env list
 						 conda info --envs
 
-(가상환경 생성;n은 --name) conda creat -n ml-dl-nlp python=3.10
+(가상환경 생성;n은 --name) conda create -n ml-dl-nlp python=3.10
 (생성한 가상환경으로 전환) conda activate ml-dl-nlp
 (PIP최신 버전 업그래이드)python -m pip install --upgrade pip
 
