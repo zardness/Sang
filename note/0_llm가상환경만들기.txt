@@ -1,0 +1,77 @@
+※ 가상환경 만들기(llm)
+
+(현제 존재하는 가상환경 목록 확인) conda env list
+						 conda info --envs
+
+(가상환경 생성) conda create -n llm python=3.10
+
+(생성한 가상환경으로 전환) conda activate llm
+
+(PIP최신 버전 업그래이드)python -m pip install --upgrade pip
+
+llm환경을 jupyter 설치 conda install ipykernel
+
+llm 가상환경을 jupiter에서 선택가능한 커널로 등록
+python -m ipykernel install --user --name llm --display-name "llm(ipykernel)"
+
+upyter 커널 목록 확인
+jupyter kernelspec list
+
+
+------------------------------------------------------------------------
+(가상환경 삭제)
+jupyter kernelspec remove"llm"
+
+(llm가상환경 삭제)
+conda env remove --name llm
+
+※ 허깅 패이스(다양한 llm모델과 환경을 제공하는 프래임 워크)
+# 파이토치(cpu버전
+pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorch.org/whl/cpu
+
+
+pip install sympy==1.13.1 fsspec 
+pip install transformers==4.57.3
+pip install sentencepiece  # 자연어의 Tokenizer기능(구글)
+pip install hf_xet		    # 허깅패이스hub 대용량 파일을 빠르게 업로드/다운로드 지원	
+pip install sacremoses      # 영한번역에서 경고 줄이기도 하고 번역품질도 높아져
+
+pip install python-dotenv 
+
+pip install opencv-python==4.10.0.84
+
+pip install matplotlib
+
+※  Ollama langChain
+
+pip install -q langchain-ollama
+
+pip install langchain-openai # 1.6.2 유료
+
+pip install langchain-anthropic # 1.7.1claude 유료모델
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
