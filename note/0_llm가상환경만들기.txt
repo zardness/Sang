@@ -50,9 +50,11 @@ pip install langchain-openai # 1.6.2 유료
 
 pip install langchain-anthropic # 1.7.1claude 유료모델
 
+pip install sounddevice scipy # 마이크 녹음후 파일로 전송하기
 
+sounddevice = Version: 0.5.6
 
-
+scipy = Version: 1.15.3
 
 
 
