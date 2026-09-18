@@ -55,6 +55,10 @@ pip install dataprep
 
 exit'
 
+의사결정 나무 구조 시각화(ml-dl-nlp)
+conda install-c conda-forge graphviz
+pip install pydot
 
-
-
+의사결정 나무 구조 시각화(base환경)
+conda install graphviz
+pip install pydot
