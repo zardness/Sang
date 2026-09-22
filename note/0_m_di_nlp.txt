@@ -62,3 +62,28 @@ pip install pydot
 의사결정 나무 구조 시각화(base환경)
 conda install graphviz
 pip install pydot
+
+
+pip install imbalanced-learn==0.10.1
+
+
+※앙상블 모형
+
+pip install --dry-run xgboost
+
+pip install xgboost #3.2.0
+
+
+pip install --dry-run lightgbm
+
+pip install lightgbm# 4.7.0
+
+
+pip install catboost # 1.2.10
+
+
+
+
+
+
+
