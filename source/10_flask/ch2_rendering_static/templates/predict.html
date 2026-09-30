@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+    <!--link href="/static/file.css" rel="stylesheet" type="text/css">-->
+    <link href="{{ url_for('static',filename='file.css') }}"
+          rel="stylesheet"
+          type="text/css" > 
+    
+</head>
+<body>
+    <h2>{{year}} 년도 매매 예측금액(Jinja2템플릿 이용)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>건축년도</th><th>전용면적</th><th>층</th><th>예상금액</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{year}}</td> <td>{{square}}</td> <td>{{floor}}</td> <td>{{price}}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
