@@ -1,0 +1,80 @@
+1장 CSS 단위
+    -px : CSS 픽셀 단위 / pt : 포인트 단위, 3pt = 4px
+    -font-size의 em : 부모 글자 크기 기준 / .8em은 0.8배
+    -font-size의 % : 부모 글자 크기 기준 / 100%는 부모와 같은 크기
+    -24pt = 32px / 100%가 항상 16px인 것은 아님
+    -width의 % : 일반적으로 기준이 되는 부모 영역 너비에 대한 비율
+
+2장 url()과 배경 이미지·글꼴
+    -url('경로') : 이미지나 글꼴 등 외부 자원의 위치 지정
+    -background: url('이미지') center no-repeat; : 중앙 배치, 반복 없음
+    -background-size:100%; : 배경 이미지 너비를 배경 영역에 맞춤
+    -@font-face : 글꼴 등록 / font-family : 글꼴 이름 / src : 글꼴 파일 경로
+    -font-family는 앞쪽 글꼴부터 적용 가능한 것을 사용
+    -실습 : 로컬 ttf 글꼴과 외부 웹폰트 연결
+
+3장 display 속성
+    -block : 기본적으로 새 줄에서 시작, 너비·높이 지정 가능
+    -inline : 문장 흐름에 배치, 일반 텍스트 요소는 width·height 적용 안 됨
+    -inline-block : 한 줄에 배치하면서 너비·높이 지정 가능
+    -none : 요소를 숨기고 배치 공간도 제거
+    -a에 display:block 적용 : 링크 영역을 블록 크기로 확장
+
+4장 visibility와 opacity
+    -visibility:hidden; : 숨기지만 원래 배치 공간은 유지
+    -display:none; : 숨기고 배치 공간도 제거
+    -opacity:0; : 완전 투명 / 0.5 : 반투명 / 1 : 불투명
+    -opacity는 자식 내용을 포함한 요소 전체에 적용
+    -opacity:0이어도 배치 공간이 남고 클릭 대상이 될 수 있음
+
+5장 margin·padding·border
+    -margin : 테두리 바깥 여백 / padding : 내용과 테두리 사이 여백
+    -border : 테두리 / solid : 실선 / dashed : 파선
+    -값 4개 : 위 → 오른쪽 → 아래 → 왼쪽
+    -값 2개 : 위아래 → 좌우 / 값 1개 : 네 방향 모두
+    -기본 박스의 바깥 너비 : width + 좌우 padding + 좌우 border
+    -예 : width 100px + padding 10px씩 + border 10px씩 = 140px
+    -margin은 위 박스 너비 바깥에 추가되는 여백
+
+6장 box-sizing
+    -content-box : 기본값, width·height가 내용 영역 크기
+    -border-box : width·height에 padding과 border 포함, margin은 제외
+    -예 : width 100px, border 5px이면 content-box는 110px, border-box는 100px
+    -메뉴나 여러 열의 전체 너비를 계산할 때 활용
+
+7장 글자와 line-height
+    -font-family : 글꼴 / font-size : 크기 / font-weight : 굵기
+    -font-style:italic; : 기울임꼴 / text-decoration:underline; : 밑줄
+    -text-align:center; : 가운데 / justify : 양쪽 정렬
+    -line-height : 줄 높이
+    -한 줄 텍스트는 height와 line-height를 같게 하여 세로 중앙 배치 가능
+    -width·height 300px, border-radius 150px : 원형 박스
+
+8장 position과 z-index
+    -static : 기본 배치 / relative : 원래 위치 기준으로 이동, 원래 공간 유지
+    -absolute : 일반 흐름에서 빠져 배치되며 원래 공간을 차지하지 않음
+    -예제의 absolute 기준 : 가장 가까운 position이 static이 아닌 조상
+    -해당 조상이 없으면 초기 컨테이닝 블록을 기준으로 배치
+    -fixed : 예제에서는 화면 기준 고정, 스크롤해도 같은 위치 유지
+    -top·left·right·bottom : 기준 영역에서의 위치 지정
+    -부모 relative + 자식 absolute : 부모 내부의 특정 위치에 배치
+    -z-index : 겹침 순서 지정, 같은 쌓임 맥락에서는 큰 값이 앞에 표시
+
+9장 float
+    -float:left; : 왼쪽 배치 / float:right; : 오른쪽 배치
+    -이미지 옆으로 본문이 흐르도록 배치할 때 사용
+    -이미지 margin으로 글자와의 간격 조절
+    -예제의 overflow:hidden은 float 자식을 감싸는 데도 사용
+
+10장 종합 실습과 수정 사항
+    -11_quiz.html : 배경 이미지·헤더·메뉴·본문·배너·푸터 구성
+    -absolute와 opacity로 배경 처리, float로 메뉴와 본문 영역 배치
+    -하위 메뉴 HTML은 있으나 펼침·숨김 동작을 위한 CSS는 작성되지 않음
+    -1_단위들.html : p 사이에 span이 있으므로 nth-child(2), (4)는 p에 적용되지 않음
+    -p만 순서대로 선택하려면 p:nth-of-type(1)~(4) 사용
+    -2_url함수.html : @font-face의 scr → src
+    -4_visibility.html : id=" visibility", id=" display"의 앞 공백 제거
+    -4_visibility.html : 투명도 설명은 있으나 실제 opacity 선언은 없음
+    -8_글자관련.html : font-weight:400px; → font-weight:400;
+    -11_quiz.html : width:800; → width:800px; / cener → center
+    -11_quiz.html : 본문·배너의 너비와 좌우 여백 합계를 확인해야 줄바꿈 방지 가능

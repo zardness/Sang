@@ -1,0 +1,56 @@
+1장 파일과 페이지 구성
+    -ex.html : 모바일 뉴스 페이지 구조 / ex.css : 외부 디자인 파일
+    -ex_test.html : 체크박스로 영역을 보이거나 숨기는 토글 연습
+    -페이지 순서 : 로고·검색창 → 메뉴 → 이미지 기사 → 제목 목록 → 이미지와 글 → 푸터
+    -<link href="ex.css" rel="stylesheet"> : 같은 폴더의 CSS 연결
+
+2장 모바일 화면 설정
+    -meta viewport : 모바일 브라우저의 화면 표시 기준 설정
+    -width=device-width : 기기 화면 너비에 맞춤 / initial-scale=1.0 : 초기 배율 1
+    -ex_test.html은 최소·최대 확대 배율과 사용자 확대 허용도 설정
+    -너비를 %로 지정하여 화면에 따라 영역 크기 조절
+
+3장 CSS만으로 메뉴 토글
+    -<input type="checkbox" id="toggle"> : 열림·닫힘 상태 저장
+    -<label for="toggle"> : 메뉴 이미지를 클릭하면 체크 상태 변경
+    -#toggle {display:none;} : 체크박스 자체는 숨김
+    -#lnb {display:none;} : 메뉴를 처음에는 숨김
+    -#toggle:checked ~ #lnb {display:block;} : 체크하면 메뉴 표시
+    -:checked : 체크된 상태 / ~ : 같은 부모 아래 뒤에 있는 형제 선택
+    -중간에 다른 요소가 있어도 선택 가능 / JavaScript 없이 동작
+    -ex_test.html은 같은 방식으로 #showHide 영역을 표시·숨김
+
+4장 헤더와 검색창
+    -position:relative : 내부 absolute 요소의 배치 기준
+    -position:absolute; left:0; top:0; : 왼쪽 위에 메뉴 아이콘 배치
+    -right:0; top:0; : 오른쪽 위에 내 정보·검색 아이콘 배치
+    -검색 입력창 width:100% / box-sizing:border-box : 테두리를 포함한 너비 설정
+    -padding-right:55px : 검색 버튼과 입력 글자가 겹치지 않도록 여백 확보
+    -검색 버튼은 submit이며, 검색 결과를 처리하는 서버 코드는 첨부에 없음
+
+5장 메뉴와 이미지 배치
+    -메뉴 li : float:left; width:16.66666%; → 6개 메뉴를 가로 배치
+    -li:last-child : 마지막 메뉴의 오른쪽 테두리 제거
+    -이미지 영역 : 3행, 각 행에 width:50%인 두 칸 배치
+    -overflow:hidden : 넘친 부분 숨김, 예제에서는 float 자식을 감싸는 데도 사용
+    -img의 width:100%; height:100px; : 지정된 이미지 영역에 맞춤
+    -object-fit:fill; : 영역을 채우며 원본 비율이 달라질 수 있음
+
+6장 한 줄 말줄임
+    -white-space:nowrap; : 줄바꿈 방지
+    -overflow:hidden; : 넘친 내용 숨김
+    -text-overflow:ellipsis; : 넘친 글자를 ...으로 표시
+    -너비가 제한되는 블록 컨테이너 등에 세 속성을 함께 적용
+    -기사 제목 a와 첫 번째 span에 적용 / span은 display:block으로 변경
+
+7장 이미지와 글 배치·푸터
+    -현재 적용된 방식 : 이미지에 float:left, padding-right:10px 지정
+    -주석 속 대안 : li에 relative, 이미지에 absolute, 글에 padding-left 지정
+    -span:first-child : 첫 번째 span을 선택하여 제목 크기·색상·굵기 변경
+    -footer : 주황 배경, 가운데 정렬 / 마지막 p는 작은 회색 글자
+
+8장 확인 및 수정 사항
+    -ex.css : /#section2 → #section2로 수정해야 여백 규칙 적용
+    -ex_test.html : initial-scale=1.0 뒤에 쉼표를 넣어 다음 viewport 설정과 구분
+    -ch07 폴더의 아이콘·로고·썸네일 파일이 있어야 로컬 이미지 표시 가능
+    -외부 기사 이미지와 링크는 네트워크 연결 및 해당 주소의 접근 가능 여부에 영향받음

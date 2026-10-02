@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  번호 : {{emp.empno}}<br>
+  이름 : {{emp.ename}}<br>
+  직책 : {{emp.job}}<br>
+  상사사번 : {% if emp.mgr %} {{emp.mgr}} {%else%} - {%endif%}<br>
+  입사일 : {{emp.hiredate.strftime("%Y년%m월%d일")}}<br>
+  급여 : {{ "{:,.0f}".format(emp.sal) }}<br>
+  상여 : {% if emp.comm %} {{emp.comm}} {%else%} - {%endif%}<br>
+  부서번호 : {{emp.deptno}}<br>
+{% endblock %}

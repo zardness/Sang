@@ -1,0 +1,67 @@
+1장 변수 선언
+    -var : 같은 범위에서 재선언 가능, 함수 범위 적용
+    -let : 같은 범위에서 재선언 불가, 재할당 가능, 블록 범위 적용
+    -const : 재할당 불가, 선언할 때 초기값 필요
+    -var가 항상 전역변수이고 let이 항상 지역변수인 것은 아님
+    -v++ : 값을 1 증가 / 예제의 v 최종값은 21, l은 20
+    -const 배열도 내부 요소 변경 가능 / Carr[0]=9 → [9,2,3]
+
+2장 자료형과 typeof
+    -typeof 값 : 값의 자료형을 문자열로 확인
+    -undefined : 선언 후 값이 할당되지 않은 상태 / string : 문자열
+    -number : 숫자 / boolean : true·false
+    -함수는 typeof 결과가 'function' / 객체와 배열은 'object'
+    -null : 값이 없음을 의도적으로 지정하는 원시값, typeof 결과는 'object'
+    -배열 여부는 Array.isArray()로 확인 가능
+    -하나의 변수에 다른 자료형의 값을 다시 할당할 수 있음
+    -백틱 문자열과 ${변수} : 문자열 안에 변수값 삽입
+    -variable = function(){ ... }; : 함수를 변수에 저장 / variable() : 호출
+
+3장 복합 대입과 화면 내용 추가
+    -+= : 기존 값에 더해서 저장 / 문자열에서는 이어 붙이기
+    -list += '<li>HTML</li>'; : HTML 문자열을 순서대로 조립
+    -window.onload = function(){ ... }; : 페이지와 관련 자원 로딩 후 실행
+    -document.body.innerHTML += list; : 기존 본문 HTML에 목록 문자열을 합쳐 다시 설정
+    -innerHTML은 문자열을 HTML로 해석하며, += 사용 시 기존 내부 요소도 다시 생성됨
+
+4장 confirm과 비교 연산자
+    -confirm('질문') : 확인·취소 선택창
+    -확인 → true / 취소 → false / 반환값 자료형은 boolean
+    -== : 필요하면 자료형을 변환하여 비교 / === : 형 변환 없이 비교
+    -false == 0은 true / false === 0은 false
+    -예제의 answer==0은 취소 여부 판단 / !answer 또는 answer===false로 표현 가능
+    -confirm은 선택값만 반환하며 실제 삭제 기능은 예제에 없음
+
+5장 prompt와 숫자 변환
+    -prompt('질문','기본값') : 입력창 / 확인 → 문자열, 취소 → null
+    -if(!scoreStr) : 취소(null) 또는 빈 문자열('') 처리
+    -문자열 '0'과 공백 문자열 ' '는 위 조건에서 걸러지지 않음
+    -Number('100') → 100 / Number('100점') → NaN
+    -Number(''), Number(' '), Number(null) → 0
+    -parseInt('100점',10) → 100 / parseInt('3.9',10) → 3
+    -parseInt('',10), parseInt(' ',10), parseInt(null,10) → NaN
+    -NaN : 유효한 숫자 결과가 아님 / typeof NaN은 'number'
+    -isNaN(score) : 예제에서 변환 결과가 NaN인지 확인
+    -예제는 Number 결과를 parseInt 결과로 덮어쓰므로 최종 판정은 parseInt 기준
+
+6장 삼항 연산자
+    -조건 ? 참일 때 값 : 거짓일 때 값
+    -score > 80 ? '잘했어요' : '못했어요'
+    -80점 초과일 때 '잘했어요' / 80점 이하는 '못했어요'
+
+7장 false로 해석되는 값
+    -Boolean(값) : 논리값 true·false로 변환
+    -예제에서 false : undefined, 0, NaN, null, ''
+    -false 자체도 false로 해석됨
+    -예제에서 true : 빈 배열 [], 공백 문자열 ' '
+    -빈 문자열 ''과 공백이 들어 있는 문자열 ' '는 다름
+
+8장 원본 코드의 수정 사항
+    -2_변수자료형.js : document.write1 두 곳 → document.write
+    -첫 write1 호출에서 오류가 발생하므로 이후 배열 예제도 실행되지 않음
+    -3_복합대입연산자.html : 마지막 list += '<ul>'; → list += '</ul>';
+    -4_confirm.html의 answer, 5_prompt.html의 result는 let 또는 const로 선언
+    -1_변수선언.js의 v=10은 뒤의 var v 선언이 호이스팅되어 동작함
+    -혼동을 줄이려면 변수 선언 후 값을 사용하도록 작성
+    -점수를 엄격히 검사하려면 취소·공백 확인 후 Number 변환과 숫자 여부 검사
+    -document·window·alert·confirm·prompt 예제는 브라우저 환경에서 실행

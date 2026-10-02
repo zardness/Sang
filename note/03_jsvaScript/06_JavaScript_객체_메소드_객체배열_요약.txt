@@ -1,0 +1,48 @@
+1장 배열과 객체의 출력 및 속성 변경 (1번 소스)
+    -배열은 인덱스로 값에 접근, 객체는 속성 이름(key)으로 값에 접근
+    -arr.push(값): 배열 끝에 추가, arr.pop(): 마지막 요소 제거 및 반환
+    -객체 생성: {name:'홍길동', age:20} 형태
+    -obj.name과 obj['name']으로 속성값에 접근
+    -for-in문은 열거 가능한 속성 이름을 순회하며, 예제의 key와 배열 인덱스는 문자열
+    -변수 key에 담긴 속성 이름을 사용하려면 obj[key]로 접근
+    -obj.address = '신림동'처럼 새 속성 추가, delete obj.age로 속성 삭제
+
+2장 객체의 속성과 메소드 (2번 소스)
+    -객체는 이름·나이 같은 데이터와 함수인 메소드를 함께 저장
+    -eat:function(food){...}로 메소드 정의, person.eat('덮밥')으로 호출
+    -person.eat()처럼 호출할 때 메소드 안의 this는 person을 가리킴
+    -this.name, this.age로 같은 객체의 속성 사용
+    -person.eat은 함수 자체를 참조하고, person.eat(...)은 함수를 실행
+    -예제에서 person을 문자열로 출력하면 기본적으로 [object Object] 표시
+
+3장 toString() 재정의 (3번 소스)
+    -toString(): 객체를 문자열로 표현하는 메소드
+    -직접 정의하면 document.write(person) 등의 문자열 변환에 사용됨
+    -for-in문으로 속성을 순회하고 eat, toString을 제외하여 문자열 생성
+    -nickname과 hobby를 추가하면 다음 출력에 새 속성도 반영됨
+    -output에 문자열을 누적한 뒤 return으로 반환
+
+4장 객체 배열과 성적 계산 (4번 소스)
+    -students 배열에 학생별 이름, 국어, 수학, 영어 점수를 객체로 저장
+    -반복문으로 각 학생 객체에 getSum, getAvg, toString 메소드 추가
+    -getSum(): this.kor + this.mat + this.eng로 총점 계산
+    -getAvg(): 총점/3을 소수 둘째 자리에서 반올림하여 소수 첫째 자리까지 계산
+    -Math.round(평균*10)/10으로 반올림 처리
+    -toString()에서 학생 정보와 총점·평균을 하나의 문자열로 반환
+    -key.substring(3).toUpperCase(): getSum→SUM, getAvg→AVG로 표시 이름 변환
+    -this[key]()로 속성 이름에 해당하는 메소드 호출
+    -일반 for, for-in, for-of, forEach로 학생 목록을 각각 출력
+
+5장 객체를 반환하는 함수 (5번 소스)
+    -makeStudent(name,kor,mat,eng)는 학생 객체를 만들어 반환하는 일반 함수
+    -함수 안에서 속성과 getSum, getAvg, toString 메소드를 함께 정의
+    -students.push(makeStudent(...))로 생성한 객체를 배열에 추가
+    -같은 구조의 객체를 반복해서 만드는 코드를 함수로 묶어 재사용
+    -forEach로 배열을 순회하며 각 학생 정보를 출력
+
+6장 학습 시 주의할 부분
+    -배열은 객체의 일종이지만 일반 객체와 달리 length와 배열 메소드를 제공
+    -for-in은 상속받은 열거 가능한 속성도 순회할 수 있어 배열 값 순회에는 for-of나 forEach가 적합
+    -this로 객체 속성을 사용하는 예제의 메소드를 화살표 함수로 바꾸면 this 동작이 달라짐
+    -4번 소스의 평균 주석과 달리 실제 계산은 소수 둘째 자리에서 반올림
+    -Math.round(평균*10)/10은 숫자 계산이므로 정수 결과에 .0을 붙여 표시하지는 않음
