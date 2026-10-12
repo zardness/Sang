@@ -1,0 +1,46 @@
+1장 fetch와 버튼 클릭 (1_fetch(buttonclick).html)
+    -DOMContentLoaded 후 중복체크 버튼에 click 이벤트 등록
+    -input[name=id]의 value로 입력한 아이디 읽기
+    -new URLSearchParams({id:id})로 URL에 넣을 쿼리 문자열 생성
+    -URLSearchParams는 공백이나 특수문자 등을 URL에 맞게 인코딩
+    -fetch('주소?쿼리문자열', {method:'get'})로 비동기 GET 요청
+    -fetch()는 Promise를 반환하며 then()으로 응답 처리 연결
+
+2장 응답과 오류 처리
+    -response.ok: HTTP 상태 코드가 200~299이면 true
+    -response.status: 상태 코드, response.statusText: 상태 설명
+    -HTTP 오류 응답도 fetch 자체는 성공적으로 응답을 받을 수 있어 ok 검사 필요
+    -ok가 false이면 throw new Error(...)로 오류 발생
+    -response.text()로 응답 본문을 문자열로 읽으며 이 작업도 Promise 반환
+    -catch(error)에서 요청 실패나 앞선 처리 중 발생한 오류를 받아 alert()로 표시
+
+3장 중복 확인 결과 표시
+    -midConfirmExists.html: '중복된 ID 입니다.'라는 고정 HTML 문구
+    -midConfirmNonExists.html: '사용가능한 아이디입니다.'라는 고정 HTML 문구
+    -현재 버튼 소스는 항상 midConfirmNonExists.html을 요청
+    -아이디를 URL에 전달해도 첨부된 정적 HTML만으로 실제 중복 여부를 판단하지는 않음
+    -실행 중인 코드에는 응답을 화면에 넣는 두 번째 then()이 빠져 있음
+    -then(data => { document.querySelector('#idConfirmResult').innerHTML = data; })를 연결하면 결과 표시 가능
+    -화면 표시 코드는 주석 안에만 있으므로 현재 상태에서는 요청 성공 시 결과 영역이 바뀌지 않음
+
+4장 키 입력 기반 확인 (2_fetch(keyup).html)
+    -현재 파일은 기본 HTML 틀만 있고 스크립트와 화면 내용이 비어 있음
+    -파일명은 keyup 기반 실습을 나타내지만 실제 기능은 구현되지 않음
+    -keyup은 키보드 키를 놓을 때 발생하는 이벤트
+
+5장 회원가입 화면 (join.html)
+    -아이디, 비밀번호, 비밀번호 확인, 이름, 생년월일 입력란 구성
+    -idConfirmResult와 pwChkResult는 검사 결과를 표시할 영역
+    -아이디와 이름에는 required를 지정하여 필수 입력 설정
+    -가입하기는 submit, 다시하기는 reset, 로그인은 일반 button
+    -css/join.css를 연결하지만 해당 CSS 파일은 이번 첨부에 없음
+    -주석에는 아이디 중복 확인, 비밀번호 일치 검사, 제출 시 유효성 검사 구현 계획이 적혀 있음
+    -주석의 $.ajax()는 jQuery 방식이지만 실제 jQuery 연결과 구현 코드는 없음
+
+6장 미완성 부분과 주의점
+    -join.html의 addEventListener('DOMContentLoaded')에는 처리 함수 인자가 없어 오류 발생
+    -document.addEventListener('DOMContentLoaded', () => {...}) 형태로 작성 필요
+    -실제 아이디 조회와 회원가입 저장을 처리하는 서버 코드는 포함되어 있지 않음
+    -폼의 action과 method가 생략되어 있어 기본적으로 현재 주소에 GET 방식으로 제출됨
+    -비밀번호를 URL에 넣지 않도록 실제 가입 처리에서는 POST 방식과 서버 처리를 구성해야 함
+    -fetch 실습은 HTML 파일을 직접 여는 대신 HTTP 서버를 통해 실행해야 로컬 파일 접근 제한을 피할 수 있음

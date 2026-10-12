@@ -9,3 +9,5 @@ IDE/
 .env
 /.metadata/
 09_project/
+/env
+/vercel

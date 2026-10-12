@@ -1,0 +1,174 @@
+생성형 AI · Hugging Face · LangChain · OpenAI API 핵심요약
+(첨부 노트북 10개 기준 / 소스 분석이며 모델·API 호출은 실행하지 않음)
+※ 모델명과 호출 예시는 첨부 소스 기준. 요금·모델 지원 현황은 이 요약의 확인 대상에서 제외.
+
+1장 Hugging Face 모델 활용
+    -Hugging Face는 학습된 모델을 가져와 다양한 AI 작업에 활용하는 플랫폼
+    -transformers.pipeline(): 전처리 → 모델 실행 → 후처리를 한 번에 처리
+    -예제의 pipeline은 모델을 내려받아 로컬에서 실행하고 InferenceClient는 서버에 요청
+    -text-classification / sentiment-analysis: 문장의 범주·긍정·부정 분류
+    -zero-shot-classification: candidate_labels로 제시한 후보 중 관련 범주 선택
+    -text-generation: 주어진 문장에 이어질 텍스트 생성
+    -fill-mask: [MASK] 또는 <mask> 위치에 들어갈 단어 예측
+    -ner: 사람·장소·조직 등의 개체명 인식
+    -question-answering: 제공한 context에서 질문의 답을 추출
+    -summarization / translation: 문서 요약 / 언어 번역
+    -image-to-text / image-classification: 이미지 설명 생성 / 이미지 분류
+    -예제 모델: 영어 감성분석 DistilBERT, 한국어 감성분석 KoELECTRA, 텍스트 생성 GPT-2·KoGPT2
+    -사용할 언어와 작업에 맞는 모델을 선택하고 결과의 label·score·generated_text 등을 확인
+    -max_new_tokens는 새로 생성할 토큰 수, top_k·top_p는 샘플링 후보 범위를 조절
+    -temperature는 생성의 무작위성, repetition_penalty는 반복 억제 정도를 조절
+
+2장 Ollama와 LangChain 기본
+    -Ollama: 내려받은 LLM을 로컬에서 실행하는 도구
+    -소스에서는 llama3.2:1b, deepseek-r1:1.5b, exaone3.5:2.4b를 예제로 사용
+    -ChatOllama(model=...): 로컬 모델 연결 / ChatOpenAI(model=...): OpenAI 모델 연결
+    -invoke(입력): 모델·프롬프트·체인을 실행하는 공통 방식
+    -LLM 호출 결과는 AIMessage이며 result.content로 답변 텍스트 확인
+    -response_metadata에는 실행 시간·토큰 등 실행 관련 정보가 들어갈 수 있음
+    -PromptTemplate: {country}처럼 바뀌는 값을 포함한 질문 틀
+    -template.invoke({'country':'Korea'}): 변수에 값을 넣어 프롬프트 생성
+    -ChatPromptTemplate: 역할별 메시지를 포함하는 대화형 프롬프트 틀
+    -SystemMessage는 지시, HumanMessage는 사용자 질문, AIMessage는 AI 답변
+    -few-shot은 질문·모범답안 예시를 프롬프트에 넣어 원하는 형식을 안내하는 방법
+
+3장 출력 파서·Pydantic·LCEL
+    -StrOutputParser(): AIMessage의 답변을 문자열로 변환
+    -JsonOutputParser(): JSON 형식의 답변을 파이썬 자료구조로 해석
+    -Pydantic BaseModel: 결과에 필요한 필드와 자료형을 정의하고 값 검증
+    -Field(): 기본값·길이·값의 범위·설명 등을 지정
+    -with_structured_output(CountryDetail): 정의한 구조에 맞는 결과를 받도록 구성
+    -model_dump(): Pydantic 객체를 딕셔너리로 변환
+    -LCEL의 | 연산자로 실행 단계를 연결
+    -기본 체인: prompt_template | llm | output_parser
+    -복합 체인 예제: 국가 설명 → 국가명 추측 → 수도명 생성
+    -{'country': country_chain} | capital_chain은 앞 체인 결과를 country 입력에 전달
+    -체인의 다음 단계가 요구하는 입력 변수명과 앞 단계의 출력 형식을 맞춰야 함
+
+4장 Chat Completions API
+    -load_dotenv()로 .env를 읽고 client = OpenAI()로 API 요청 객체 생성
+    -OPENAI_API_KEY는 환경변수로 관리하며 소스에 직접 적지 않음
+    -client.chat.completions.create(model=..., messages=...)로 답변 요청
+    -messages는 role과 content를 가진 메시지 목록
+    -system: 역할·규칙 / user: 질문 / assistant: AI 답변 / tool: 함수 실행 결과
+    -응답 텍스트: response.choices[0].message.content
+    -같은 질문도 역할 지시와 예시를 바꾸면 답변 관점·형식이 달라질 수 있음
+    -이전 user·assistant 메시지를 함께 전달해 대화 맥락 유지
+    -response_format={'type':'json_object'} 예제는 JSON 출력을 요청하고 json.loads()로 변환
+    -stream=True일 때 응답 조각의 choices[0].delta.content를 순서대로 연결
+    -스트리밍 조각은 반드시 한 글자씩 오거나 이전 문장 전체를 반복하는 형태는 아님
+    -usage.prompt_tokens는 입력, completion_tokens는 출력, total_tokens는 합계
+    -대화형 챗봇은 입력 → 이력 추가 → API 요청 → 답변 출력·이력 추가를 반복
+    -예외 처리로 요청 오류를 다루며, 빈 입력과 종료 명령을 별도로 처리
+
+5장 이미지 생성과 편집
+    -소스에서는 gpt-image-1-mini를 사용한 이미지 생성·편집 예제 구현
+    -client.images.generate(): 설명(prompt)을 바탕으로 이미지 생성
+    -n은 이미지 수, size는 크기, quality는 품질 설정
+    -response.data[0].b64_json에서 Base64 이미지 데이터를 꺼냄
+    -base64.b64decode()로 바이트 변환 → open(..., 'wb')로 PNG 저장
+    -PIL.Image와 BytesIO 또는 IPython.display.Image로 이미지 표시
+    -client.images.edit(): 원본 image·수정 영역 mask·편집 지시 prompt를 전달
+    -소스의 편집 예제는 원본과 마스크를 읽어 하늘의 구름 제거를 요청
+    -편집 응답도 디코딩·저장해야 결과 파일로 확인할 수 있음
+
+6장 TTS: 텍스트를 음성으로 변환
+    -TTS(Text-to-Speech)는 글을 읽는 음성 데이터를 생성하는 기능
+    -client.audio.speech.create(model=..., voice=..., input=...)로 요청
+    -예제 모델은 tts-1·tts-1-hd이며 nova·fable·shimmer 목소리를 사용
+    -voice는 목소리, input은 읽을 글, speed는 말하는 속도
+    -response_format으로 MP3·WAV 등의 출력 형식을 지정하는 예제 포함
+    -일반 응답은 response.content의 오디오 바이트를 'wb' 모드로 저장
+    -스트리밍 예제는 with client.audio.speech.with_streaming_response.create(...) 사용
+    -with 블록 안에서 response.stream_to_file(경로)로 오디오 저장
+    -IPython.display.Audio(filename=경로, autoplay=True)로 노트북에서 재생
+    -TTS 응답은 음성 데이터이므로 Chat Completions의 choices로 읽지 않음
+    -파일 확장자와 실제 response_format을 맞추고 저장할 폴더를 준비
+
+7장 Whisper: 음성을 텍스트로 변환
+    -STT 또는 ASR은 음성을 인식해 글로 바꾸는 작업
+    -client.audio.transcriptions.create(): 음성을 원래 언어의 글로 필사
+    -소스의 model='whisper-1', file은 'rb' 모드로 연 오디오 파일
+    -response_format='text'는 텍스트, 'srt'·'vtt'는 시간 정보가 포함된 자막 형식
+    -'verbose_json'은 세그먼트 등 상세 정보 확인에 사용
+    -language='ko'·'es'는 입력 음성의 언어를 알려주는 설정
+    -번역용 translations는 영어 텍스트 출력을 위한 기능으로 설명됨
+    -스페인어 음성을 한국어로 바꾸는 예제: 스페인어 필사 → Chat Completions 번역
+    -마이크 예제: sounddevice.rec() → 녹음 완료 대기 → WAV 저장 → 필사 요청
+    -소스의 마이크 처리는 5초 녹음 후 파일을 보내는 방식
+
+8장 텍스트 요약 후 MP3 생성 과제
+    -data/ch06_quiz.txt를 UTF-8로 읽고 줄바꿈을 공백으로 정리
+    -Chat Completions에 핵심 내용을 100자 이내로 요약하도록 요청
+    -summary = chat_response.choices[0].message.content로 요약문 추출
+    -요약문을 TTS의 input에 넣고 voice='nova'로 음성 변환
+    -data/ch6_quiz.mp3로 저장 후 Audio로 재생
+    -전체 흐름: 파일 읽기 → 요약 → 음성 생성 → MP3 저장 → 재생
+    -100자 제한을 확실하게 적용하려면 생성 후 len(summary) 확인도 필요
+    -.env 로드와 client 생성은 API 호출 전에 실행
+
+9장 Responses API와 대화 관리
+    -client.responses.create(model=..., instructions=..., input=...)로 요청
+    -instructions는 역할·규칙, input은 질문이나 입력 내용
+    -response.output_text로 최종 답변 텍스트 확인
+    -response.id를 다음 요청의 previous_response_id로 전달해 대화를 연결
+    -예제는 매 요청에 instructions를 넣고 previous_id를 갱신
+    -이전 대화 연결과 별개로 history 목록을 만들어 대화 내용을 파일로 백업
+    -usage.input_tokens·output_tokens로 입력·출력 사용량 확인
+    -Code Interpreter 예제: 파일 업로드 → file_id를 도구 컨테이너에 연결 → 계산·분석 요청
+    -File Search 예제: Vector Store 생성 → 파일 업로드·처리 대기 → 문서 근거 질의
+    -코드 인터프리터는 파일 계산·가공, 파일 검색은 관련 문서 내용 검색에 사용
+    -소스의 파일 업로드 메서드: client.vector_stores.files.upload_and_poll()
+
+10장 Function Calling
+    -모델이 사용할 함수 이름과 인자를 요청하고, 실제 함수는 개발자 코드가 실행
+    -예제 get_weather(latitude, longitude)는 외부 날씨 API에서 현재 기온을 조회
+    -tools에 함수 이름·설명·parameters의 JSON Schema를 등록
+    -required는 필수 인자, additionalProperties=False는 정의되지 않은 인자를 제한
+    -strict는 함수 인자가 지정한 스키마를 따르도록 하는 설정
+    -모델 응답의 message.tool_calls에서 함수명·JSON 문자열 인자를 확인
+    -json.loads()로 인자를 변환하고 해당 파이썬 함수를 실행
+    -assistant의 호출 메시지와 role='tool'의 실행 결과를 messages에 추가
+    -tool_call_id로 함수 호출 요청과 실행 결과를 연결
+    -결과가 추가된 messages로 모델을 다시 호출하면 사용자용 최종 답변 생성
+    -함수 호출이 없는 응답도 처리하고, 여러 호출이면 각각 결과를 연결해야 함
+    -첨부 소스는 메시지 추가·출력까지 구현되어 있으며 마지막 모델 재요청은 빠져 있음
+
+11장 생성형 AI 레시피 과제
+    -목표: 국가명 → 해당 국가의 대표 음식 → 한국어 레시피
+    -첫 번째 체인은 country 입력을 받아 음식명만 출력
+    -두 번째 체인은 food 입력을 받아 재료·조리 순서·팁을 출력
+    -ChatOllama와 PromptTemplate, StrOutputParser를 연결해 구성
+    -정리된 연결 구조:
+        output_parser = StrOutputParser()
+        country_chain = country_prompt | llm | output_parser
+        recipe_chain = recipe_prompt | llm | output_parser
+        final_chain = {'food': country_chain} | recipe_chain
+        result = final_chain.invoke({'country': 'Korea'})
+    -country_prompt는 {country}, recipe_prompt는 {food}를 포함하는 템플릿으로 먼저 정의
+    -첨부 과제 소스에는 변수 초기화·이름·연결 오류가 있어 그대로는 순서대로 실행하기 어려움
+
+12장 주요 용어와 소스 수정사항
+    -client: 서버에 요청하는 객체 / response: 요청 처리 후 받은 응답
+    -context: 질문을 이해하는 문맥 / template: 반복해서 사용할 질문 양식
+    -parser: 결과를 프로그램에서 사용하기 좋은 형식으로 해석·변환
+    -@property: 메서드를 괄호 없이 속성처럼 접근하게 하는 파이썬 기능
+    -few-shot은 프롬프트에 예시를 주는 방식으로 모델 가중치를 바꾸는 학습과 구분
+    -temperature는 무작위성 조절이며, 낮다고 사실 정확성이 보장되지는 않음
+    -허깅페이스 예제의 HF_TOKEN과 HF-TOKEN 환경변수 이름을 하나로 통일
+    -파라미터 수를 MB로 표시한 코드는 자료형의 바이트 수를 반영하지 않음
+    -가중치 용량은 파라미터 수 × 원소당 바이트 수로 계산하며 실행 메모리와도 구분
+    -LangChain의 ChatAnthropic(model=)은 모델 값이 빠진 문법 오류
+    -{'Korea'}는 집합이므로 변수 입력에는 {'country':'Korea'}처럼 딕셔너리 사용
+    -few-shot의 'The capital of Italy is Paris.'는 France로 수정
+    -JSON 예시의 키·문자열에는 큰따옴표를 사용하고 population 필드의 자료형도 일치시킴
+    -Chat Completions 챗봇의 입력·출력 토큰 누적 변수가 뒤바뀌어 있음
+    -input_tokens에는 prompt_tokens, output_tokens에는 completion_tokens를 누적
+    -Whisper 예제의 response = client.audio.는 미완성 코드
+    -sd.walt()는 sd.wait()로 수정하고 response_format='text' 뒤에 쉼표 추가
+    -SRT 결과는 transcription에 저장했으므로 print(transcription)으로 출력
+    -Responses의 history에는 assistant만 저장하므로 전체 기록에는 user 질문도 추가
+    -레시피 과제는 outputParser를 사용 전에 생성하고 미정의 prompt_template·food_frompt를 수정
+    -음식명 생성 체인과 레시피 프롬프트에 같은 food_prompt 이름을 재사용하지 않도록 정리
+    -Function Calling은 tool_calls가 없으면 기존 코드의 반복문·result 사용에서 오류가 날 수 있음
+    -API 응답 구조·예제 코드와 설명이 다른 곳이 있어 실제 호출 코드와 변수명을 기준으로 확인

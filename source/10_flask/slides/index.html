@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flask Todo 프로젝트 발표</title>
+  <!-- 글꼴: 본문 IBM Plex Sans KR, 코드 IBM Plex Mono (구글 폰트) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+  <style>
+    /* ===== 색과 글꼴을 변수로 모아 두기: 여기만 바꾸면 전체 분위기가 바뀜 ===== */
+    :root {
+      --paper: #FBFCFE;      /* 바탕 (모눈종이 느낌) */
+      --grid: #E3E9F4;       /* 모눈 선 */
+      --ink: #1F3A93;        /* 제목·강조 (파란 잉크) */
+      --text: #2E3440;       /* 본문 */
+      --muted: #6B7385;      /* 보조 설명 */
+      --mark: #FFE45C;       /* 형광펜 (한 곳에만 사용) */
+      --font: "IBM Plex Sans KR", "Malgun Gothic", sans-serif;
+      --mono: "IBM Plex Mono", Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: var(--font); color: var(--text); line-height: 1.7;
+      /* 배경에 24px 간격의 모눈 그리기 */
+      background:
+        linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 24px 24px,
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 24px 24px,
+        var(--paper);
+    }
+    a { color: var(--ink); }
+    :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+    /* ===== 상단 고정 메뉴 ===== */
+    nav {
+      position: sticky; top: 0; z-index: 10; background: rgba(251,252,254,.95);
+      border-bottom: 2px solid var(--ink); display: flex; gap: 20px; align-items: center;
+      padding: 10px 24px; overflow-x: auto; white-space: nowrap;
+    }
+    nav strong { color: var(--ink); margin-right: auto; }
+    nav a { text-decoration: none; font-size: 15px; }
+
+    /* ===== 공통 섹션 ===== */
+    section { max-width: 1040px; margin: 0 auto; padding: 72px 24px; }
+    h1, h2, h3 { color: var(--ink); line-height: 1.3; }
+    h2 { font-size: 30px; margin: 0 0 8px; }
+    .lead { color: var(--muted); max-width: 640px; margin: 0 0 32px; }
+
+    /* ===== 표지 ===== */
+    .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; min-height: 80vh; }
+    .hero h1 { font-size: clamp(34px, 5vw, 56px); margin: 0 0 16px; }
+    /* 형광펜은 표지 제목 아래 한 줄에만 */
+    .hero h1 span { background: linear-gradient(transparent 60%, var(--mark) 60%); }
+    .team { color: var(--muted); }
+    .btn {
+      display: inline-block; padding: 12px 20px; border: 2px solid var(--ink);
+      background: var(--ink); color: #fff; text-decoration: none; font-weight: 600; margin: 8px 8px 0 0;
+    }
+    .btn.line { background: transparent; color: var(--ink); }
+
+    /* ===== 영상·이미지 공통 (클릭하면 확대) ===== */
+    .media { width: 100%; border: 2px solid var(--ink); background: #fff; display: block; cursor: zoom-in; }
+
+    /* ===== 단계 목록: 왼쪽 설명 / 오른쪽 영상 ===== */
+    .step { display: grid; grid-template-columns: 64px 1fr 1.2fr; gap: 24px; padding: 32px 0; border-top: 1px dashed var(--ink); }
+    .step .no { font-family: var(--mono); font-size: 28px; color: var(--ink); }
+    .step h3 { margin: 0 0 8px; }
+    .step ul { margin: 0; padding-left: 18px; color: var(--muted); }
+
+    /* ===== 구조도: 상자와 화살표를 HTML로 ===== */
+    .arch { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: center; text-align: center; }
+    .box { border: 2px solid var(--ink); background: #fff; padding: 20px; }
+    .box b { display: block; color: var(--ink); font-size: 18px; }
+    .arrow { grid-column: 1 / -1; color: var(--ink); font-size: 22px; }
+
+    /* ===== 코드 블록 ===== */
+    pre {
+      background: #1E2433; color: #E6EAF2; padding: 20px; overflow-x: auto;
+      font-family: var(--mono); font-size: 14px; line-height: 1.6; border-left: 6px solid var(--ink);
+    }
+    .code-title { font-family: var(--mono); font-size: 13px; color: var(--muted); margin-bottom: -8px; }
+
+    /* ===== 자료 다운로드 목록 ===== */
+    .files { list-style: none; padding: 0; margin: 0; }
+    .files li { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--grid); }
+    .files span { color: var(--muted); }
+
+    /* ===== QR 영역 ===== */
+    .try { display: flex; gap: 32px; align-items: center; flex-wrap: wrap; }
+    .try img { width: 180px; border: 2px solid var(--ink); background: #fff; padding: 8px; }
+
+    /* ===== 확대 보기 창 (모달) ===== */
+    #modal {
+      position: fixed; inset: 0; background: rgba(20,24,36,.88); display: none;
+      align-items: center; justify-content: center; padding: 24px; z-index: 100;
+    }
+    #modal.open { display: flex; }
+    #modal img, #modal video { max-width: 100%; max-height: 90vh; }
+    #modal button { position: absolute; top: 16px; right: 16px; font-size: 16px; padding: 8px 14px; cursor: pointer; }
+
+    footer { text-align: center; padding: 40px; color: var(--muted); }
+
+    /* ===== 휴대폰 화면: 한 줄로 쌓기 ===== */
+    @media (max-width: 760px) {
+      .hero, .step, .arch { grid-template-columns: 1fr; }
+      .hero { min-height: auto; }
+    }
+    /* 움직임 줄이기 설정한 사용자 배려 */
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 메뉴: href="#아이디" 로 해당 섹션으로 이동 -->
+  <nav>
+    <strong>Flask Todo</strong>
+    <a href="#flow">체험 흐름</a>
+    <a href="#arch">구조</a>
+    <a href="#code">핵심 코드</a>
+    <a href="#files">자료</a>
+    <a href="#try">직접 해보기</a>
+  </nav>
+
+  <!-- ===== 1. 표지 ===== -->
+  <section class="hero" id="top">
+    <div>
+      <h1>할 일을 기록하고<br><span>어디서나 확인하는 앱</span></h1>
+      <p>Flask로 만든 할 일 관리 서비스를 Vercel에 배포했습니다.</p>
+      <p class="team">1st 프로젝트 : 김아무개, 박아무개, 이아무개, 정아무개</p>
+      <a class="btn" href="#flow">발표 보기</a>
+      <!-- 실제 배포 주소로 바꾸기 -->
+      <a class="btn line" href="https://test-two-orcin-95.vercel.app" target="_blank">서비스 열기</a>
+    </div>
+    <!-- autoplay muted loop playsinline: 소리 없이 자동 반복 재생 (휴대폰에서도 재생되려면 muted, playsinline 필수) -->
+    <video class="media" src="assets/sonatina.mp4" poster="assets/스크린샷.png" autoplay muted loop playsinline></video>
+  </section>
+
+  <!-- ===== 2. 체험 흐름 (단계가 실제 순서라서 번호 사용) ===== -->
+  <section id="flow">
+    <h2>이렇게 사용합니다</h2>
+    <p class="lead">실제 사용 화면을 녹화했습니다. 영상을 누르면 크게 볼 수 있습니다.</p>
+
+    <!-- 단계 하나 = div.step 하나. 단계를 늘리려면 이 블록을 복사해서 붙여 넣기 -->
+    <div class="step">
+      <div class="no">1</div>
+      <div>
+        <h3>로그인</h3>
+        <ul>
+          <li>세션에 사용자 정보 저장</li>
+          <li>로그인 후 목록 화면으로 이동</li>
+        </ul>
+      </div>
+      <video class="media" src="assets/step-01.mp4" autoplay muted loop playsinline></video>
+    </div>
+
+    <div class="step">
+      <div class="no">2</div>
+      <div>
+        <h3>할 일 추가</h3>
+        <ul>
+          <li>입력한 내용을 POST로 전송</li>
+          <li>최신 항목이 위에 보이도록 정렬</li>
+        </ul>
+      </div>
+      <video class="media" src="assets/step-02.mp4" autoplay muted loop playsinline></video>
+    </div>
+
+    <div class="step">
+      <div class="no">3</div>
+      <div>
+        <h3>예측서비스</h3>
+        <ul>
+          <li>PUT, DELETE 요청으로 처리</li>
+          <li>없는 번호는 404 안내 화면</li>
+        </ul>
+      </div>
+      <!-- 영상 대신 캡처 이미지를 써도 됨 -->
+      <img class="media" src="assets/스크린샷.png" alt="수정과 삭제 화면">
+    </div>
+  </section>
+
+  <!-- ===== 3. 구조 ===== -->
+  <section id="arch">
+    <h2>프로젝트 구조</h2>
+    <p class="lead">프로젝트에 대한 설명</p>
+    <div class="arch">
+      <div class="box"><b>insight 발견</b>전처리 사항들 두세단어로</div>
+      <div class="box"><b>딥러닝 머신러닝 예측</b>모델명들</div>      
+      <div class="box"><b>웹 서비스 구현</b>무엇을 서비스하는지</div>
+    </div>
+  </section>
+
+  <!-- ===== 4. 핵심 코드 ===== -->
+  <section id="code">
+    <h2>핵심 코드</h2>
+    <p class="lead">프로젝트에서 중요한 부분만 골랐습니다.</p>
+    <p class="code-title">app.py · 할 일 추가</p>
+    <!-- pre 안에서 < > 기호는 &lt; &gt; 로 써야 HTML 태그로 인식되지 않음 -->
+<pre><code>@app.route('/create', methods=["POST"])
+def create():
+  todo = Todo(content=request.form.get("content"))
+  create_todo(todo)   # DB에 저장
+  return redirect(url_for("todos", order="desc"))</code></pre>
+  </section>
+
+  <!-- ===== 5. 자료 다운로드 ===== -->
+  <section id="files">
+    <h2>발표 자료</h2>
+    <p class="lead">파일은 assets 폴더에 넣고 아래 링크 주소를 맞춰 주세요.</p>
+    <ul class="files">
+      <!-- download 속성: 클릭하면 열지 않고 바로 내려받기 -->
+      <li><a href="assets/slides.pdf" download>발표 슬라이드</a><span>PDF</span></li>
+      <li><a href="assets/plan.pdf" download>일지 및 WBS</a><span>PDF</span></li>
+    </ul>
+  </section>
+
+  <!-- ===== 6. 직접 해보기 (QR) ===== -->
+  <section id="try">
+    <h2>직접 사용해 보세요</h2>
+    <div class="try">
+      <img src="assets/qr.png" alt="서비스 접속 QR 코드">
+      <div>
+        <p>휴대폰 카메라로 QR을 찍으면 서비스가 열립니다.</p>
+        <a class="btn" href="https://test-two-orcin-95.vercel.app" target="_blank">서비스 열기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>조명(아무개, 이무개, 김무개, 박무개) · Flask Todo 프로젝트 · <a href="#top">맨 위로</a></footer>
+
+  <!-- ===== 확대 보기 창 ===== -->
+  <div id="modal" role="dialog" aria-label="크게 보기">
+    <button type="button" id="close">닫기 (Esc)</button>
+    <div id="modal-body"></div>
+  </div>
+
+  <script>
+    // 확대 창 관련 요소 가져오기
+    const modal = document.getElementById("modal");
+    const body = document.getElementById("modal-body");
+
+    // class="media" 인 영상·이미지를 클릭하면 확대 창에 복사해서 보여주기
+    document.querySelectorAll(".media").forEach(el => {
+      el.addEventListener("click", () => {
+        const copy = el.cloneNode(true);   // 원본은 그대로 두고 복사본 사용
+        copy.classList.remove("media");
+        if (copy.tagName === "VIDEO") copy.controls = true;   // 확대 시 재생 버튼 표시
+        body.innerHTML = "";
+        body.appendChild(copy);
+        modal.classList.add("open");
+      });
+    });
+
+    // 닫기: 버튼, 바깥 어두운 영역 클릭, Esc 키
+    function closeModal() {
+      modal.classList.remove("open");
+      body.innerHTML = "";   // 영상이 뒤에서 계속 재생되지 않게 비우기
+    }
+    document.getElementById("close").addEventListener("click", closeModal);
+    modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+  </script>
+</body>
+</html>

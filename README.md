@@ -10,5 +10,5 @@ c:/READEME.md파일(대문 페이지)
 
 ●DBMS
 
-
+<img width="578" height="820" alt="Image" src="https://github.com/user-attachments/assets/4b5e1e68-e822-43fe-a65b-aca61f6fa9f2" />
 

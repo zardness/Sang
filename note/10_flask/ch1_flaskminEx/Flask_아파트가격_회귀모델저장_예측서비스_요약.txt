@@ -1,0 +1,76 @@
+Flask 아파트 가격 예측 서비스 핵심요약
+(첨부 소스 3개 기준 / 모델 학습·서버 실행은 하지 않음)
+
+1장 전체 구성
+    -ex1_회귀모델저장.ipynb: 아파트 거래 데이터를 읽어 회귀모델을 학습하고 저장
+    -predict.py: 저장된 모델을 불러와 가격을 예측하는 함수 제공
+    -ex2_appliction.py: URL로 받은 값을 예측 함수에 전달하고 웹 화면에 결과 표시
+    -전체 흐름: CSV → 모델 학습 → joblib 저장 → 모델 불러오기 → URL 입력 → 예측 금액 출력
+
+2장 개발 환경 준비
+    -python -m venv .venv: 가상환경 생성
+    -.venv\Scripts\activate: Windows 명령 프롬프트에서 가상환경 활성화
+    -VS Code에서 해당 가상환경의 파이썬 인터프리터와 노트북 커널 선택
+    -사용 패키지: pandas, statsmodels, joblib, flask
+    -pip freeze > requirements.txt: 설치된 패키지 목록 저장
+    -다른 환경에서는 pip install -r requirements.txt로 목록에 맞춰 설치
+
+3장 아파트 회귀모델 학습
+    -pd.read_csv('./ch1_data/trade_apt_api.csv', encoding='cp949'): 거래 자료 읽기
+    -입력 X: 건축년도, 전용면적, 층
+    -정답 y: 거래금액
+    -X['const']=1: 절편 계산에 필요한 상수 열 추가
+    -sm.OLS(y, X).fit(): 최소제곱법으로 선형회귀모델 학습
+    -예측식: 건축년도×계수 + 전용면적×계수 + 층×계수 + 절편
+    -model.summary(): 회귀계수와 모델의 통계 요약 확인
+    -R-squared는 학습 데이터의 타겟 변동을 모델이 설명하는 비율
+    -Adj. R-squared는 입력 변수 수 등을 고려한 조정 결정계수
+    -Durbin-Watson은 잔차의 자기상관을 보는 통계량이며 입력 변수 간 상관을 보는 값이 아님
+
+4장 모델 저장과 불러오기
+    -model 폴더가 없으면 os.mkdir('model')로 생성
+    -joblib.dump(model, './model/ex1_apt_price_regression.joblib'): 학습한 모델 저장
+    -joblib.load(...): 저장된 회귀모델 복원
+    -노트북의 예측 함수는 호출할 때마다 모델을 다시 불러옴
+    -predict.py는 모듈을 가져올 때 r_model에 모델을 불러와 이후 함수에서 재사용
+
+5장 가격 예측 함수
+    -predict_apt_price(year, square, floor): 건축년도·전용면적·층을 받아 금액 반환
+    -input_data = [[int(year), int(square), int(floor), 1]]
+    -입력은 1행 4열이며 학습할 때의 열 순서와 같아야 함
+    -마지막 1은 학습 시 추가한 const에 대응
+    -r_model.predict(input_data)[0]: 첫 번째 입력의 예측값 추출
+    -소스는 거래금액이 만원 단위라는 전제로 10000을 곱해 원 단위로 변환
+    -round()로 반올림하고 format(result, ',')로 천 단위 쉼표 추가
+    -마지막에 '원'을 붙여 문자열로 반환
+    -predict.py를 직접 실행하면 input()으로 세 값을 받아 예측 결과 출력
+
+6장 Flask 웹 서비스
+    -application = Flask(__name__): Flask 애플리케이션 객체 생성
+    -@application.route('/hello'): /hello 요청에 Hello, Flask! HTML 반환
+    -@application.route('/apt/<year>/<square>/<floor>'): URL에서 세 값을 문자열로 받음
+    -예: /apt/2002/102/8 → 건축년도 2002년, 전용면적 102, 8층으로 예측
+    -aptPredictHandler()에서 predict_apt_price()를 호출
+    -반환된 금액을 <h1> 태그 안에 넣어 브라우저에 표시
+    -if __name__ == '__main__': 파일을 직접 실행할 때만 서버 시작
+    -application.run(debug=True): 개발용 디버그 모드로 실행
+
+7장 실행 순서
+    -CSV 파일을 준비하고 노트북을 실행해 모델 파일 생성
+    -predict.py와 ex2_appliction.py를 같은 프로젝트 폴더에 배치
+    -모델 파일은 프로젝트의 model/ex1_apt_price_regression.joblib에 배치
+    -프로젝트 폴더에서 python ex2_appliction.py 실행
+    -브라우저에서 http://127.0.0.1:5000/apt/2002/102/8 접속
+    -현재 소스에는 '/' 경로가 없으므로 기본 주소만 열면 404가 발생할 수 있음
+
+8장 소스 주의사항
+    -첨부에는 학습 CSV와 저장된 joblib 모델이 없어 실제 예측값은 확인하지 않음
+    -상대경로 ./model/...은 현재 실행 폴더 기준이므로 다른 위치에서 실행하면 파일을 못 찾을 수 있음
+    -모델을 먼저 생성하지 않으면 predict.py를 import하는 단계부터 오류 발생
+    -전용면적을 int로 처리해 '84.5' 같은 문자열 입력은 오류 발생. 소수 면적은 float(square)로 처리 필요
+    -URL에 숫자가 아닌 값이 들어오면 변환 오류가 나므로 입력값 검사 필요
+    -predict.py의 최상위 predict_apt_price(2002, 102, 8)는 import할 때도 실행되지만 결과는 출력하지 않음
+    -해당 테스트 호출은 직접 실행 구문 안으로 이동하거나 제거 가능
+    -ex2_appliction.py에서 r_model은 직접 사용하지 않으므로 예측 함수만 import해도 됨
+    -학습·테스트 데이터 분리와 별도 오차 평가가 없어 summary()만으로 새 데이터 예측 성능을 판단할 수 없음
+    -거래금액의 실제 저장 단위를 확인한 뒤 10000배 환산을 적용

@@ -1,0 +1,67 @@
+1장 인라인 이벤트 모델 (1_인라인이벤트모델)
+    -HTML 태그에 onclick="whenClick()"처럼 이벤트 처리 코드 작성
+    -이벤트 이름은 click, 이벤트 속성은 onclick, 처리 함수는 whenClick
+    -예제는 h1 클릭 시 문구를 바꾸고 글자색을 빨간색으로 변경
+
+2장 기본 이벤트 모델 (2_기본이벤트모델)
+    -요소.onclick = function(){...}처럼 이벤트 속성에 함수 할당
+    -같은 onclick에 다시 할당하면 이전 처리 함수를 덮어씀
+    -window.onload에서 요소를 선택한 뒤 클릭 처리 함수 연결
+    -일반 함수로 등록한 처리 함수의 this는 연결된 요소를 가리킴
+    -소스의 haeder와 header 이름이 달라 오류 발생: header로 통일 필요
+    -innerHTML +=로 body를 다시 구성하면 기존 요소 참조가 화면의 요소와 달라질 수 있으므로 주의
+
+3장 표준 이벤트 모델 (3_표준이벤트모델)
+    -요소.addEventListener('click', 함수)로 이벤트 처리 함수 등록
+    -이벤트 이름에는 on을 붙이지 않으며 서로 다른 처리 함수를 여러 개 등록 가능
+    -DOMContentLoaded: HTML 파싱이 끝나 DOM을 사용할 수 있을 때 발생
+    -load: 이미지 등 페이지 리소스 로드까지 완료된 뒤 발생
+    -예제는 DOMContentLoaded 후 h1에 클릭 이벤트 등록
+
+4장 this와 여러 요소의 이벤트 (4_this)
+    -querySelectorAll('h1.header')로 여러 제목 요소 선택
+    -각 요소에 이벤트를 연결하여 클릭한 제목만 문구와 색상 변경
+    -일반 함수의 this는 이벤트가 연결된 요소이며 event.currentTarget에 해당
+    -화살표 함수는 바깥 범위의 this를 사용하므로 요소 변수나 event.currentTarget 활용
+    -NodeList를 for-in으로 순회하면 요소 외 속성도 포함될 수 있어 forEach 또는 for-of 사용이 적합
+
+5장 마우스 동작에 따른 이미지 변경 (5_quiz 두 소스)
+    -mousedown: 마우스 버튼을 누를 때, mouseup: 버튼을 놓을 때 발생
+    -누르면 but2.gif, 놓으면 but1.gif로 이미지 변경
+    -setAttribute()로 src와 alt 속성을 함께 수정
+    -기본 모델은 onmousedown·onmouseup에 함수 할당
+    -표준 모델은 addEventListener('mousedown', ...), addEventListener('mouseup', ...) 사용
+    -이미지 표시에는 ch11_img 폴더의 해당 GIF 파일 필요
+
+6장 이벤트 강제 발생과 클릭 횟수 (5_이벤트강제발생 두 소스)
+    -Number(표시값)+1로 문자열을 숫자로 바꿔 클릭 횟수 증가
+    -btnB.click()으로 코드에서 B 버튼의 클릭 동작 발생
+    -5_이벤트강제발생(1).html은 A·B 횟수를 각각 증가시키며 실제 강제 클릭 코드는 없음
+    -5_이벤트강제발생(기본이벤트)(1).html은 파일명과 달리 addEventListener 사용
+    -이 파일은 두 처리 함수 모두 btnA에 연결되어 A를 누르면 A·B 표시값이 함께 증가
+    -btnB에는 처리 함수가 없어 B를 직접 누르거나 btnB.click()을 실행해도 B 횟수는 증가하지 않음
+    -의도한 연동을 위해 두 번째 addEventListener의 대상을 btnB로 수정 필요
+
+7장 이벤트 제거 (6_이벤트제거)
+    -h1을 클릭할 때마다 하트 span을 추가하고 cnt 증가
+    -7회 클릭 후 this.onclick = null로 기본 이벤트 처리 함수 제거
+    -처음부터 하트가 1개 있으므로 종료 시 하트는 총 8개
+    -CSS 색상은 1~7번째 span까지만 지정되어 8번째에는 별도 색상 규칙이 없음
+    -표준 모델의 이벤트 제거는 removeEventListener('click', 등록한함수) 사용
+    -제거할 때는 등록 시 사용한 동일한 함수 참조와 capture 설정이 필요
+
+8장 기본 동작 제한 (7_이벤트제한 두 소스)
+    -폼 제출처럼 브라우저가 수행하는 기본 동작을 조건에 따라 취소
+    -기본 모델: onsubmit 처리 함수에서 return false
+    -표준 모델: submit 처리 함수의 event.preventDefault() 호출
+    -addEventListener 처리 함수에서 return false만으로는 제출이 취소되지 않음
+    -기본 동작 취소와 이벤트 전파 중단은 별개
+
+9장 비밀번호 검사 소스의 오류
+    -pw와 pw1에는 .value를 읽은 문자열이 저장되어 있음
+    -문자열에는 focus()가 없으므로 입력 요소를 따로 저장하고 요소.focus() 호출 필요
+    -pw.value와 pw1.value는 모두 undefined이므로 비밀번호 불일치를 검사하지 못함
+    -문자열 비교는 pw !== pw1로 작성하거나 요소를 저장한 뒤 각 .value 비교
+    -기본 모델은 마지막에도 return false가 있어 오류가 없는 경로에서도 항상 제출 중단
+    -빈 비밀번호에서는 pw.focus() 오류로 return false나 preventDefault()에 도달하지 못함
+    -표준 모델도 해당 오류를 고치고 실패 조건에서 preventDefault()가 실행되도록 해야 함

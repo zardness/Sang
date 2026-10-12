@@ -1,0 +1,20 @@
+1. 모델로 예측하기
+2. route render static
+3. http 요청방식(get post patch delete)
+4. jinja2
+(5. fileupload)
+6. db
+
+
+ PowerShell 관리자에서 
+Get-ExecutionPolicy -> RemoteSigned
+Set-ExecutionPolicy RemoteSigned
+
+# 가상환경 만들기 : python -m venv .venv
+# 가상환경 들어가기 : .venv\Scripts\activate
+# python -m pip install --upgrade pip
+# pip install flask
+
+# pip freeze > requirements.txt
+# notepad requirements.txt
+# pip install -r requirements.txt #requirements.txt 에 있는 라이브러리들 설치

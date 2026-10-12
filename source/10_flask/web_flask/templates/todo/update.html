@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="container-fluid py-5">
+    <h1 class="display-5 fw-bold">{{todo.id ~ '번 상세보기'}}</h1>
+    <table class="table table-info table-hover">
+      <tbody>
+        <tr>
+          <td>
+            <div class="input-group input-group-lg">
+              <span class="input-group-text">할 일</span>
+              <input type="text" class="form-control" 
+                      value="{{todo.content | default('') }}" id="content" required>
+            </div>
+            <div class="input-group input-group-lg">
+              <span class="input-group-text">수 행</span>
+              <select id="is_done" class="form-select">
+                <option
+                  {% if not todo.is_done %}
+                    selected
+                  {% endif %}
+                value="False"
+                >미완료</option>
+                <option
+                  {% if todo['is_done'] %}
+                    selected
+                  {% endif %}
+                  value="True"
+                >완료</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <button onclick="location='/todos'" class="btn btn-primary">목록</button>
+            <button class="btn btn-success update">수정</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+  document.getElementsByClassName('update')[0].addEventListener('click', function(){
+    var content = document.getElementById('content').value;
+    var is_done = document.getElementById('is_done').value;
+    let url = `/update/{{todo.id}}/${content}/${is_done}`;
+    
+    // 주소에는 id만, 데이터는 body에 JSON으로
+    fetch('/update/{{todo.id}}', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },   // "JSON을 보낸다"고 서버에 알려 줌
+      body: JSON.stringify({ content: content, is_done: is_done })   // 객체 → JSON 문자열
+    })
+    .then(response => {
+      if(!response.ok){
+        // 실패하면 에러를 던져서 아래 .then(성공 처리)을 건너뛰게 함
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      alert(data);                              // "3번 장고 공부를 수정하였습니다."
+      location.href = '/todos/{{todo.id}}';
+    })
+    .catch(err => alert(`실패 : ${err.message}`));   // 실패 시 한 번만 알림
+  });
+</script>
+{% endblock %}

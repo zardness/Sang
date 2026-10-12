@@ -1,0 +1,137 @@
+1장 선형회귀 입문 (01_머신러닝 입문 linear Regression)
+    -회귀분석: 입력값을 이용하여 연속적인 숫자를 예측
+    -섭씨→화씨 공식 F=1.8*C+32를 데이터로 학습하는 실습
+    -입력과 정답을 100으로 나누어 크기를 조정하고 Dense(1)로 모델 구성
+    -compile(loss='mse', optimizer='rmsprop', metrics=['mae'])로 학습 설정
+    -fit()으로 가중치와 편향 학습, predict()로 예측, save()와 load_model()로 저장·불러오기
+    -노이즈가 없는 데이터와 정규분포 노이즈를 더한 데이터를 비교
+    -MSE는 오차 제곱의 평균, MAE는 오차 절댓값의 평균
+    -원래 화씨 단위로 해석하려면 예측값에 다시 100을 곱함
+
+2장 딥러닝 분류 입문 (02_딥러닝입문 분류분석)
+    -분류분석: 입력값이 어느 범주에 해당하는지 예측
+    -데이터 준비→전처리→모델 구성→compile→fit→evaluate→저장·예측 순서
+    -LabelEncoder: 문자열 범주를 정수 번호로 변환
+    -to_categorical(), get_dummies(): 범주별 열을 만드는 원핫인코딩
+    -예제는 숫자 1~9를 입력받아 2~10 범주를 예측하도록 학습
+    -출력층 Dense(11, activation='softmax')와 categorical_crossentropy 사용
+    -softmax는 클래스별 확률을 출력, argmax로 가장 큰 확률의 클래스 선택
+    -학습·검증 loss와 accuracy를 그래프로 비교
+    -이 예제는 학습·검증에 같은 값들이 반복되어 새로운 데이터에 대한 성능 검증은 제한적
+
+3장 군집분석과 K-Means (03_비지도학습_군집분석_, 해설 EX)
+    -비지도학습: 정답 라벨 없이 데이터의 구조나 비슷한 그룹 탐색
+    -키·몸무게의 가상 데이터 100개를 두 그룹으로 나누는 실습
+    -초기 중심점 선택→가까운 중심점에 배정→그룹 평균으로 중심점 갱신 반복
+    -dist()는 두 점 사이의 유클리드 거리 계산
+    -KMeans(n_clusters=2, init='random', n_init=10)으로 라이브러리 구현
+    -cluster_centers_: 군집 중심, labels_: 각 데이터에 배정된 군집 번호
+    -군집 번호 0·1 자체가 남녀 등 정답 의미를 보장하지는 않음
+    -EX 파일은 같은 실습에 난수·리스트·거리 계산 등의 상세 해설을 추가한 자료
+
+4장 TensorFlow v1과 경사하강법 (04_tensorFlow_v1)
+    -tensorflow.compat.v1과 disable_v2_behavior()로 v1 방식 실습
+    -constant: 상수, Variable: 학습할 변수, placeholder: 외부 입력을 받을 자리
+    -Session을 만들고 sess.run()으로 그래프 실행
+    -Variable은 global_variables_initializer()로 초기화
+    -H=w*x+b, cost=평균((H-y)^2)로 선형회귀 정의
+    -GradientDescentOptimizer가 손실을 줄이는 방향으로 가중치·편향 갱신
+    -feed_dict로 placeholder에 학습값이나 예측 입력값 전달
+    -입력이 3개이면 X와 W의 행렬곱으로 H=X@W+b 계산
+    -H는 실행 전에는 Tensor이며 sess.run() 결과를 숫자·배열로 얻음
+
+5장 스케일 조정과 인코딩 (04, 05_Quiz)
+    -MinMaxScaler: 학습 데이터의 각 열을 기본적으로 0~1 범위로 조정
+    -StandardScaler: 각 열의 평균을 빼고 표준편차로 나누어 표준화
+    -fit(): 변환 기준 학습, transform(): 기준 적용, fit_transform(): 두 과정 수행
+    -inverse_transform(): 예측값 등을 원래 단위로 복원
+    -reshape(-1,1): 여러 값을 하나의 특성 열로 구성
+    -Quiz는 지역명·연도·월을 입력, 평당분양가격을 타겟으로 전처리
+    -지역명 라벨인코딩과 원핫인코딩, 입력·타겟의 정규화·표준화 비교
+    -순서 없는 지역명에 붙인 정수 번호는 실제 지역 간 순서나 거리를 뜻하지 않음
+
+6장 피마 당뇨병 데이터 분류 (05_피마인디언당뇨병발병예측)
+    -8개 입력 특성으로 데이터셋의 당뇨병 여부 0·1을 분류하는 학습 실습
+    -read_csv() 또는 loadtxt()로 읽고 결측치와 타겟 비율 확인
+    -첫 모델은 입력 8→32→64→16→출력 1 구조
+    -sigmoid 출력과 binary_crossentropy로 이진분류 학습
+    -예측 확률을 0.5 기준으로 0·1로 변환
+    -시험 데이터 evaluate(), 혼동행렬, 정밀도·재현율로 결과 확인
+    -뒷부분은 원핫 정답과 출력 2개 softmax를 사용하려는 실습이나 코드가 혼재되어 수정 필요
+    -은닉층이 여러 개인 이 모델은 단순 로지스틱 회귀보다 복잡한 신경망 분류기
+
+7장 심장병 데이터 분류와 과적합 조절 (06_심장병발병예측)
+    -엑셀의 '?'를 NaN으로 바꾸고 결측 행 제거 후 입력 13개와 타겟 분리
+    -train_test_split(stratify=y)로 클래스 비율을 고려하여 분할
+    -입력 13→32→16→8→출력 1의 sigmoid 모델 구성
+    -Dropout: 학습 중 일부 뉴런 출력을 무작위로 제외
+    -L2 규제: 큰 가중치에 손실 패널티 부여
+    -BatchNormalization: 중간값을 정규화하여 학습 안정화를 돕는 층
+    -class_weight: 클래스별 손실 기여도를 조절하며 데이터 개수 자체를 바꾸지는 않음
+    -ReduceLROnPlateau: 검증 성능이 개선되지 않으면 학습률 감소
+    -후반부는 원핫 정답·출력 2개 softmax·categorical_crossentropy로 같은 이진 문제 구현
+
+8장 MNIST 손글씨 분류 (07_MNIST_accuracy늘리기_콜백함수들)
+    -28×28 이미지를 784개 값으로 펼치고 float32로 변환한 뒤 255로 나눔
+    -0~9 정답을 원핫인코딩하고 출력층에 softmax 10개 사용
+    -학습 5만, 검증 1만, 시험 1만으로 분리하는 구성
+    -일부 실습은 학습·검증에서 소량을 추출하여 실행 시간 단축
+    -작은 은닉층 모델과 층 추가·Dropout·BatchNormalization 적용 모델 비교
+    -학습 곡선, 시험 정확도, 혼동행렬로 성능 확인
+    -모델 규모나 epoch 증가가 정확도 향상을 항상 보장하지는 않음
+
+9장 학습 콜백 (07)
+    -Callback의 on_epoch_end(): epoch 종료 시 사용자 코드 실행
+    -CustomHistory: 10 epoch마다 손실과 정확도 출력
+    -EarlyStopping: 지정 지표가 patience 기간 동안 개선되지 않으면 조기 종료
+    -ModelCheckpoint(save_best_only=True): 모니터링 지표가 개선될 때 모델 저장
+    -ReduceLROnPlateau: 정체 시 factor 비율로 학습률 감소, min_lr로 하한 설정
+    -callbacks=[...]에 여러 콜백을 함께 전달 가능
+    -예제의 EarlyStopping은 최선 가중치 복원을 지정하지 않아 종료 시 모델과 최선 저장 모델이 다를 수 있음
+
+10장 와인 품질 다중분류 (08_wine품질등급예측)
+    -세미콜론으로 구분된 와인 CSV를 읽고 11개 입력과 품질 등급 분리
+    -StandardScaler로 입력 표준화, get_dummies()로 정답 원핫인코딩
+    -입력 11→64→50→30→출력 6의 softmax 모델 구성
+    -He 초기화, ReLU, Dropout과 EarlyStopping을 사용
+    -categorical_crossentropy로 학습하고 시험 결과·교차표 확인
+    -argmax 결과에 3을 더하는 코드는 클래스가 3~8 순서라는 가정에 의존
+    -실제 클래스 복원에는 원핫인코딩 열 이름과 예측 인덱스의 대응 관계 유지 필요
+    -class_weight는 가져오기·주석에만 있고 실제 fit()에는 적용하지 않음
+
+11장 Iris와 다양한 DNN 구성 (09_iris종별예측_다양한DNN모델)
+    -붓꽃의 4개 특성으로 setosa·versicolor·virginica 3종 분류
+    -정수 라벨과 softmax 3개 출력에 sparse_categorical_crossentropy 사용
+    -Sequential 모델과 sklearn MLPClassifier로 다층 신경망 학습 비교
+    -build() 함수로 입력 크기·활성화 함수·출력 크기를 받는 모델 생성 방식 구현
+    -함수형 API는 Input과 각 층을 연결하고 Model(inputs, outputs)로 구성
+    -concatenate(): 병렬 분기의 출력을 이어 붙임
+    -add(): 같은 크기 출력을 더해 잔차 연결(Residual Block) 구성
+    -후반의 병렬·잔차 모델은 구조 생성과 summary()까지이며 학습·성능 비교는 없음
+
+12장 출력층·손실함수·평가 핵심
+    -회귀: 연속값 출력 + MSE/MAE
+    -이진분류: sigmoid 1개 + 0·1 정답 + binary_crossentropy
+    -다중분류: softmax K개 + 원핫 정답 + categorical_crossentropy
+    -정수 클래스 정답이면 softmax K개 + sparse_categorical_crossentropy
+    -accuracy: 전체 중 맞힌 비율
+    -precision=TP/(TP+FP): 양성으로 예측한 것 중 실제 양성 비율
+    -recall=TP/(TP+FN): 실제 양성 중 찾아낸 비율
+    -훈련셋은 학습, 검증셋은 모델 선택, 시험셋은 최종 평가에 사용
+
+13장 소스에서 수정·확인할 부분
+    -01의 첫 수동 MSE 계산은 scaled_data_C가 아닌 정답 scaled_data_F와 비교해야 함
+    -03 두 파일의 point는 points 오타이며 빈 군집의 평균 처리도 고려 필요
+    -05 피마 후반부는 원핫 정답 2열인데 출력이 sigmoid 1개: 출력·손실·평가 정답 형식을 통일해야 함
+    -sigmoid 출력 1개에 argmax(axis=1)를 쓰면 항상 0이므로 임계값 비교 사용
+    -05 피마의 정밀도·재현율은 숫자를 직접 적었으므로 실제 혼동행렬 값에서 계산 필요
+    -06 심장병과 08 와인은 분할 전 전체 데이터로 스케일러를 학습: 분할 후 훈련셋에서만 fit하고 검증·시험셋에는 transform 적용
+    -06의 Precision 이름과 val_precision 참조는 대소문자가 달라 history 키 확인 필요
+    -06의 (model.predict)는 함수를 실행하지 않으므로 model.predict(input_data)로 호출 필요
+    -07 앞부분의 test_X가 X_val로 만들어져 y_test와 짝이 맞지 않음: X_test로 수정 필요
+    -07의 plt.gigure는 plt.figure 오타, np.random.choice는 replace=False가 없으면 기본적으로 복원추출
+    -07 확장 모델의 첫 은닉층은 주석의 1024가 아니라 실제 코드에서 units=2
+    -Input(shape=784,), Input(11), Input(4)는 각각 Input(shape=(784,)), Input(shape=(11,)), Input(shape=(4,))로 명시
+    -고정된 체크포인트 파일명은 이번 학습에서 실제 생성된 파일명과 일치해야 함
+    -여러 노트북이 data/와 model/ 파일에 의존하며 이번 첨부에는 원본 데이터·저장 모델이 포함되지 않음
+    -이 요약은 코드와 설명을 읽어 정리했으며 모델 재학습이나 정확도 재검증은 수행하지 않음

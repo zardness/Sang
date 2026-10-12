@@ -1,0 +1,63 @@
+유저 버전은 설치하고 있는 현재 윈도우 사용자 계정만 사용가능.
+시스템버전은 해당 컴퓨터에 모든 사람이 사용 가능
+
+🧠 python 수업 때
+korean (한글팩설치 후 resart해줘야 함)
+python
+jupyter
+Pylance (언어 서버) 코드 분석: 오류 검사, 타입 힌트
+			정적 분석: 변수/함수 정의 찾기
+			리팩토링: 이름 변경, import 정리
+			문법 검사: Python 문법 오류 미리 발견
+
+💡웹표준 수업일 때
+korean (한글팩설치 후  토스트메세지가 나오면 resart해줘야 함)
+Prettier - Code formatter(prettier로 검색 ; 코드 포맷팅) ctrl+, 설정 검색에서 format on save 활성화
+open in browser (브라우저로 볼 수 있는 프로그램 Alt+B)
+indent-rainbow(indent - 들여쓰기 레벨을 보기 쉽게 색으로 구별)
+Auto Rename Tag(rename - 여는 태그를 바꾸면 닫는 태그도 자동 변경)
+Live Server(Alt + L O ) - Open with Live Server
+
+💡 자바스크립트 수업일 때
+Prettier - Code formatter(prettier로 검색 ; 코드 포맷팅) ctrl+, 설정 검색에서 format on save 활성화
+materical icon theme (아이콘)
+error lens : 오류메시지 친절하게
+
+Ctrl + , → 설정 검색창에 sticky scroll 입력
+Editor: Sticky Scroll › Enabled 체크 해제
+
+⚡ Supermaven (AI 자동완성) => Cursor로 합병됨
+코드 생성: 함수 전체 자동완성
+패턴 학습: 네 코딩 스타일 학습
+빠른 제안: 타이핑하면 바로바로 제안
+컨텍스트 이해: 전체 프로젝트 맥락 파악
+
+vs extension : supermaven https://marketplace.visualstudio.com/items?itemName=supermaven.supermaven
+(https://supermaven.com 회원가입)
+supermaven preview 해 줍니다.
+
+"Use free version" 선택
+자동완성 쓰는 법
+그냥 코드 치면 회색/연한 글씨로 자동완성 제안 나옴
+수락: Tab
+일부만 수락: Ctrl + →
+무시: 그냥 계속 타이핑
+
+
+⚡Gemini Code Assist와 Continue확장설치
+
+1) ollama pull qwen2.5-coder:1.5b
+2) C:\Users\space\.continue/config.yaml을 아래와 같이
+
+# Continue 설정 파일
+name: Local Assistant      # 설정 이름 (아무거나)
+version: 1.0.0
+schema: v1
+
+models:
+  # Tab 자동완성 전용 모델
+  - name: Qwen2.5-Coder 1.5B
+    provider: ollama              # 로컬 Ollama 사용
+    model: qwen2.5-coder:1.5b     # 위에서 pull 받은 모델 이름과 동일해야 함
+    roles:
+      - autocomplete              # 자동완성 역할로 지정

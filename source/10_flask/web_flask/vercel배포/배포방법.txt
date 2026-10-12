@@ -1,0 +1,19 @@
+vercel.com 회원가입
+
+bash나 cmd, powershell
+# 1) Vercel CLI 설치 (Node.js 필요)
+npm i -g vercel
+
+# 2) 로그인 (브라우저 창이 열림)
+vercel login
+
+# 3) 프로젝트 폴더에서 배포 → 미리보기(preview) URL이 생성됨
+vercel
+
+# 4) 정식(production) 배포 → xx.vercel.app 주소로 반영
+vercel --prod
+
+# 5) 배포가 되면 aliased에 표시된 고정 주소를 접속하여 확인
+
+배포된 웹서비스 : https://test-two-orcin-95.vercel.app/
+프로젝트 설명 : https://slides-eta-three.vercel.app/
