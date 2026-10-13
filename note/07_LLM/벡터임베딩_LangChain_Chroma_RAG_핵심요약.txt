@@ -1,0 +1,110 @@
+벡터 임베딩 · LangChain · Chroma · RAG 핵심요약
+(첨부 노트북 5개 기준 / API 호출과 모델 실행은 하지 않음)
+
+1장 전체 학습 흐름
+    -ch09_01: 문장을 임베딩 벡터로 변환하고 문장 간 유사도 비교
+    -ch09_02: OpenAI SDK와 LangChain으로 OpenAI 모델 호출
+    -ch09_03: OpenAI 호환 API와 LangChain으로 Upstage 모델 호출
+    -ch09_04: 파일명과 달리 실제 내용은 로컬 Ollama 모델 호출
+    -ch09_05: DOCX 문서를 검색해 답변하는 RAG 구현
+    -전체 흐름: 문서 읽기 → 청크 분할 → 임베딩 → 저장·검색 → 검색 내용을 참고한 답변 생성
+
+2장 임베딩과 유사도
+    -임베딩(Embedding): 문장의 의미적 특징을 숫자 벡터로 표현하는 작업
+    -의미가 관련된 문장을 벡터의 거리나 방향을 기준으로 비교
+    -유클리드 거리는 두 벡터 사이의 거리이며 작을수록 가까움
+    -코사인 유사도는 벡터 방향의 유사성을 나타냄
+    -계산식: dot(vec1, vec2) / (norm(vec1) × norm(vec2))
+    -np.dot(): 내적 / np.linalg.norm(): 벡터 크기 계산
+    -소스의 cosine_similarity()는 영벡터가 들어오면 0을 반환하도록 처리
+    -내적은 방향과 벡터 크기의 영향을 모두 받으며 거리값 자체는 아님
+    -문장 비교에는 같은 임베딩 공간의 벡터를 사용해야 함
+
+3장 OpenAI·Upstage 임베딩 예제
+    -load_dotenv()로 .env 파일의 환경변수 로드
+    -OPENAI_API_KEY와 UPSTAGE_API_KEY를 서비스별로 사용
+    -client.embeddings.create(input=문장, model=모델명)으로 임베딩 요청
+    -response.data[0].embedding에서 벡터 추출 후 np.array()로 변환
+    -OpenAI 예제의 실제 호출 모델은 text-embedding-3-large
+    -왕·여왕·노예 관련 영어와 한국어 문장을 임베딩해 유사도 비교
+    -영어 문장과 같은 뜻의 한국어 문장도 비교하는 실습 포함
+    -Upstage 예제는 OpenAI 객체에 Upstage의 base_url과 API 키를 지정
+    -Upstage 실제 호출 코드는 model='embedding-query'를 사용
+    -임베딩 모델은 검색용 벡터를 만들고, 채팅 모델은 최종 답변을 생성하는 역할
+
+4장 OpenAI SDK와 LangChain
+    -SDK 방식: OpenAI() → client.chat.completions.create(...)
+    -messages에 system 지시와 user 질문을 전달
+    -response.choices[0].message.content로 답변 텍스트 확인
+    -response.usage로 토큰 사용량 확인
+    -LangChain 방식: ChatOpenAI(model='gpt-4o-mini', temperature=0.5)
+    -llm.invoke(질문 또는 메시지 목록)로 실행
+    -결과는 AIMessage이며 content는 답변, usage_metadata는 사용량 정보
+    -SystemMessage는 역할·규칙, HumanMessage는 사용자 질문
+    -temperature는 답변 생성의 무작위성을 조절하며 사실 정확도를 보장하는 값은 아님
+
+5장 Upstage와 Ollama 모델 호출
+    -Upstage SDK 예제: OpenAI(api_key=..., base_url='https://api.upstage.ai/v1')
+    -채팅 요청에서 model='solar-pro4'를 지정
+    -LangChain 예제는 langchain_upstage의 ChatUpstage() 사용
+    -소스의 ChatUpstage()에는 모델명을 명시하지 않아 SDK 예제와 같은 모델인지 별도 확인 필요
+    -Ollama 예제는 base_url='http://localhost:11434/v1'로 로컬 서버 연결
+    -로컬 모델은 exaone3.5:2.4b를 사용하며 사전에 모델 준비와 서버 실행이 필요
+    -LangChain에서는 ChatOllama(model=...)로 연결하는 구조
+    -OpenAI 호환 클라이언트를 사용하더라도 실제 요청 대상은 base_url에 따라 달라짐
+    -%%time은 노트북 셀의 실행 시간을 측정하는 매직 명령
+
+6장 DOCX 문서 읽기와 청크 분할
+    -RAG(Retrieval-Augmented Generation): 관련 문서를 검색해 답변 생성의 근거로 제공하는 방식
+    -Docx2txtLoader(...).load(): DOCX를 LangChain 문서 형태로 읽음
+    -python-docx의 Document(...).paragraphs: 문단 목록에 접근
+    -paragraph.text를 공백으로 이어 full_text 생성
+    -tiktoken.encoding_for_model('gpt-4o-mini'): 토큰 인코더 준비
+    -encoder.encode(text)는 문자열을 토큰 번호 목록으로 변환
+    -encoder.decode(tokens)는 토큰 번호 목록을 문자열로 복원
+    -split_text()는 전체 토큰을 기본 1500개씩 나누어 chunk_list 반환
+    -청크(Chunk)는 검색 단위로 나눈 문서 조각이며 토큰 수와 글자 수는 다름
+    -현재 함수는 고정 길이 분할이며 청크 간 겹침이나 조항 경계 처리는 없음
+
+7장 Chroma 인메모리 벡터 저장소
+    -chromadb.Client()로 인메모리 클라이언트 생성
+    -OpenAIEmbeddingFunction에 API 키와 text-embedding-3-large 지정
+    -get_or_create_collection()으로 tax_collection을 가져오거나 생성
+    -Collection은 문서·벡터·ID 등을 묶어 관리하는 공간
+    -각 청크에 '0', '1', '2' 같은 문자열 ID 부여
+    -tax_collection.add(documents=chunk_list, ids=ids)로 청크 등록
+    -지정한 임베딩 함수를 통해 문서를 벡터화하는 구조
+    -get(include=[...])로 저장한 문서·임베딩·메타데이터 확인
+    -파일명은 'vectorStore저장없이'이지만 실제로는 메모리의 벡터 저장소를 사용
+    -디스크 영구 저장 설정이 없으므로 실행 종료 후에도 유지되는 구성은 아님
+
+8장 검색과 답변 생성
+    -사용자 질문을 query에 저장
+    -tax_collection.query(query_texts=query, n_results=3)로 관련 청크 3개 검색
+    -질문도 컬렉션에 연결된 임베딩 함수를 이용해 검색 벡터로 변환하는 구조
+    -retrieved_doc['documents'][0]에서 첫 번째 질문의 검색 문서 목록 추출
+    -검색 문서와 질문을 함께 gpt-4o-mini에 전달
+    -system 메시지에 참고 문서를 넣고 user 메시지에 원래 질문을 넣음
+    -답변은 response.choices[0].message.content로 출력
+    -RAG는 모델을 재학습하는 방식이 아니라 검색 결과를 입력 문맥에 추가하는 방식
+    -현재 예제에는 답변 정확도 자동 평가나 출처·조항 표시 기능은 구현되어 있지 않음
+
+9장 소스에서 확인할 수정사항
+    -ch09_04의 Chatollama는 대소문자 오타이며 ChatOllama로 수정 필요
+    -ollama llama3.2:1b에는 동작 명령이 빠져 있음. 모델 다운로드 의도라면 pull을 추가
+    -ch09_04의 Upstage API 키 안내는 실제 Ollama 코드와 맞지 않는 복사된 설명
+    -ch09_05는 decoded = encoder.encode(full_text)로 저장한 뒤 미정의 encoding을 사용
+    -토큰 변수명을 tokens 등으로 통일하고 len(tokens), tokens[:10]으로 확인
+    -Document로 읽는 파일에는 이름 끝에 '_'가 붙어 있어 앞선 Loader의 파일명과 다름
+    -document는 Loader 결과, documents는 python-docx 객체이므로 출력·접근 대상을 구분
+    -문단 속성 이름은 paragraphs, Chroma 생성자는 Client(), 변수명은 collection_name으로 일치시킴
+    -안내문에 있는 python-docs는 python-docx로 수정. 실제 설치 셀은 python-docx를 사용 중
+    -API 키가 없으면 os.getenv()가 None을 반환하므로 key[:5]에서 오류가 발생할 수 있음
+    -키 내용 출력 대신 환경변수 설정 여부만 확인하도록 정리 가능
+    -같은 여왕 문장의 임베딩 요청이 반복되어 있으므로 이미 얻은 벡터를 재사용 가능
+    -컬렉션에 같은 ID를 반복 추가하는 상황을 고려해 재실행 방식을 정해야 함
+    -현재 문단 추출 코드는 DOCX 표 안의 내용을 별도로 순회하지 않음
+    -검색 문서는 문자열 목록을 그대로 넣기보다 문서별 구분과 출처를 붙이면 확인하기 쉬움
+    -질문 문자열의 '직장인의ㅏ'는 '직장인의'로 수정
+    -첨부에 원본 DOCX와 환경변수 파일은 없으므로 실제 검색 결과·답변 품질은 확인하지 않음
+    -모델명은 소스에 적힌 값 기준이며 특정 서비스의 한국어 성능 우위는 이 코드만으로 입증되지 않음
