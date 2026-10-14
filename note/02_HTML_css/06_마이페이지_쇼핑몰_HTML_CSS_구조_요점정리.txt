@@ -1,0 +1,84 @@
+마이페이지 · 쇼핑몰 HTML/CSS 구조 요점 정리
+대상: 0803(1).css, 0803(1).html, ex_01(1).html, shoppingmall(1).html
+※ 미완성 화면 예제이며, 로그인·저장·상품 주문 등의 실제 처리 코드는 포함되어 있지 않다.
+
+1장 공통 CSS (0803(1).css)
+    -* { margin: 0; padding: 0; }: 모든 요소의 기본 바깥·안쪽 여백을 초기화한다.
+    -li { list-style: none; }: 목록 앞의 기호를 제거한다.
+    -a { text-decoration: none; color: black; display: block; }:
+      링크 밑줄을 없애고 검정 글자로 표시하며 블록 형태로 배치한다.
+    -#wrap { width: 1000px; margin: 20px auto; }:
+      전체 영역의 내용 너비를 1000px로 지정하고 위·아래 20px, 좌·우 자동 여백을 준다.
+    -현재 CSS는 초기화와 전체 폭 설정만 있다. 좌우 메뉴·본문·버튼의 상세 배치 규칙은 없다.
+    -고정 너비 1000px이므로 작은 화면에서는 가로 넘침이 생길 수 있다.
+
+2장 마이페이지 기본 구조 (0803(1).html)
+    -wrap: 페이지 주요 영역을 묶는 컨테이너.
+    -nav_left: LOGO, 참여하기, 개설하기, 검색하기 메뉴.
+    -nav_right: 사용자명, 로그아웃, 고객센터 메뉴.
+    -title: '마이페이지' 제목.
+    -content 내부에 lnb와 my_content를 배치한다.
+    -lnb: 나의여행·참여여행·관심여행·개인정보변경·비밀번호변경 메뉴.
+    -my_content: '개인정보변경' 소제목과 입력 폼.
+    -form_row: label과 input을 한 줄 단위로 묶는 클래스.
+    -입력 항목은 화면 문구 기준 이름, 전화, 주소다.
+    -input type="tel": 전화번호 입력용. 형식 검증 기능은 별도로 설정해야 한다.
+    -id는 요소 식별과 label 연결에, name은 폼 제출 항목 이름에 사용한다.
+
+3장 마이페이지 소스의 수정할 부분
+    -0803(1).html에는 외부 CSS 연결 태그가 없다.
+      같은 폴더의 첨부 CSS를 사용하려면 head에 다음을 추가한다.
+      <link href="0803(1).css" rel="stylesheet">
+    -이름 label의 for="username"과 input의 id="email"이 일치하지 않는다.
+      이름 입력 목적이라면 input의 id와 name을 username으로 맞춘다.
+    -'저장'은 div의 글자일 뿐 제출 버튼이 아니다.
+      실제 폼 제출 버튼 예: <button type="submit">저장</button>
+    -form에는 action과 method가 없다. 제출 버튼을 추가하면 기본 GET 방식으로
+      현재 문서 주소에 제출하므로 실제 저장 주소와 처리 방식을 별도로 지정해야 한다.
+    -footer는 현재 wrap을 닫은 뒤에 있으므로 wrap 바깥 영역이다.
+    -footer 다음에 불필요한 </div>가 하나 더 있어 닫는 태그를 정리해야 한다.
+    -좌우를 뜻하는 id 이름만으로 실제 가로 배치가 이루어지는 것은 아니다.
+
+4장 마이페이지 작성 연습 (ex_01(1).html)
+    -lang="ko": 문서의 기본 언어를 한국어로 지정한다.
+    -viewport 메타 태그: 모바일 화면에서 페이지 크기와 초기 확대 비율을 설정한다.
+    -nav 안에 nav_left와 nav_right를 묶어 상단 탐색 영역을 구성한다.
+    -contents 안에 title, lnb, my_content를 구성한다.
+    -modify 영역 안에서 form과 table을 사용해 입력 항목을 행 단위로 배치한다.
+    -현재 작성된 입력 항목은 이름과 이메일이며 다음 행은 미완성이다.
+    -이메일 input은 type="text"다. 기본 이메일 형식 검사가 필요하면 type="email"로 바꾼다.
+    -CSS 연결의 rel="stylesheeet"는 rel="stylesheet"로 수정한다.
+    -참조한 '박상혁_웹서비스개발.css'는 이번 첨부에 없어 해당 스타일 내용은 확인할 수 없다.
+    -마지막 tr 안의 '<'는 미완성 코드이므로 제거하거나 정상적인 셀 태그를 작성한다.
+    -LOGO 링크가 참조하는 '웹서비스 개발.html'도 이번 첨부에는 없다.
+    -0803의 content와 이 파일의 contents는 다른 id다. CSS 선택자와 정확히 맞춰야 한다.
+
+5장 쇼핑몰 상단 구조 (shoppingmall(1).html)
+    -header: 상단 메뉴와 로고, 상품 분류 메뉴를 묶는다.
+    -gnb(Global Navigation Bar): 사이트 전반의 주요 탐색 메뉴 영역.
+      Login, JoinUs, Wish, Cart, Order, My page, Notice, QnA, Review, Favorite를 배치한다.
+    -logo: 사이트 로고 영역. 현재는 LOGO라는 글자만 있다.
+    -hitmenu: hit4 → hit3 → hit2 → hit1 순서의 메뉴 목록.
+      실제 시각적 배치 순서는 연결된 CSS에 따라 달라질 수 있다.
+    -lnb(Local Navigation Bar): menu1~menu8의 분류 메뉴 영역.
+    -ul과 li로 목록을 만들고 a로 링크를 구성한다.
+
+6장 쇼핑몰 본문과 하단 구조
+    -content의 section1: 슬라이드 배너와 사이드 배너 자리.
+    -section2의 hit_product: 인기 상품 4개를 배치할 목록.
+    -section2의 md_propduct: 추천 상품 4개를 배치할 목록.
+    -footer: office_logo, office_address, shopping_info, copyright 영역.
+    -각 영역은 현재 텍스트 자리표시자이며 실제 상품 이미지나 상세 데이터는 없다.
+    -슬라이드 배너라는 이름만 있고 자동 슬라이드 동작을 구현한 JavaScript는 없다.
+    -CSS는 css/shoppingmall.css를 참조하지만 이번 첨부에 없어 실제 디자인은 확인할 수 없다.
+    -Google Fonts의 Pacifico 스타일시트를 연결한다.
+      폰트를 사용할 요소에는 font-family 설정이 필요하며, 외부 CSS의 적용 여부는 확인되지 않았다.
+
+7장 공통 주의점과 핵심 정리
+    -href="#"는 임시 링크다. 로그인·검색·장바구니·로그아웃 기능이 실행되는 것은 아니다.
+    -class 이름 slide_benner, side_benner, md_propduct에는 철자 오류가 있다.
+      banner, md_product 등으로 정리할 경우 HTML과 CSS의 이름을 함께 수정해야 한다.
+    -일반 HTML에서 </LI>처럼 태그 대소문자가 섞여도 동작할 수 있지만 표기를 통일하면 읽기 쉽다.
+    -HTML은 페이지 구조, CSS는 크기·색상·배치, JavaScript와 서버는 실제 동작을 담당한다.
+    -파일 경로, rel="stylesheet", 선택자 이름, label의 for와 input의 id를 먼저 확인한다.
+    -이번 자료의 학습 핵심은 메뉴·입력 폼·배너·상품 목록·하단 정보를 영역별로 나누는 것이다.

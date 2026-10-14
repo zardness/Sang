@@ -1,0 +1,102 @@
+모바일 페이지 · CSS 토글 · 검색창 · 말줄임 요점 정리
+대상: ex(1).css, ex(1).html, ex_test(1).html
+
+1장 전체 구성과 파일 연결
+    -ex(1).html: 모바일형 뉴스 페이지 구조.
+    -ex(1).css: 헤더, 검색창, 펼침 메뉴, 기사 영역, 하단 디자인.
+    -ex_test(1).html: 체크박스로 영역을 보이거나 숨기는 기능만 분리한 예제.
+    -페이지 구성: 헤더 → 펼침 메뉴 → 이미지 기사 → 제목 목록 → 이미지·설명 목록 → footer.
+    -ex(1).html은 ex.css를 참조한다. 첨부 파일명 그대로 사용하려면
+      <link href="ex(1).css" rel="stylesheet">로 바꾸거나 CSS 파일명을 ex.css로 변경한다.
+    -로고 링크도 ex.html을 가리키므로 실제 HTML 파일명과 일치시켜야 한다.
+    -viewport의 width=device-width, initial-scale=1.0은 기기 화면 폭과 초기 확대 비율을 설정한다.
+    -메뉴와 카드에 비율 너비를 사용하지만 미디어 쿼리로 화면별 구조를 바꾸는 코드는 없다.
+
+2장 CSS 초기화와 헤더
+    -* { margin: 0; padding: 0; }: 기본 여백 초기화 및 공통 글꼴 설정.
+    -a: 밑줄 제거, 블록 배치, 기본 글자색 navy.
+    -li: 목록 기호 제거.
+    -header: 주황색(#ea8f00) 배경.
+    -logo_wrap: position: relative;로 내부 아이콘의 배치 기준을 만든다.
+    -menu는 absolute로 왼쪽 위, myinfo는 오른쪽 위에 배치한다.
+    -로고는 text-align: center;와 line-height: 50px;로 가운데 표시한다.
+    -header 안의 링크는 흰색·굵은 글자·1.5em 크기로 지정한다.
+    -myinfo는 이미지일 뿐 클릭 동작이나 개인정보 페이지 연결은 없다.
+
+3장 검색창 배치
+    -search 영역 높이는 50px이며 position: relative;로 버튼의 위치 기준이 된다.
+    -텍스트 입력칸은 width: 100%, height: 50px, box-sizing: border-box를 사용한다.
+    -border-box는 테두리와 안쪽 여백을 지정 너비·높이에 포함한다.
+    -padding: 0 55px 0 5px;로 오른쪽 검색 버튼과 입력 글자가 겹치지 않게 한다.
+    -제출 버튼은 50×50px이며 absolute로 오른쪽 위에 겹쳐 배치한다.
+    -버튼 배경에 ch07/search.png를 사용하고 테두리를 제거한다.
+    -입력값 이름은 query_word다. form에 action·method가 없어 기본적으로
+      현재 주소에 GET으로 제출되며 실제 검색 결과 처리 기능은 포함되어 있지 않다.
+    -버튼 value가 빈 값이므로 aria-label="검색" 같은 접근 가능한 이름을 추가하면 좋다.
+
+4장 JavaScript 없이 메뉴 펼치기
+    -input type="checkbox" id="toggle": 열림·닫힘 상태를 저장한다.
+    -label for="toggle": 메뉴 이미지를 클릭하면 연결된 체크박스 상태가 바뀐다.
+    -#lnb { display: none; }: 메뉴는 처음에 숨긴다.
+    -#toggle:checked ~ #lnb { display: block; }: 체크된 동안 메뉴를 표시한다.
+    -:checked는 선택 상태, ~는 같은 부모 아래 뒤쪽 형제 요소를 선택한다.
+    -checkbox와 lnb 사이에 header 등 다른 요소가 있어도 적용된다.
+      단, 같은 부모 아래에 있고 lnb가 checkbox보다 뒤에 있어야 한다.
+    -#toggle { display: none; }: 체크박스 자체는 숨긴다.
+    -이 방식은 클릭 토글 연습용이다. 체크박스를 display:none으로 숨기면
+      키보드로 직접 초점을 줄 수 없어 실제 메뉴에는 접근성 보완이 필요하다.
+
+5장 6칸 메뉴와 이미지 카드
+    -lnb의 li는 float: left;와 width: 16.66666%로 6개를 가로 배치한다.
+    -오른쪽 구분선을 넣고 마지막 항목은 border: 0;으로 선을 제거한다.
+    -부모 ul의 overflow: hidden;은 float 자식의 높이를 포함하도록 한다.
+    -section1은 row1~row3으로 구성되며 각 행에 이미지 카드 2개, 총 6개가 있다.
+    -카드는 float: left;와 width: 50%, height: 120px로 배치한다.
+    -카드의 흰 테두리 2px는 border-box로 너비 안에 포함한다.
+    -이미지는 width: 100%, height: 100px로 표시한다.
+    -object-fit: fill;은 지정 영역을 채우지만 원본 비율과 다르면 이미지가 늘어날 수 있다.
+    -이미지 클릭 시 연결된 기사 주소로 이동한다. 기사 내용 자체를 불러오는 코드는 아니다.
+
+6장 한 줄 말줄임 처리
+    -section2는 기사 제목 링크 4개를 목록으로 표시한다.
+    -white-space: nowrap; → 글자를 한 줄로 유지한다.
+    -overflow: hidden; → 표시 영역을 넘는 내용을 숨긴다.
+    -text-overflow: ellipsis; → 잘린 끝부분을 말줄임표(...)로 표시한다.
+    -세 속성을 함께 사용하고, 실제로 폭이 제한되어 글자가 넘쳐야 말줄임이 보인다.
+    -이 예제의 a는 공통 규칙에서 display: block;으로 설정되어 있다.
+    -말줄임은 화면 표시만 바꾸며 원래 링크 텍스트를 삭제하지 않는다.
+    -오타: /#section2 { margin: 5px; }의 앞 '/'를 제거해야 해당 여백 규칙이 적용된다.
+
+7장 이미지와 설명을 나란히 배치
+    -section3은 이미지와 텍스트가 있는 항목 2개로 구성된다.
+    -방법1은 주석 처리: li를 relative로, 이미지를 absolute로 배치하고
+      텍스트 왼쪽 padding 120px로 이미지 자리를 확보한다.
+    -현재 실행되는 방법2: 이미지 영역에 float: left;와 padding-right: 10px를 적용한다.
+    -첫 번째 span은 block으로 바꾸고 말줄임·1.3em·굵기·navy 색을 적용한다.
+    -두 번째 span에는 말줄임 설정이 없어 일반 텍스트로 표시된다.
+    -li의 height: 100px에 padding 10px와 테두리 1px가 더해지므로
+      기본 content-box 기준 테두리까지 높이는 122px이다.
+    -고정 높이 안에 설명이 길어지면 넘칠 수 있으므로 실제 내용에 맞게 높이를 검토한다.
+
+8장 토글 단독 연습 (ex_test)
+    -showHide는 너비 200px, 높이 100px의 빨간 영역이며 처음에는 숨겨져 있다.
+    -#toggle:checked ~ #showHide로 체크 상태에서만 표시한다.
+    -중간에 p와 label이 있어도 뒤쪽 형제 선택자 ~가 적용됨을 보여 준다.
+    -script는 비어 있으며 실제 동작은 HTML과 CSS만으로 구성된다.
+    -viewport의 initial-scale=1.0 뒤에 쉼표가 누락되어 있으므로 다음처럼 구분한다.
+      initial-scale=1.0, maximum-scale=2.0, minimum-scale=0.7, user-scalable=yes
+    -확대 범위를 굳이 제한하지 않는다면 width=device-width, initial-scale=1.0만으로
+      설정을 간단히 유지할 수 있다.
+
+9장 하단 영역과 실행 확인 사항
+    -footer는 헤더와 같은 주황 배경에 가운데 정렬한다.
+    -마지막 p는 글자 크기 0.8em, 색 #333333, 아래 padding 5px로 표시한다.
+    -ch07의 메뉴·검색·회원정보·목록 이미지·로고 파일은 이번 첨부에 없어 내용은 확인하지 않았다.
+    -외부 기사 이미지와 링크도 네트워크 및 원본 서버 상태에 영향을 받는다.
+    -#l1~#l6 링크에 대응하는 id가 문서에 없어 메뉴 이동 대상은 아직 구현되지 않았다.
+
+핵심 정리
+    -CSS 토글 = checkbox + label + :checked + 뒤쪽 형제 선택자(~).
+    -겹쳐 배치 = relative 부모 + absolute 자식.
+    -비율 배치 = % 너비 + float + border-box.
+    -한 줄 말줄임 = nowrap + hidden + ellipsis + 제한된 표시 폭.

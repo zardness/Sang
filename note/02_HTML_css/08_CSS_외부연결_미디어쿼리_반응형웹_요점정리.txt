@@ -1,0 +1,88 @@
+CSS 외부 연결 · 미디어 쿼리 · 반응형 웹 요점 정리
+대상: ex1_link(1).html, ex2_규칙(1).html, ex3_반응형(1).html
+
+1장 외부 CSS 연결 (ex1_link)
+    -HTML 구조: wrap 안에 title, content, footer를 배치한 공지문 예제.
+    -<link href="파일경로" rel="stylesheet">로 외부 CSS를 연결한다.
+    -title.css와 footer.css: 매체 조건 없이 연결하는 공통 스타일 파일.
+    -content-pc.css는 media="screen"으로 화면에서 사용한다.
+    -content-print.css는 media="print"로 인쇄·인쇄 미리보기에서 사용한다.
+    -screen은 PC만을 뜻하지 않으며 스마트폰·태블릿 등의 화면에도 해당한다.
+    -같은 HTML에 화면용·인쇄용 디자인을 각각 적용할 수 있다.
+    -파일 상단의 내부 style은 주석 처리되어 있어 적용되지 않는다.
+    -주석 속 스타일은 너비 500px, 가운데 배치, 제목 밑줄, 진녹색 본문 배경 등을
+      보여 주는 참고 코드이며 실제 외부 CSS 내용과 동일하다고 단정할 수 없다.
+
+2장 @import와 @media 규칙 (ex2_규칙)
+    -@import url('css/title.css');: CSS 안에서 다른 CSS 파일을 불러온다.
+    -예제는 title.css와 footer.css를 style 시작 부분에서 불러온다.
+    -@import는 일반 선택자 규칙보다 앞에 작성한다.
+    -@media screen { ... }: 화면 출력 조건에서 적용할 규칙.
+    -@media print { ... }: 인쇄 조건에서 적용할 규칙.
+    -현재 내부 CSS는 screen과 print 모두 본문 글자색 #003300,
+      padding 20px, text-align: justify를 지정하여 두 매체의 설정이 같다.
+    -style 뒤에는 화면용·인쇄용 외부 CSS도 link로 다시 연결되어 있다.
+    -외부 파일에 같은 속성 규칙이 있으면 명시도·중요도·작성 순서 등에 따라 최종값이 결정된다.
+      조건과 명시도가 같다면 뒤에 연결한 스타일이 우선한다.
+    -link는 HTML에서 연결하고, @import는 CSS 안에서 불러온다는 점을 구분한다.
+
+3장 반응형 웹 기본 (ex3_반응형)
+    -반응형 웹: 화면 크기 등의 조건에 따라 폭, 글자 크기, 메뉴 표시를 바꾸는 방식.
+    -viewport의 width=device-width는 기기 화면 폭에 맞춘 뷰포트를 사용하도록 한다.
+    -initial-scale=1.0은 초기 확대 비율을 지정한다.
+    -미디어 쿼리의 width는 이 예제에서 브라우저 뷰포트의 CSS 픽셀 너비를 기준으로 한다.
+    -스마트폰·태블릿·PC라는 주석은 구간의 용도를 설명한 것이며 기기 종류를 직접 탐지하지 않는다.
+    -script는 비어 있으며 화면 변화는 JavaScript 없이 CSS로 처리한다.
+
+4장 공통 화면 구성
+    -wrap 안에 header → nav → content → footer를 배치한다.
+    -* { margin: 0; padding: 0; }: 기본 여백 초기화.
+    -li { list-style: none; }: 목록 기호 제거.
+    -a: 밑줄 제거, 검정색, 블록 배치, 굵은 글자 적용.
+    -header: 높이와 line-height를 100px로 설정하고 글자를 가운데 정렬한다.
+    -nav의 li는 float: left;로 가로 배치하고 높이·line-height를 60px로 지정한다.
+    -ul의 overflow: hidden;은 float 자식의 높이를 포함하도록 한다.
+    -box-sizing: border-box;는 지정 크기에 테두리와 padding을 포함한다.
+    -content는 padding 10px, footer는 회색 배경과 가운데 정렬을 적용한다.
+
+5장 화면 너비별 적용 내용
+    -849px 이하: @media screen and (max-width: 849px)
+      배경 분홍색, wrap 너비 99%, margin 0.5%, 글자 크기 1.2em.
+      메뉴 2·4를 display: none;으로 숨긴다.
+      남은 메뉴는 1·3·5이며 각 너비는 33.3%다.
+    -850~1200px: @media screen and (min-width: 850px) and (max-width: 1200px)
+      배경 연두색, 글자 크기 1.1em.
+      메뉴 4만 숨겨 메뉴 1·2·3·5를 표시하며 각 너비는 25%다.
+      wrap에 별도 고정 너비를 지정하지 않아 기본 블록 너비로 배치된다.
+    -1201px 이상: @media screen and (min-width: 1201px)
+      wrap 너비 800px, margin: 0 auto;로 가운데 배치.
+      메뉴 5개 모두 표시하며 각 너비는 20%다.
+      배경색과 글자 크기는 이 구간에서 따로 지정하지 않는다.
+
+6장 메뉴 숨김과 선택자 이해
+    -:nth-child(2), :nth-child(4)는 각각 부모의 두 번째·네 번째 자식을 선택한다.
+    -display: none;은 메뉴와 메뉴가 차지하는 공간을 함께 제거한다.
+    -일부 메뉴를 숨겨도 HTML의 자식 순서는 바뀌지 않는다.
+    -너비 조건을 벗어나면 해당 미디어 쿼리의 숨김 규칙도 더 이상 적용되지 않는다.
+      따라서 넓은 화면에서는 별도의 display 복구 코드 없이 메뉴가 다시 표시된다.
+    -33.3%를 3개 합하면 99.9%이므로 작은 여유 폭이 남을 수 있다.
+
+7장 소스 주의점
+    -ex1·ex2가 참조하는 css/title.css, footer.css, content-pc.css,
+      content-print.css는 이번 첨부에 없어 실제 외부 스타일은 확인하지 않았다.
+    -ex1·ex2 footer에는 여는 p 없이 </p>가 있다. 불필요한 닫는 태그를 제거하거나
+      내용을 <p>...</p>로 감싸 구조를 맞춘다.
+    -Written ny는 Written by의 오타다.
+    -849px과 850px 사이, 1200px과 1201px 사이의 소수 너비에서는
+      어느 화면별 규칙에도 해당하지 않는 구간이 생길 수 있다.
+    -보완 방법: 작은 화면 스타일을 기본으로 작성하고 min-width: 850px,
+      min-width: 1201px 규칙을 순서대로 덮어쓰는 방식으로 구간을 연속되게 만든다.
+      이때 작은 화면에서 숨긴 메뉴를 넓은 구간에서 다시 표시하는 규칙도 필요하다.
+    -ex3의 화면별 규칙은 screen 전용이므로 인쇄에서는 공통 CSS만 적용된다.
+    -메뉴 href="#"는 임시 링크이며 실제 메뉴 이동 기능은 구현되어 있지 않다.
+
+핵심 정리
+    -link: HTML에서 외부 CSS 연결 / @import: CSS 안에서 외부 CSS 연결.
+    -screen·print: 출력 매체 구분 / min-width·max-width: 화면 너비 조건.
+    -공통 스타일을 먼저 정의하고 조건별로 필요한 속성을 바꾼다.
+    -화면 구간별 메뉴 개수: 3개 → 4개 → 5개.
