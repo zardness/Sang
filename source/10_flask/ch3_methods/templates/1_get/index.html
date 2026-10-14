@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="{{ url_for('static', filename='file.css') }}" 
+        rel="stylesheet"
+        type="text/css">
+  <link href="{{ url_for('static', filename='flask.png') }}"
+        rel="icon">
+</head>
+<body>
+  <h2>WELCOME(GET)</h2>
+  <form action="/user" method="get">
+    <p><input type="text" name="name" placeholder="이름"></p>
+    <p><input type="submit" value="post요청"></p>
+  </form>
+  <button onclick="location.href='/join_form'">회원가입(GET)</button>
+  <br>
+  <a href="/join_form">회원가입(GET요청)</a>
+</body>
+</html>
