@@ -1,0 +1,154 @@
+자연어처리 · RNN · LSTM · Seq2Seq · Transformer 핵심요약
+(첨부 노트북 12개와 emma.jpg 기준 / 소스 내용 요약, 모델 재학습은 하지 않음)
+
+1장 NLTK 자연어처리
+    -자연어처리는 사람이 사용하는 문장을 분석하거나 모델의 입력으로 바꾸는 작업
+    -말뭉치(Corpus): 분석에 사용하는 텍스트 모음. 예제에서는 소설 Emma 사용
+    -sent_tokenize(): 문장 분리 / word_tokenize(): 단어 단위 토큰화
+    -RegexpTokenizer(): 정규표현식에 맞는 토큰 추출
+    -PorterStemmer, LancasterStemmer, RegexpStemmer: 단어의 어간 추출
+    -pos_tag(): 문맥을 바탕으로 품사 태깅. NN, NNS, NNP, NNPS로 명사 추출
+    -len(단어목록)은 등장 횟수, len(set(단어목록))은 중복을 제외한 종류 수
+    -FreqDist(), Text.vocab().most_common(): 단어 빈도와 최빈 단어 확인
+    -Text.plot(): 빈도 시각화 / dispersion_plot(): 텍스트 내 단어 등장 위치 표시
+    -특정 단어의 품사는 전체 문장에서 태깅한 뒤 골라야 문맥이 유지됨
+
+2장 한글 형태소 분석과 워드클라우드
+    -분석 흐름: 텍스트 준비 → 형태소·품사 분석 → 불용어 제거 → 빈도·유사도 분석
+    -Hannanum, Kkma, Komoran, Okt, MeCab의 분석 결과를 비교
+    -morphs(): 형태소 분리 / pos(): 품사 태깅 / nouns(): 명사 추출
+    -분석기마다 태그가 다름: Okt는 Noun, MeCab·Komoran 등은 NNG·NNP 사용
+    -헌법 말뭉치 constitution.txt에서 명사를 추출하고 출현 빈도 계산
+    -WordCloud().generate(text): 단어 빈도를 글자 크기로 표현
+    -font_path는 글꼴, stopwords는 제외 단어, mask는 출력 모양을 지정
+    -background_color, colormap, max_words 등으로 표시 방식 조절
+    -to_file(): 워드클라우드를 이미지로 저장
+    -emma.jpg는 Emma, Harriet 등 소설 속 단어를 표시한 워드클라우드 결과 이미지
+
+3장 Word2Vec과 여행 지역 비교
+    -Word2Vec: 주변에 함께 등장하는 단어 관계를 학습해 단어를 벡터로 표현
+    -입력은 문서별 단어 목록을 모은 2차원 리스트
+    -window는 주변 문맥 범위, min_count는 최소 출현 횟수, workers는 작업 스레드 수
+    -sg=1은 Skip-gram, sg=0은 CBOW 방식
+    -model.wv.most_similar(): 학습된 벡터를 기준으로 유사한 단어 검색
+    -여행 예제: 네이버 블로그에서 경주·전주 관련 제목과 요약을 수집하는 코드
+    -.env에서 API 인증값을 읽고 HTML 태그·특수문자를 제거
+    -MeCab으로 명사를 추출하고 지역명·여행 등 분석 목적에 맞는 불용어 제거
+    -groupby()로 지역별 빈도 집계 → outer merge → 결측 빈도를 0으로 채움
+    -경주빈도·전주빈도·빈도합과 단어별 지역 비율을 CSV로 저장
+    -지역별 워드클라우드, 경주 최빈 단어 그래프, 통합 Word2Vec 유사 단어 탐색 구현
+    -지역 비율은 해당 단어의 두 지역 빈도합 중 각 지역이 차지하는 비율
+    -학습 어휘에 없는 단어는 유사도 검색 전에 포함 여부 확인 필요
+
+4장 연관분석
+    -같은 거래나 문서에서 자주 함께 등장하는 항목 사이의 규칙을 찾는 분석
+    -X → Y: X가 등장했을 때 Y도 등장하는 규칙
+    -지지도(support) = P(X와 Y): 전체 중 두 항목이 함께 등장한 비율
+    -신뢰도(confidence) = P(X와 Y) / P(X): X가 있을 때 Y가 있을 비율
+    -향상도(lift) = P(X와 Y) / [P(X) × P(Y)]
+    -lift > 1은 함께 등장하기 쉬움, 1은 독립 수준, 1 미만은 함께 등장하기 어려움
+    -apyori.apriori()에 거래 목록과 최소 지지도·신뢰도·향상도 전달
+    -결과를 lhs, rhs, support, confidence, lift 열의 DataFrame으로 정리
+    -장바구니 CSV와 뉴스별 명사 목록에 적용하고 지표를 기준으로 정렬
+    -연관 규칙은 동시 등장 관계이며 원인과 결과를 증명하는 것은 아님
+
+5장 RNN으로 다음 단어 예측
+    -RNN은 앞선 시점의 상태를 다음 시점으로 전달하며 순서가 있는 데이터를 처리
+    -Tokenizer.fit_on_texts(): 단어 사전 생성 / texts_to_sequences(): 정수 시퀀스로 변환
+    -예문에서 연속된 부분 문장을 만들고 마지막 단어를 정답으로 사용
+    -pad_sequences(): 길이를 통일. 예제는 앞쪽에 0을 채우는 pre padding 사용
+    -X는 마지막 단어 이전까지, y는 마지막 단어이며 to_categorical()로 정답 원핫 인코딩
+    -모델: Embedding → SimpleRNN(32) → Dense(softmax)
+    -Embedding은 단어 번호를 학습 가능한 밀집 벡터로 변환
+    -categorical_crossentropy와 Adam으로 학습
+    -argmax()로 다음 단어를 선택하고 입력에 붙이는 과정을 반복해 문장 생성
+    -짧은 예문을 학습하는 실습으로, 모르는 단어와 새로운 문맥의 처리에는 한계가 있음
+
+6장 LSTM으로 영화평 감성분석
+    -LSTM은 RNN의 장기 정보 학습 어려움을 완화하는 순환신경망 구조
+    -IMDB 영화평의 정수 시퀀스를 입력으로 사용하며 0은 부정, 1은 긍정
+    -예제 설정: 어휘 10,000개, 문장 길이 80, 임베딩 차원 32, LSTM 유닛 64
+    -긴 리뷰는 뒤를 자르고(truncating='post'), 짧은 리뷰는 앞에 0을 채움
+    -모델: Embedding → LSTM → Dense(1, sigmoid)
+    -binary_crossentropy로 학습하고 예측값이 0.5보다 크면 긍정으로 분류
+    -Dropout·순환 Dropout·L2 규제로 과적합 완화를 시도
+    -EarlyStopping은 val_loss를 감시하고 restore_best_weights=True로 최적 가중치 복원
+    -학습 데이터의 20%를 검증용으로 사용하고 별도 테스트 데이터로 평가
+    -새 리뷰도 소문자 변환·토큰화·정수 변환·패딩을 거쳐 같은 형태로 입력
+
+7장 Seq2Seq 스마트 번역기
+    -Seq2Seq는 입력 시퀀스를 인코더로 처리하고 디코더가 출력 시퀀스를 만드는 구조
+    -translate.csv의 영어·한국어 쌍으로 문자 단위 번역 실습
+    -문자 사전을 만들고 영어 입력과 디코더 입력은 원핫 인코딩
+    -디코더 입력은 'S + 정답', 디코더 목표는 '정답 + E': 시작·종료 표시 사용
+    -인코더 LSTM의 state_h, state_c를 디코더의 initial_state로 전달
+    -return_sequences=True로 각 출력 시점의 결과를 얻고 softmax로 문자 확률 계산
+    -정답은 정수 번호이므로 sparse_categorical_crossentropy 사용
+    -소스는 영어 4문자, 디코더 3시점 입력으로 길이가 고정된 예제
+    -학습 시 정답의 앞부분을 디코더에 제공하는 방식은 Teacher Forcing
+    -예제 추론은 'Spp'를 한 번에 넣는 방식. 일반적인 순차 생성은 이전 예측 문자를 다음 입력에 사용
+    -학습 데이터로 평가하므로 별도 테스트 성능과 구분해야 함
+
+8장 시계열 분석과 Prophet
+    -시계열은 날짜나 시간 순서에 따라 기록된 데이터
+    -대기오염 CSV에서 측정소·결측치를 확인하고 측정일시를 datetime으로 변환
+    -공항대로 측정소의 미세먼지·초미세먼지 농도 변화를 그래프로 표시
+    -seasonal_decompose(): 시계열을 관측값·추세·계절성·잔차로 분해
+    -additive는 관측값 = 추세 + 계절성 + 잔차인 가법 모형
+    -예제 period=30은 30개 관측치 주기이며, 매일 기록된 데이터에서는 30일에 해당
+    -result.trend는 장기 추세, result.seasonal은 반복 패턴, result.resid는 잔차
+    -Prophet 입력 열은 ds(날짜), y(관측값)로 준비
+    -fit() → make_future_dataframe(periods=30) → predict()로 향후 30일 예측
+    -yhat은 예측값, yhat_lower·yhat_upper는 예측 불확실성 구간
+
+9장 Attention 번역기
+    -Attention은 현재 출력에 필요한 입력 부분에 더 큰 가중치를 주는 방법
+    -기본 Seq2Seq에 인코더의 모든 시점 출력 ENC_OUT을 추가로 활용
+    -Attention()([DEC_MID, ENC_OUT])에서 디코더 출력은 Query 역할
+    -인코더 출력은 Key·Value 역할로 사용되어 문맥 벡터를 계산
+    -Concatenate()로 문맥 벡터와 디코더 출력을 결합한 후 softmax로 문자 예측
+    -마지막 인코더 상태뿐 아니라 각 입력 시점의 정보를 참조할 수 있음
+    -데이터 인코딩·손실함수·고정 길이 및 추론 방식은 Seq2Seq 예제와 같음
+
+10장 Transformer 영화평 분류
+    -Transformer는 Self-Attention으로 입력 토큰 사이의 관계를 계산하는 구조
+    -예제는 Transformer 인코더 기반 영화평 분류 모델
+    -입력 단어 Embedding에 학습 가능한 위치 Embedding을 더해 순서 정보 제공
+    -MultiHeadAttention은 여러 관점에서 단어 관계를 계산
+    -잔차 연결(add)과 LayerNormalization으로 Attention·FFN 결과를 처리
+    -FFN은 각 토큰에 적용되는 Dense 기반 신경망
+    -GlobalAvgPool1D로 토큰별 출력을 평균 내어 문장 벡터 생성
+    -이진 출력 버전: Dense(1, sigmoid) + binary_crossentropy + 0.5 기준 판정
+    -다중분류 파일의 출력: Dense(2, softmax) + sparse_categorical_crossentropy + argmax
+    -다중분류 파일도 실제 데이터 범주는 긍정·부정 2개이며 정답은 원핫 변환하지 않음
+    -Dropout·L2·EarlyStopping을 적용하고 테스트 데이터로 평가
+
+11장 Attention 용어와 혼동행렬
+    -Query(Q): 찾으려는 정보 / Key(K): 비교할 특징 / Value(V): 반영할 정보
+    -Attention Score는 Q와 K의 관련성 점수, Weight는 정규화한 중요도
+    -Attention Distribution은 입력 요소 전체에 대한 가중치 분포
+    -Scaled Dot-Product Attention: softmax(QKᵀ / √dk)V
+    -Self-Attention은 같은 시퀀스에서 Q·K·V를 만들고, Cross-Attention은 다른 시퀀스 정보를 참조
+    -Multi-Head Attention은 여러 Attention 결과를 결합
+    -혼동행렬은 실제 정답과 예측 범주를 교차해 맞고 틀린 개수를 표시
+    -TP: 양성을 양성으로 예측 / TN: 음성을 음성으로 예측
+    -FP: 음성을 양성으로 예측 / FN: 양성을 음성으로 예측
+    -정확도 = (TP + TN) / 전체 수
+    -정밀도 = TP / (TP + FP), 재현율 = TP / (TP + FN)
+    -F1 = 2 × 정밀도 × 재현율 / (정밀도 + 재현율)
+
+12장 소스에서 확인할 주요 수정사항
+    -한글 형태소 분석: 'NNp'는 'NNP'로 수정해야 고유명사를 제대로 선택
+    -stopwords,fileids()는 stopwords.fileids()로 수정
+    -이미지 배열 처리 전에 from PIL import Image, import numpy as np가 필요
+    -여행 비교의 select_pos=['NNP','NNP','NP']에는 일반명사 NNG가 빠져 있음
+    -연관분석의 stopwords는 선언만 되어 있으므로 명사 추출 조건에 적용해야 함
+    -Seq2Seq 학습 호출의 epochs=MY_EPOCH,s에는 불필요한 s가 있어 문법 수정 필요
+    -LSTM·Transformer의 마지막 리뷰 예측은 split() 없이 문자열을 순회해 문자 단위로 인코딩됨
+    -마지막 리뷰에도 앞선 예제처럼 정제·단어 분리·어휘 범위 처리를 동일하게 적용
+    -IMDB 소스의 '3: padding' 주석과 달리 pad_sequences()의 기본 패딩 값은 0
+    -SKIP_TOP=40은 변수만 선언되어 있으며 실제 load_data()에 전달되지 않음
+    -Transformer의 LayerNormalization은 BatchNormalization과 다른 정규화 방식
+    -Transformer 예제에는 패딩을 제외하는 명시적 마스크가 없어 0 패딩도 계산에 포함됨
+    -RNN의 출력 수 12와 입력 길이 5는 데이터 변경 시 어휘 수·학습 입력 길이에 맞춰 조정
+    -CSV·폰트·마스크 이미지·API 인증값 등 소스가 참조하는 외부 자료가 실행에 필요

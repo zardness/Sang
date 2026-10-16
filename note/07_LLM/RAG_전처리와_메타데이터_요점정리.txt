@@ -1,0 +1,110 @@
+RAG 구현·전처리·메타데이터 활용 요점 정리
+대상: ch09_07, ch09_09, ch09_10, ch09_11, ch09_12 노트북
+
+1장 RAG의 기본 흐름
+    -RAG는 질문과 관련된 문서를 검색한 뒤, 검색 내용을 참고하여 LLM이 답변하는 방식이다.
+    -실행 순서: 문서 로드 → 청크 분할 → 임베딩 → 벡터 DB 저장 → 질문 검색 → 프롬프트 구성 → 답변 생성.
+    -Docx2txtLoader: DOCX 파일의 텍스트를 읽는다.
+    -RecursiveCharacterTextSplitter: 문서를 문자 기준으로 나누며 chunk_overlap으로 앞뒤 내용을 일부 겹친다.
+    -임베딩 모델은 문장·문서를 벡터로 만들고, 대화 모델은 검색 문맥을 바탕으로 답변을 생성한다.
+    -k는 검색할 문서 수이다. 문서 수가 많다고 답변 품질이 항상 좋아지는 것은 아니다.
+
+2장 Upstage와 Chroma를 이용한 RAG(ch09_07)
+    -Upstage 임베딩과 로컬 Chroma 저장소를 연결하는 예제이다.
+    -TokenTextSplitter의 1,500토큰·중복 200 설정을 실습한 후, 문자 기준 1,500·중복 200으로 documents를 다시 만든다.
+    -토큰 수와 문자 수는 서로 다른 단위이며, 마지막으로 대입한 분할 결과가 이후 코드에 사용된다.
+    -Chroma 저장 경로는 ./chroma_upstage, 컬렉션 이름은 tax-collection이다.
+    -문서 저장 코드가 주석 처리되어 있어, 실행 중인 코드는 기존 저장소를 불러오는 흐름이다.
+    -유사도 검색 → 검색 문서 결합 → 질문과 문맥 전달 → 답변 출력 순서로 진행한다.
+    -ChatOpenAI를 생성한 뒤 ChatUpstage로 llm을 다시 지정하므로, 이후 체인에는 마지막 모델이 사용된다.
+
+3장 OpenAI 임베딩과 Pinecone을 이용한 RAG(ch09_09)
+    -OpenAIEmbeddings의 text-embedding-3-large로 문서를 벡터화한다.
+    -문서 분할 설정은 chunk_size=1500, chunk_overlap=20이다.
+    -Pinecone의 tax-index-openai 인덱스를 연결하여 관련 문서를 검색한다.
+    -from_documents는 문서 임베딩과 저장에 사용하고, 기존 인덱스 연결은 저장된 벡터를 재사용한다.
+    -이 자료에서는 저장 코드가 주석 처리되어 있으므로 기존 인덱스와 데이터가 필요하다.
+    -초기 답변 실습은 ChatOpenAI를 사용하지만, 마지막 RAG 체인은 ChatUpstage를 사용한다.
+    -임베딩 제공자와 답변 생성 모델의 제공자는 서로 달라도 된다.
+
+4장 표를 활용한 전처리(ch09_10)
+    -미리 준비된 소득세법_with_table.docx를 읽어 RAG에 활용한다.
+    -원본을 표 문서로 변환하는 코드는 포함되어 있지 않다.
+    -문서 분할은 1,500문자·중복 20이며, Pinecone 인덱스 이름은 tax-index-table이다.
+    -임베딩 결과의 길이로 벡터 차원을 구한다.
+        dimension = len(embedding.embed_query("차원확인용"))
+    -인덱스가 없으면 cosine 방식, AWS us-east-1 설정으로 생성하고 준비 상태를 확인한다.
+    -표의 항목과 수치가 함께 검색되도록 구성하는 것이 목적이다.
+    -다만 DOCX의 텍스트 추출과 일반 문자 분할만으로 표 구조 보존이 보장되지는 않는다.
+    -표 제목·열 이름·행 값이 서로 분리되지 않는지 실제 청크를 확인해야 한다.
+    -'55조' 포함 여부 확인은 특정 문자열의 존재를 검사할 뿐, 검색과 답변의 정확도를 검증하지는 않는다.
+
+5장 Markdown과 키워드 사전 활용(ch09_11)
+    -미리 준비된 소득세법_with_markdown.docx를 로드한다.
+    -Markdown 변환 코드나 제목 기준 Markdown 분할기는 포함되어 있지 않다.
+    -일반 문자 분할기를 사용하므로 제목과 본문이 같은 청크에 유지되는지 확인해야 한다.
+    -질문의 일상 표현을 문서에서 사용하는 표현으로 바꾸는 키워드 사전을 실습한다.
+    -예제 치환: 연봉 → 종합소득, 사람을 나타내는 표현 → 거주자, 5천 → 5,000.
+    -dictionary_chain은 질문을 바꾸고, rag_chain은 바뀐 질문으로 검색과 답변을 수행한다.
+        new_chain = dictionary_chain | rag_chain
+    -이 치환들은 검색 실험용 규칙이며, 모든 문맥에서 같은 뜻인 것은 아니다.
+    -원질문의 의미와 금액·단위가 유지되는지 확인해야 한다.
+    -코사인 유사도로 표현 사이의 벡터 유사성을 비교하지만, 높은 유사도가 의미의 완전한 일치를 뜻하지는 않는다.
+    -질문 변환용 LLM 호출이 추가되므로 처리 시간과 비용도 함께 고려한다.
+
+6장 메타데이터 활용 준비(ch09_12)
+    -메타데이터는 문서의 제목·분류·출처 등 검색에 보조적으로 사용하는 정보이다.
+    -Markdown 형식의 DOCX를 1,500문자·중복 100으로 나눈다.
+    -remove_special_chars는 줄바꿈과 불필요한 기호를 정리하고 연속 공백을 줄인다.
+    -이 함수는 일부 Markdown 표시나 괄호도 제거하므로 원문 구조가 필요한 경우 적용 범위를 정해야 한다.
+    -ChatOllama의 exaone3.5:2.4b로 청크의 핵심 제목을 추출하는 함수를 만든다.
+    -제목 길이 100토큰 이내는 프롬프트 지시이며, 코드에서 강제하는 출력 제한은 아니다.
+    -categorize_content는 키워드 포함 여부로 납세의무·세율계산·근로소득·사업소득 등 13개 범주를 분류한다.
+    -여러 범주가 동시에 선택될 수 있으며, LLM 분류가 아닌 문자열 검색 방식이다.
+    -현재 자료는 제목 추출·분류 함수 실습 단계이다. 메타데이터 저장, 필터 검색, 성능 비교까지 구현되어 있지는 않다.
+    -후속 구현에서는 결과를 Document.metadata에 넣고 벡터 DB에 저장한 뒤 필터 검색에 활용할 수 있다.
+
+7장 LCEL 체인의 핵심 구성
+    -RunnablePassthrough는 입력 질문을 다음 단계로 그대로 전달한다.
+    -retriever는 질문과 관련된 Document 목록을 반환한다.
+    -format_documents는 각 문서의 page_content를 하나의 문맥 문자열로 합친다.
+    -ChatPromptTemplate은 문맥과 질문을 포함하는 메시지를 만든다.
+    -StrOutputParser는 모델 응답에서 문자열을 얻는 데 사용한다.
+
+    기본 구조:
+        {"context": retriever | format_documents,
+         "query": RunnablePassthrough()} | prompt | llm | StrOutputParser()
+
+    필요한 import:
+        from langchain_core.output_parsers import StrOutputParser
+
+    문서 결합 함수:
+        def format_documents(retrieved_docs):
+            return "\n--\n".join(doc.page_content for doc in retrieved_docs)
+
+8장 코드에서 수정할 부분
+    -ch09_07: vectors에 저장한 결과를 vector로 조회하는 부분은 변수 이름을 통일한다.
+    -ch09_07: database.get() 결과의 메타데이터 키는 'meta'가 아니라 'metadatas'이다.
+    -ch09_07·10·11: 마지막 체인의 search_kwarge를 search_kwargs로 수정해야 의도한 k 설정을 전달할 수 있다.
+        retriever = database.as_retriever(search_kwargs={"k": 3})
+    -ch09_09: format_documents의 매개변수는 retriever_docs인데 본문은 전역 retrieved_docs를 참조한다.
+      매개변수와 본문 이름을 통일하여 현재 검색 결과를 사용하도록 수정한다.
+    -ch09_10: PineconeVectorStore를 사용하기 전에 해당 import가 실행되었는지 확인한다.
+        from langchain_pinecone import PineconeVectorStore
+    -ch09_11: tax-index-markdown을 생성한 뒤 tax-index-table로 이름을 다시 지정한다.
+      Markdown 문서 실험이라면 저장·연결·검색에 사용할 인덱스 이름을 tax-index-markdown으로 통일한다.
+    -ch09_12: categorize_content 함수 마지막에 return result가 빠져 있다.
+      현재 상태에서는 분류 결과 목록 대신 None을 반환한다.
+    -ch09_12: documents[43]을 조회하려면 청크가 최소 44개 있어야 한다.
+
+9장 실행 전 확인 사항
+    -API 키, 원본 DOCX 경로, 기존 벡터 DB 데이터가 준비되어 있어야 한다.
+    -Chroma와 Pinecone에서 저장 코드가 주석 처리되어 있으면 새 문서는 자동으로 등록되지 않는다.
+    -저장 문서와 검색 질문에는 서로 호환되는 임베딩 모델을 사용해야 한다.
+    -Pinecone 인덱스의 차원은 실제 임베딩 차원과 같아야 한다. 인덱스가 존재한다는 확인만으로 호환성이 보장되지는 않는다.
+    -모델을 변경하면 차원뿐 아니라 벡터 공간도 달라질 수 있으므로 문서 재임베딩이 필요할 수 있다.
+    -Ollama 예제는 로컬 서비스와 해당 모델이 준비되어 있어야 한다.
+    -노트북은 위에서부터 실행하며, 이전 셀의 변수나 import가 남아 있어 오류를 가리는 상황에 주의한다.
+    -전처리·사전·메타데이터의 효과는 동일한 평가 질문으로 검색 결과와 답변을 비교해야 판단할 수 있다.
+
+※ 첨부 노트북의 코드 기준 요약이며, 외부 API 호출이나 성능 검증은 실행하지 않았다.
