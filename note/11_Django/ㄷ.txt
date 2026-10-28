@@ -1,0 +1,3 @@
+supermaven 확장 비활성화
+
+continue 확장 제거

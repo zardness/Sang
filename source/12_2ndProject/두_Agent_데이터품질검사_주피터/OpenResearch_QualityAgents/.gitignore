@@ -1,0 +1,5 @@
+.env
+private_outputs/
+private_data/
+.ipynb_checkpoints/
+__pycache__/

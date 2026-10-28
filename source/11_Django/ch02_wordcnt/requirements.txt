@@ -1,0 +1,8 @@
+asgiref==3.12.1
+Django==5.2.18
+packaging==26.3
+python-decouple==3.8
+python-dotenv==1.2.4
+sqlparse==0.6.0
+typing_extensions==4.16.0
+tzdata==2026.5
