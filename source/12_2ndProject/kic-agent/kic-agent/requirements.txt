@@ -1,9 +1,0 @@
-psycopg[binary]>=3.1
-anthropic>=0.40
-pandas>=2.0
-openpyxl>=3.1
-streamlit>=1.35
-python-dotenv>=1.0
-# 선택
-# edge-tts>=6.1        # 음성 브리핑
-# joblib scikit-learn  # 건전성 분류 모델
