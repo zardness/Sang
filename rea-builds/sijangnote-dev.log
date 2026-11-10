@@ -1,0 +1,18 @@
+
+> sijangnote@0.1.0 dev
+> node scripts/dev.mjs
+
+
+> sijangnote@0.1.0 dev:server
+> tsx watch server/index.ts
+
+
+> sijangnote@0.1.0 dev:web
+> vite
+
+
+  VITE v5.4.11  ready in 335 ms
+
+  ➜  Local:   http://localhost:4317/
+  ➜  Network: use --host to expose
+[시장노트] API http://127.0.0.1:4318/api

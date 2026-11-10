@@ -1,0 +1,133 @@
+{
+ "agent": "P02",
+ "ticker": "000660",
+ "name": "SK하이닉스",
+ "counts": {
+  "claims": 20,
+  "suppressed": 0,
+  "evidence": 27,
+  "calculations": 8,
+  "holds": 7,
+  "blocking": 0
+ },
+ "verifier": [
+  {
+   "check": "V1 근거 연결",
+   "pass": 20
+  },
+  {
+   "check": "V2 산식 재계산",
+   "pass": 8
+  },
+  {
+   "check": "V3 문장 숫자",
+   "pass": 8
+  },
+  {
+   "check": "V4 표현 규칙",
+   "pass": 20
+  }
+ ],
+ "segments": {},
+ "companyRevenue": [
+  {
+   "period": "2023Q1",
+   "won": 5088111000000,
+   "method": "Q1 3개월",
+   "rcept": "20230515001677"
+  },
+  {
+   "period": "2023Q2",
+   "won": 7305933000000,
+   "method": "반기 3개월",
+   "rcept": "20230814002376"
+  },
+  {
+   "period": "2023Q3",
+   "won": 9066171000000,
+   "method": "3분기 3개월",
+   "rcept": "20231114002574"
+  },
+  {
+   "period": "2023Q4",
+   "won": 11305505000000,
+   "method": "연간 − 3분기누적",
+   "rcept": "20240319000684"
+  },
+  {
+   "period": "2024Q1",
+   "won": 12429598000000,
+   "method": "Q1 3개월",
+   "rcept": "20240516001638"
+  },
+  {
+   "period": "2024Q2",
+   "won": 16423258000000,
+   "method": "반기 3개월",
+   "rcept": "20240814001887"
+  },
+  {
+   "period": "2024Q3",
+   "won": 17573069000000,
+   "method": "3분기 3개월",
+   "rcept": "20241114001712"
+  },
+  {
+   "period": "2024Q4",
+   "won": 19767035000000,
+   "method": "연간 − 3분기누적",
+   "rcept": "20250319000665"
+  },
+  {
+   "period": "2025Q1",
+   "won": 17639141000000,
+   "method": "Q1 3개월",
+   "rcept": "20250515002103"
+  },
+  {
+   "period": "2025Q2",
+   "won": 22231952000000,
+   "method": "반기 3개월",
+   "rcept": "20250814003049"
+  },
+  {
+   "period": "2025Q3",
+   "won": 24448929000000,
+   "method": "3분기 3개월",
+   "rcept": "20251114001805"
+  },
+  {
+   "period": "2025Q4",
+   "won": 32826653000000,
+   "method": "연간 − 3분기누적",
+   "rcept": "20260317000635"
+  },
+  {
+   "period": "2026Q1",
+   "won": 52576287000000,
+   "method": "Q1 3개월",
+   "rcept": "20260515002287"
+  },
+  {
+   "period": "2026Q2",
+   "won": 79318746000000,
+   "method": "반기 3개월",
+   "rcept": "20260814003509"
+  }
+ ],
+ "queries": [
+  {
+   "query": "HBM",
+   "found": false,
+   "holds": [
+    "TARGET_NOT_DISCLOSED: SK하이닉스 \"HBM\" 매출이 공시 사업 단위에 없음"
+   ]
+  }
+ ],
+ "summaries": {},
+ "source": {
+  "notebook": "P02_Agent_LIVE__Final_v5.2.ipynb",
+  "run": "p02_out/20261104T085311928947Z",
+  "dataMode": "LIVE"
+ }
+}

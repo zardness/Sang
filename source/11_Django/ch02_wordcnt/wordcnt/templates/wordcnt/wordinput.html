@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}단어 입력{% endblock %}
+{% block content %}
+  <h1 onclick="location.href='/'">처음으로 가기</h1>
+  <h1 onclick="location.href='{% url 'index' %}'">처음으로 가기</h1>
+  <a href="/wordcnt/about">도움말</a>
+  <a href="{% url 'wordcnt:about' %}">도움말</a>
+  <br>
+  <!-- <form action="/wordcnt/result" method="get"> -->
+  <form action="{% url 'wordcnt:result' %}" method="post">
+    {% comment %} 장고 주석:Django에서의 post방식시 추가 {% endcomment %}
+    {% csrf_token %}
+    <textarea name="fulltxt" cols="40" rows="5" class="form-control"></textarea>
+    <br>
+    <input type="submit" value="계산 결과" class="btn btn-secondary">
+  </form>
+{% endblock %}

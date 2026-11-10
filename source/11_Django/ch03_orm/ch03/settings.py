@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+print('폴더명 :', BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -23,13 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 from dotenv import load_dotenv
 import os
 load_dotenv()
-SECRET_KEY = "django-insecure-6d^a%zbj!k_@h@-8%_8*mts+mvxg%ujp+5eu!!lao2@^zt1i8u"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #개발단계
+DEBUG = True # 개발단계
 # DEBUG = False # 배포단계
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','*']
+ALLOWED_HOSTS = ['127.0.0.1','localhost', '*']
 
 
 # Application definition

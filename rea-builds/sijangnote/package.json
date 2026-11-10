@@ -1,0 +1,46 @@
+{
+  "name": "sijangnote",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:server": "tsx watch server/index.ts",
+    "dev:web": "vite",
+    "build": "tsc --noEmit && vite build",
+    "start": "tsx server/index.ts --prod",
+    "test": "vitest run",
+    "test:e2e": "node tests/e2e/run.mjs",
+    "test:html": "node tests/e2e/html-final.mjs",
+    "seed": "tsx server/seed.ts --reset",
+    "docs:inference": "tsx scripts/inference-md.ts",
+    "build:html": "tsc --noEmit && vite build --config vite.standalone.config.ts && node scripts/rename-html.mjs",
+    "agent:targets": "tsx scripts/agent-targets.ts",
+    "agent:bundle": "tsx scripts/bundle-agent-results.ts",
+    "html:release": "node scripts/release-html.mjs"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "hono": "^4.6.12",
+    "lucide-react": "^0.460.0",
+    "pretendard": "^1.3.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "playwright": "^1.63.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vite-plugin-singlefile": "^2.0.3",
+    "vitest": "^2.1.8"
+  }
+}

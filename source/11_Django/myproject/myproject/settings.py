@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 1. SECRET_KEY 등록
 2. 앱등록
-3. myproject밑에 기본 templates(base.html/header.html/footer.html)을 인식하도록 등록
+3. myproject밑의 templates(base.html/header.html/footer.html)을 인식하도록 등록
 4. myproject밑의 static폴더도 인식하도록 등록
-5. 한국어 등록 (admin페이지)
+5. 한국어 등록(admin페이지)
 6. 한국 timezone 등록
 """
 
@@ -21,24 +21,24 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import os
 BASE_DIR = Path(__file__).resolve().parent.parent
-print("폴더명:",BASE_DIR)
-print('기본 templates:', os.path.join(BASE_DIR,'myproject','templates'))
-print('기본 static:', os.path.join(BASE_DIR,'myproject','static'))
+# print("root 폴더명 :",BASE_DIR)
+# print('기본 templates :', os.path.join(BASE_DIR, 'myproject', 'templates'))
+# print('기본 static :', os.path.join(BASE_DIR, 'myproject', 'static'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 from dotenv import load_dotenv
-
 load_dotenv()
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY", "secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+#ALLOWED_HOSTS = ['*','0.0.0.0','127.0.0.1']
+                # "*,0.0.0.0,127.0.0.1" => ['*','0.0.0.0','127.0.0.1']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(",") # python manage.py runserver 0.0.0.0:80
 
 # Application definition
 
@@ -49,7 +49,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "blog", # 앱등록
+    "blog", # 앱 등록
+    "accounts", 
+    "book", 
+    "django.contrib.humanize", # intcomma(세자리마다 ,) 필터 사용 목적
 ]
 
 MIDDLEWARE = [
@@ -68,8 +71,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR,'myproject','templates')
-
+            os.path.join(BASE_DIR, 'myproject', 'templates'),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -100,30 +102,30 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    # }, # 다른 개인정보와 유사한 비번 사용 불가
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+        "OPTIONS":{"min_length":2}
+    }, # 최소 2자 이상 비번
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    # }, # 통상적으로 자주 사용되는 비번 사용 불가
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    # }, # 수자만 이루어진 비번 사용 불가
 ]
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-#LANGUAGE_CODE = "en-us"
+# LANGUAGE_CODE = "en-us"
 LANGUAGE_CODE = "ko-kr" # 장고 admin페이지 언어
 
 # TIME_ZONE = "UTC"
 TIME_ZONE = "Asia/Seoul"
-
 USE_I18N = True
 
 USE_TZ = True
@@ -132,10 +134,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-# 개발환경 setting : global_settings.py -> settings.py
+# 개발 환경 setting : global_settings.py -> settings.py
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'myproject','templates')
+    os.path.join(BASE_DIR, 'myproject', 'static')
 ]
 
 # Default primary key field type

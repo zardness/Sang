@@ -1,0 +1,230 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.17.0
+2 info using node@v24.19.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\ai\rea-builds\sijangnote\.npmrc
+5 silly config load:file:C:\Users\Admin\.npmrc
+6 silly config load:file:C:\Users\Admin\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm ci
+8 verbose argv "ci" "--cache" "C:\\ai\\rea-builds\\.npm-cache" "--no-fund" "--no-audit"
+9 verbose logfile logs-max:10 dir:C:\ai\rea-builds\.npm-cache\_logs\2026-11-04T10_02_08_565Z-
+10 verbose logfile C:\ai\rea-builds\.npm-cache\_logs\2026-11-04T10_02_08_565Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+14 silly idealTree buildDeps
+15 silly fetch manifest @rollup/rollup-android-x64@4.67.5
+16 silly packumentCache full:https://registry.npmjs.org/@rollup%2frollup-android-x64 cache-miss
+17 http fetch GET 200 https://registry.npmjs.org/npm 131ms
+18 http fetch GET 200 https://registry.npmjs.org/@rollup%2frollup-android-x64 64ms (cache miss)
+19 silly packumentCache full:https://registry.npmjs.org/@rollup%2frollup-android-x64 set size:undefined disposed:false
+20 silly placeDep ROOT @rollup/rollup-android-x64@4.67.5 OK for: rollup@4.67.5 want: 4.67.5
+21 verbose stack Error: 
+21 verbose stack `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+21 verbose stack
+21 verbose stack Missing: @rollup/rollup-android-x64@4.67.5 from lock file
+21 verbose stack
+21 verbose stack Clean install a project
+21 verbose stack
+21 verbose stack Usage:
+21 verbose stack npm ci
+21 verbose stack
+21 verbose stack Options:
+21 verbose stack [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+21 verbose stack [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+21 verbose stack [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+21 verbose stack [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts]
+21 verbose stack [--allow-directory <all|none|root>] [--allow-file <all|none|root>]
+21 verbose stack [--allow-git <all|none|root>] [--allow-remote <all|none|root>]
+21 verbose stack [--allow-scripts <package-list> [--allow-scripts <package-list> ...]]
+21 verbose stack [--strict-allow-scripts] [--dangerously-allow-all-scripts] [--no-audit]
+21 verbose stack [--no-bin-links] [--no-fund] [--dry-run]
+21 verbose stack [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+21 verbose stack [--workspaces] [--include-workspace-root] [--install-links]
+21 verbose stack
+21 verbose stack   --install-strategy
+21 verbose stack     Sets the strategy for installing packages in node_modules.
+21 verbose stack
+21 verbose stack   --legacy-bundling
+21 verbose stack     Instead of hoisting package installs in `node_modules`, install packages
+21 verbose stack
+21 verbose stack   --global-style
+21 verbose stack     Only install direct dependencies in the top level `node_modules`,
+21 verbose stack
+21 verbose stack   --omit
+21 verbose stack     Dependency types to omit from the installation tree on disk.
+21 verbose stack
+21 verbose stack   --include
+21 verbose stack     Option that allows for defining which types of dependencies to install.
+21 verbose stack
+21 verbose stack   --strict-peer-deps
+21 verbose stack     If set to `true`, and `--legacy-peer-deps` is not set, then _any_
+21 verbose stack
+21 verbose stack   --foreground-scripts
+21 verbose stack     Run all build scripts (ie, `preinstall`, `install`, and
+21 verbose stack
+21 verbose stack   --ignore-scripts
+21 verbose stack     If true, npm does not run scripts specified in package.json files.
+21 verbose stack
+21 verbose stack   --allow-directory
+21 verbose stack     Limits the ability for npm to install dependencies from directories.
+21 verbose stack
+21 verbose stack   --allow-file
+21 verbose stack     Limits the ability for npm to install dependencies from tarball files.
+21 verbose stack
+21 verbose stack   --allow-git
+21 verbose stack     Limits the ability for npm to fetch dependencies from git references.
+21 verbose stack
+21 verbose stack   --allow-remote
+21 verbose stack     Limits the ability for npm to fetch dependencies from urls.
+21 verbose stack
+21 verbose stack   --allow-scripts
+21 verbose stack     Comma-separated list of packages whose install-time lifecycle scripts
+21 verbose stack
+21 verbose stack   --strict-allow-scripts
+21 verbose stack     If `true`, turn the install-script policy from a warning into a hard
+21 verbose stack
+21 verbose stack   --dangerously-allow-all-scripts
+21 verbose stack     If `true`, bypass the `allowScripts` policy entirely and run every
+21 verbose stack
+21 verbose stack   --audit
+21 verbose stack     When "true" submit audit reports alongside the current npm command to the
+21 verbose stack
+21 verbose stack   --bin-links
+21 verbose stack     Tells npm to create symlinks (or `.cmd` shims on Windows) for package
+21 verbose stack
+21 verbose stack   --fund
+21 verbose stack     When "true" displays the message at the end of each `npm install`
+21 verbose stack
+21 verbose stack   --dry-run
+21 verbose stack     Indicates that you don't want npm to make any changes and that it should
+21 verbose stack
+21 verbose stack   -w|--workspace
+21 verbose stack     Enable running a command in the context of the configured workspaces of the
+21 verbose stack
+21 verbose stack   --workspaces
+21 verbose stack     Set to true to run the command in the context of **all** configured
+21 verbose stack
+21 verbose stack   --include-workspace-root
+21 verbose stack     Include the workspace root when workspaces are enabled for a command.
+21 verbose stack
+21 verbose stack   --install-links
+21 verbose stack     When set file: protocol dependencies will be packed and installed as
+21 verbose stack
+21 verbose stack
+21 verbose stack aliases: clean-install, ic, install-clean, isntall-clean
+21 verbose stack
+21 verbose stack Run "npm help ci" for more info
+21 verbose stack     at CI.usageError (C:\Program Files\nodejs\node_modules\npm\lib\base-cmd.js:179:26)
+21 verbose stack     at CI.exec (C:\Program Files\nodejs\node_modules\npm\lib\commands\ci.js:84:18)
+21 verbose stack     at async Npm.exec (C:\Program Files\nodejs\node_modules\npm\lib\npm.js:193:9)
+21 verbose stack     at async module.exports (C:\Program Files\nodejs\node_modules\npm\lib\cli\entry.js:67:5)
+22 error code EUSAGE
+23 error
+23 error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+23 error
+23 error Missing: @rollup/rollup-android-x64@4.67.5 from lock file
+23 error
+23 error Clean install a project
+23 error
+23 error Usage:
+23 error npm ci
+23 error
+23 error Options:
+23 error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+23 error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+23 error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+23 error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts]
+23 error [--allow-directory <all|none|root>] [--allow-file <all|none|root>]
+23 error [--allow-git <all|none|root>] [--allow-remote <all|none|root>]
+23 error [--allow-scripts <package-list> [--allow-scripts <package-list> ...]]
+23 error [--strict-allow-scripts] [--dangerously-allow-all-scripts] [--no-audit]
+23 error [--no-bin-links] [--no-fund] [--dry-run]
+23 error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+23 error [--workspaces] [--include-workspace-root] [--install-links]
+23 error
+23 error   --install-strategy
+23 error     Sets the strategy for installing packages in node_modules.
+23 error
+23 error   --legacy-bundling
+23 error     Instead of hoisting package installs in `node_modules`, install packages
+23 error
+23 error   --global-style
+23 error     Only install direct dependencies in the top level `node_modules`,
+23 error
+23 error   --omit
+23 error     Dependency types to omit from the installation tree on disk.
+23 error
+23 error   --include
+23 error     Option that allows for defining which types of dependencies to install.
+23 error
+23 error   --strict-peer-deps
+23 error     If set to `true`, and `--legacy-peer-deps` is not set, then _any_
+23 error
+23 error   --foreground-scripts
+23 error     Run all build scripts (ie, `preinstall`, `install`, and
+23 error
+23 error   --ignore-scripts
+23 error     If true, npm does not run scripts specified in package.json files.
+23 error
+23 error   --allow-directory
+23 error     Limits the ability for npm to install dependencies from directories.
+23 error
+23 error   --allow-file
+23 error     Limits the ability for npm to install dependencies from tarball files.
+23 error
+23 error   --allow-git
+23 error     Limits the ability for npm to fetch dependencies from git references.
+23 error
+23 error   --allow-remote
+23 error     Limits the ability for npm to fetch dependencies from urls.
+23 error
+23 error   --allow-scripts
+23 error     Comma-separated list of packages whose install-time lifecycle scripts
+23 error
+23 error   --strict-allow-scripts
+23 error     If `true`, turn the install-script policy from a warning into a hard
+23 error
+23 error   --dangerously-allow-all-scripts
+23 error     If `true`, bypass the `allowScripts` policy entirely and run every
+23 error
+23 error   --audit
+23 error     When "true" submit audit reports alongside the current npm command to the
+23 error
+23 error   --bin-links
+23 error     Tells npm to create symlinks (or `.cmd` shims on Windows) for package
+23 error
+23 error   --fund
+23 error     When "true" displays the message at the end of each `npm install`
+23 error
+23 error   --dry-run
+23 error     Indicates that you don't want npm to make any changes and that it should
+23 error
+23 error   -w|--workspace
+23 error     Enable running a command in the context of the configured workspaces of the
+23 error
+23 error   --workspaces
+23 error     Set to true to run the command in the context of **all** configured
+23 error
+23 error   --include-workspace-root
+23 error     Include the workspace root when workspaces are enabled for a command.
+23 error
+23 error   --install-links
+23 error     When set file: protocol dependencies will be packed and installed as
+23 error
+23 error
+23 error aliases: clean-install, ic, install-clean, isntall-clean
+23 error
+23 error Run "npm help ci" for more info
+24 verbose cwd C:\ai\rea-builds\sijangnote
+25 verbose os Windows_NT 10.0.26200
+26 verbose node v24.19.0
+27 verbose npm  v11.17.0
+28 notice
+28 notice New major version of npm available! 11.17.0 -> 12.2.1
+28 notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+28 notice To update run: npm install -g npm@12.2.1
+28 notice  { force: true, Symbol(proc-log.meta): true }
+29 verbose exit 1
+30 verbose code 1
+31 error A complete log of this run can be found in: C:\ai\rea-builds\.npm-cache\_logs\2026-11-04T10_02_08_565Z-debug-0.log

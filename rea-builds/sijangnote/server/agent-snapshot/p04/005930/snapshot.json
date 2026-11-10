@@ -1,0 +1,297 @@
+{
+ "agent": "P04",
+ "ticker": "005930",
+ "verifier": [
+  {
+   "check": "V1~V4 전체",
+   "pass": 40
+  }
+ ],
+ "name": "삼성전자",
+ "status": {
+  "verifier": 40,
+  "status": "observation_only",
+  "claims": 10,
+  "suppressed": 4,
+  "holds": 7,
+  "blocking": 7,
+  "reportId": "P04-005930-2026-11-03-47c1c014"
+ },
+ "phase": "하락추세(종가 < MA20 < MA60)",
+ "observations": [
+  {
+   "id": "OBS_CLOSE",
+   "label": "종가",
+   "value": 219500.0,
+   "unit": "원",
+   "formula": "close[t]",
+   "window": "2026-11-03~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_MA20",
+   "label": "20일 이동평균",
+   "value": 230400.0,
+   "unit": "원",
+   "formula": "mean(last 20 closes)",
+   "window": "2026-10-06~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_CLOSE_VS_MA20",
+   "label": "종가의 20일선 대비",
+   "value": -4.7,
+   "unit": "%",
+   "formula": "(close / MA20 - 1) * 100",
+   "window": "2026-10-06~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_MA60",
+   "label": "60일 이동평균",
+   "value": 250467.0,
+   "unit": "원",
+   "formula": "mean(last 60 closes)",
+   "window": "2026-08-05~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_CLOSE_VS_MA60",
+   "label": "종가의 60일선 대비",
+   "value": -12.4,
+   "unit": "%",
+   "formula": "(close / MA60 - 1) * 100",
+   "window": "2026-08-05~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_MA120",
+   "label": "120일 이동평균",
+   "value": 272692.0,
+   "unit": "원",
+   "formula": "mean(last 120 closes)",
+   "window": "2026-05-08~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_CLOSE_VS_MA120",
+   "label": "종가의 120일선 대비",
+   "value": -19.5,
+   "unit": "%",
+   "formula": "(close / MA120 - 1) * 100",
+   "window": "2026-05-08~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_RSI14",
+   "label": "RSI(14)",
+   "value": 42.1,
+   "unit": "index",
+   "formula": "Wilder RSI(14)",
+   "window": "2026-10-14~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_RETURN_20D",
+   "label": "20거래일 수익률",
+   "value": -20.5,
+   "unit": "%",
+   "formula": "(close / close[-20] - 1) * 100",
+   "window": "2026-10-02~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_RETURN_60D",
+   "label": "60거래일 수익률",
+   "value": -8.5,
+   "unit": "%",
+   "formula": "(close / close[-60] - 1) * 100",
+   "window": "2026-08-04~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_RV5_PAST",
+   "label": "지난 5거래일 실현분산",
+   "value": 0.012266,
+   "unit": "sum",
+   "formula": "r²                        sum(ln(P_t/P_t-1)^2, last 5)",
+   "window": "2026-10-27~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_RV5_PAST_PCT",
+   "label": "지난 5거래일 실현변동성",
+   "value": 11.08,
+   "unit": "%",
+   "formula": "sqrt(RV5) * 100",
+   "window": "2026-10-27~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_RV20_PAST",
+   "label": "지난 20거래일 실현분산",
+   "value": 0.039398,
+   "unit": "sum",
+   "formula": "r²                       sum(ln(P_t/P_t-1)^2, last 20)",
+   "window": "2026-10-02~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_RV20_PAST_PCT",
+   "label": "지난 20거래일 실현변동성",
+   "value": 19.85,
+   "unit": "%",
+   "formula": "sqrt(RV20) * 100",
+   "window": "2026-10-02~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_VOL20_ANNUAL_STD",
+   "label": "20일 연환산 변동성(표본 표준편차)",
+   "value": 69.5,
+   "unit": "%",
+   "formula": "std(20 daily simple returns) * sqrt(252) * 100",
+   "window": "2026-10-02~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_MDD_1Y",
+   "label": "최근 1년 최대낙폭",
+   "value": -42.9,
+   "unit": "%",
+   "formula": "min(close / cummax(close) - 1) * 100 over last 252",
+   "window": "2025-10-23~2026-11-03",
+   "display": "미확인"
+  },
+  {
+   "id": "OBS_VOLUME_VS_20D",
+   "label": "거래량(직전 20일 평균 대비)",
+   "value": 0.74,
+   "unit": "배",
+   "formula": "volume / mean(previous 20 volumes)",
+   "window": "2026-10-02~2026-11-03",
+   "display": "미확인"
+  }
+ ],
+ "forecasts": [
+  {
+   "item": "RV5",
+   "status": "held",
+   "holds": [
+    "ADJUSTMENT_UNVERIFIED",
+    "TRADING_STATUS_UNVERIFIED",
+    "CALENDAR_UNVERIFIED",
+    "RESEARCH_USAGE_UNVERIFIED"
+   ]
+  },
+  {
+   "item": "RV20",
+   "status": "held",
+   "holds": [
+    "ADJUSTMENT_UNVERIFIED",
+    "TRADING_STATUS_UNVERIFIED",
+    "CALENDAR_UNVERIFIED",
+    "RESEARCH_USAGE_UNVERIFIED"
+   ]
+  },
+  {
+   "item": "D5_5",
+   "status": "held",
+   "holds": [
+    "ADJUSTMENT_UNVERIFIED",
+    "TRADING_STATUS_UNVERIFIED",
+    "CALENDAR_UNVERIFIED",
+    "RESEARCH_USAGE_UNVERIFIED"
+   ]
+  },
+  {
+   "item": "D20_10",
+   "status": "held",
+   "holds": [
+    "ADJUSTMENT_UNVERIFIED",
+    "TRADING_STATUS_UNVERIFIED",
+    "CALENDAR_UNVERIFIED",
+    "RESEARCH_USAGE_UNVERIFIED"
+   ]
+  }
+ ],
+ "holdActions": [
+  {
+   "code": "ADJUSTMENT_UNVERIFIED",
+   "cause": "시세 조정 기준·근거 미확인",
+   "next": "input/metadata.json에 price_basis·adjustment_verified·근거 기재"
+  },
+  {
+   "code": "AVAILABILITY_UNVERIFIED",
+   "cause": "이용 가능 시각·수정 버전 결측",
+   "next": "price_daily에 available_at(시간대 포함)·provider_revision 적재"
+  },
+  {
+   "code": "CALENDAR_UNVERIFIED",
+   "cause": "공식 거래일 달력 미확인",
+   "next": "input/sessions.csv(공식 거래일·종가 확정 시각)와 calendar_verified·근거 기재"
+  },
+  {
+   "code": "EVALUATION_BLOCKED",
+   "cause": "과거 평가 조건 미충족(계약·이력)",
+   "next": "2단계 계약 감사의 평가 차단 항목 해결"
+  },
+  {
+   "code": "POINT_IN_TIME_UNVERIFIED",
+   "cause": "시점별 가격·행사 수정 계보 미검증",
+   "next": "metadata.json에 point_in_time_verified·근거 기재(수정 이력 보존 확인)"
+  },
+  {
+   "code": "RESEARCH_USAGE_UNVERIFIED",
+   "cause": "학습·연구 이용 범위 미확인",
+   "next": "데이터 이용약관 확인 후 research_use_verified·근거 기재"
+  },
+  {
+   "code": "TRADING_STATUS_UNVERIFIED",
+   "cause": "거래 상태 미확인",
+   "next": "metadata.json에 trading_status_verified·근거 기재(거래정지 공시 확인) 또는 price_daily에 trading_status 열 적재"
+  }
+ ],
+ "prices": {
+  "rows": 1231,
+  "range": "2021-10-22~2026-11-03",
+  "source": "Neon core.price_daily",
+  "adjustment": "split_adjusted",
+  "last": [
+   {
+    "date": "2026-10-30",
+    "open": 223500.0,
+    "high": 229500.0,
+    "low": 216500.0,
+    "close": 225000.0,
+    "volume": 19668075
+   },
+   {
+    "date": "2026-11-02",
+    "open": 219000.0,
+    "high": 232000.0,
+    "low": 217000.0,
+    "close": 229000.0,
+    "volume": 14537981
+   },
+   {
+    "date": "2026-11-03",
+    "open": 220500.0,
+    "high": 223000.0,
+    "low": 217000.0,
+    "close": 219500.0,
+    "volume": 13391670
+   }
+  ]
+ },
+ "source": {
+  "notebook": "P04_Agent_LIVE_final_v3_1104.ipynb",
+  "run": "p04_out/20261104T080828196846Z",
+  "dataMode": "LIVE"
+ },
+ "askExample": {
+  "question": "한 달 동안 얼마나 흔들릴까?",
+  "persona": "L2-CON",
+  "answer": "지금은 관측(과거)만 정리했습니다. 예측(범위·확률)은 자료 확인 전이라 보류했습니다. 처음 나오는 용어는 아래에 풀어 두었습니다. 최근 1년 최대낙폭은 -42.9%였습니다. 지난 20거래일 실현변동성은 19.85%입니다. 이동평균 배열 규칙으로 보면 현재 하락추세(종가 < MA20 < MA60)이며, 종가는 20일선 대비 -4.7%입니다. RSI(14)는 42.1입니다."
+ }
+}

@@ -19,7 +19,7 @@
     {% endfor %}
   {% endif %}  
   {% if students %}
-  <table class="table table-warning">
+    <table class="table table-warning">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -29,7 +29,6 @@
         </tr>
       </thead>
       <tbody>
-        <tbody>
         {% for s in students %}
         <tr onclick="location='/student/get/{{s.id}}'">
           <th scope="row">{{s.id}}</th>
@@ -40,7 +39,7 @@
         {% endfor %}
       </tbody>
     </table>
-  {% else %}     
+  {% else %}
       <table class="table table-secondary">
         <tr><td>데이터가 없습니다</td></tr>
       </table>

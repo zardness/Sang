@@ -1,0 +1,12 @@
+node_modules/
+dist/
+data/
+*.db
+*.db-*
+agents.config.json
+.npm-cache/
+dist-html/
+dart.config.json
+.env
+agent-targets/
+standalone/agent-results/

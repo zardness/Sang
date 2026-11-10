@@ -1,0 +1,924 @@
+{
+ "agent": "P02",
+ "ticker": "005930",
+ "name": "삼성전자",
+ "counts": {
+  "claims": 194,
+  "suppressed": 89,
+  "evidence": 100,
+  "calculations": 236,
+  "holds": 51,
+  "blocking": 24
+ },
+ "verifier": [
+  {
+   "check": "V1 근거 연결",
+   "pass": 194
+  },
+  {
+   "check": "V2 산식 재계산",
+   "pass": 158
+  },
+  {
+   "check": "V3 문장 숫자",
+   "pass": 143
+  },
+  {
+   "check": "V4 표현 규칙",
+   "pass": 194
+  }
+ ],
+ "segments": {
+  "product": {
+   "periods": [
+    "2023Q1",
+    "2023Q2",
+    "2023Q3",
+    "2023Q4",
+    "2024Q1",
+    "2024Q2",
+    "2024Q3",
+    "2024Q4",
+    "2025Q1",
+    "2025Q2",
+    "2025Q3",
+    "2025Q4",
+    "2026Q1",
+    "2026Q2"
+   ],
+   "rows": [
+    {
+     "name": "DP",
+     "values": [
+      66142.0,
+      64831.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "TV, 모니터 등",
+     "values": [
+      null,
+      null,
+      73184.0,
+      83761.0,
+      72340.0,
+      75435.0,
+      75819.0,
+      85722.0,
+      77563.0,
+      70111.0,
+      73150.0,
+      87785.0,
+      77278.0,
+      77177.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "디스플레이 패널",
+     "values": [
+      null,
+      null,
+      82186.0,
+      96596.0,
+      53864.0,
+      76462.0,
+      79991.0,
+      81261.0,
+      58669.0,
+      63800.0,
+      81015.0,
+      94932.0,
+      66935.0,
+      74851.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "메모리",
+     "values": [
+      89170.0,
+      89674.0,
+      105300.0,
+      157110.0,
+      174943.0,
+      217378.0,
+      222732.0,
+      229577.0,
+      190690.0,
+      211785.0,
+      266903.0,
+      371433.0,
+      747800.0,
+      1208402.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "무선",
+     "values": [
+      307446.0,
+      246087.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "스마트폰 등",
+     "values": [
+      null,
+      null,
+      292490.0,
+      240303.0,
+      327914.0,
+      266410.0,
+      299806.0,
+      250119.0,
+      361876.0,
+      284508.0,
+      335410.0,
+      282949.0,
+      375036.0,
+      322950.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "영상기기",
+     "values": [
+      74349.0,
+      72458.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "[합계] 제품 합계",
+     "values": [
+      637454.0,
+      600055.0,
+      674047.0,
+      null,
+      719156.0,
+      740683.0,
+      790987.0,
+      757883.0,
+      791405.0,
+      745663.0,
+      860617.0,
+      938374.0,
+      1338734.0,
+      1714995.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    }
+   ]
+  },
+  "region": {
+   "periods": [
+    "2023Q1",
+    "2024Q2",
+    "2024Q3",
+    "2025Q1",
+    "2025Q2",
+    "2025Q3",
+    "2025Q4",
+    "2026Q1",
+    "2026Q2"
+   ],
+   "rows": [
+    {
+     "name": "국내",
+     "values": [
+      113004.0,
+      97161.0,
+      113419.0,
+      null,
+      108011.0,
+      127015.0,
+      119083.0,
+      134847.0,
+      121505.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "미주",
+     "values": [
+      227625.0,
+      281065.0,
+      311818.0,
+      302195.0,
+      292194.0,
+      339058.0,
+      399300.0,
+      597503.0,
+      836157.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "본사 소재지 국가",
+     "values": [
+      null,
+      null,
+      null,
+      112302.0,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "아시아 및 아프리카",
+     "values": [
+      115343.0,
+      119641.0,
+      131235.0,
+      146511.0,
+      123743.0,
+      138880.0,
+      121346.0,
+      167612.0,
+      171443.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "유럽",
+     "values": [
+      125829.0,
+      119510.0,
+      122370.0,
+      140388.0,
+      119690.0,
+      129708.0,
+      143487.0,
+      157138.0,
+      153178.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "중국",
+     "values": [
+      55652.0,
+      123306.0,
+      112145.0,
+      90009.0,
+      102025.0,
+      125956.0,
+      155158.0,
+      281634.0,
+      432711.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "[내부거래 조정] 내부거래 조정 등",
+     "values": [
+      null,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      null,
+      null,
+      0.0,
+      0.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "[합계] 지역 합계",
+     "values": [
+      637454.0,
+      740683.0,
+      790987.0,
+      791405.0,
+      745663.0,
+      860617.0,
+      938374.0,
+      1338734.0,
+      1714995.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    }
+   ]
+  },
+  "reported_segment": {
+   "periods": [
+    "2023Q1",
+    "2023Q2",
+    "2023Q3",
+    "2023Q4",
+    "2024Q1",
+    "2024Q2",
+    "2024Q3",
+    "2024Q4",
+    "2025Q1",
+    "2025Q2",
+    "2025Q3",
+    "2025Q4",
+    "2026Q1",
+    "2026Q2"
+   ],
+   "rows": [
+    {
+     "name": "DS 부문",
+     "values": [
+      137345.0,
+      147293.0,
+      164384.0,
+      216924.0,
+      231373.0,
+      285566.0,
+      292714.0,
+      301007.0,
+      251310.0,
+      278751.0,
+      331168.0,
+      440053.0,
+      817156.0,
+      1275161.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "DX 부문",
+     "values": [
+      462225.0,
+      402062.0,
+      440154.0,
+      395482.0,
+      472927.0,
+      420708.0,
+      449939.0,
+      405302.0,
+      517172.0,
+      435702.0,
+      483751.0,
+      443049.0,
+      526547.0,
+      480224.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "Harman",
+     "values": [
+      31659.0,
+      34957.0,
+      38025.0,
+      39243.0,
+      32002.0,
+      36191.0,
+      35296.0,
+      39260.0,
+      34194.0,
+      38300.0,
+      39537.0,
+      45803.0,
+      38263.0,
+      45678.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "SDC",
+     "values": [
+      66142.0,
+      64831.0,
+      82186.0,
+      96596.0,
+      53864.0,
+      76462.0,
+      79991.0,
+      81261.0,
+      58669.0,
+      63800.0,
+      81015.0,
+      94932.0,
+      66935.0,
+      74851.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "[소계] 부문 합계(조정 전)",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      816552.0,
+      935471.0,
+      1023837.0,
+      null,
+      null
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "[내부거래 조정] 내부거래 조정 등",
+     "values": [
+      -59917.0,
+      -49087.0,
+      -50702.0,
+      -70446.0,
+      -71011.0,
+      -78243.0,
+      -66953.0,
+      -68948.0,
+      -69940.0,
+      -70889.0,
+      -74853.0,
+      -85463.0,
+      -110167.0,
+      -160918.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    },
+    {
+     "name": "[연결] 연결 매출 합계",
+     "values": [
+      637454.0,
+      600055.0,
+      674047.0,
+      677799.0,
+      719156.0,
+      740683.0,
+      790987.0,
+      757883.0,
+      791405.0,
+      745663.0,
+      860617.0,
+      938374.0,
+      1338734.0,
+      1714995.0
+     ],
+     "q4Derived": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+     ]
+    }
+   ]
+  }
+ },
+ "companyRevenue": [
+  {
+   "period": "2023Q1",
+   "won": 63745371000000,
+   "method": "Q1 3개월",
+   "rcept": "20230515002335"
+  },
+  {
+   "period": "2023Q2",
+   "won": 60005533000000,
+   "method": "반기 3개월",
+   "rcept": "20230814002534"
+  },
+  {
+   "period": "2023Q3",
+   "won": 67404652000000,
+   "method": "3분기 3개월",
+   "rcept": "20231114002109"
+  },
+  {
+   "period": "2023Q4",
+   "won": 67779938000000,
+   "method": "연간 − 3분기누적",
+   "rcept": "20240312000736"
+  },
+  {
+   "period": "2024Q1",
+   "won": 71915601000000,
+   "method": "Q1 3개월",
+   "rcept": "20240516001421"
+  },
+  {
+   "period": "2024Q2",
+   "won": 74068302000000,
+   "method": "반기 3개월",
+   "rcept": "20240814003284"
+  },
+  {
+   "period": "2024Q3",
+   "won": 79098731000000,
+   "method": "3분기 3개월",
+   "rcept": "20241114002642"
+  },
+  {
+   "period": "2024Q4",
+   "won": 75788269000000,
+   "method": "연간 − 3분기누적",
+   "rcept": "20250311001085"
+  },
+  {
+   "period": "2025Q1",
+   "won": 79140503000000,
+   "method": "Q1 3개월",
+   "rcept": "20250515001922"
+  },
+  {
+   "period": "2025Q2",
+   "won": 74566317000000,
+   "method": "반기 3개월",
+   "rcept": "20250814003156"
+  },
+  {
+   "period": "2025Q3",
+   "won": 86061747000000,
+   "method": "3분기 3개월",
+   "rcept": "20251114002447"
+  },
+  {
+   "period": "2025Q4",
+   "won": 93837371000000,
+   "method": "연간 − 3분기누적",
+   "rcept": "20260310002820"
+  },
+  {
+   "period": "2026Q1",
+   "won": 133873444000000,
+   "method": "Q1 3개월",
+   "rcept": "20260515002181"
+  },
+  {
+   "period": "2026Q2",
+   "won": 171499470000000,
+   "method": "반기 3개월",
+   "rcept": "20260814003699"
+  }
+ ],
+ "queries": [
+  {
+   "query": "DS",
+   "found": true,
+   "holds": []
+  },
+  {
+   "query": "HBM",
+   "found": false,
+   "holds": [
+    "TARGET_NOT_DISCLOSED: 삼성전자 \"HBM\" 매출이 공시 사업 단위에 없음"
+   ]
+  }
+ ],
+ "summaries": {
+  "L1_neutral": "## 요약\n\n**핵심 결과(가장 최근 분기, 공시 원문 그대로)**\n- 삼성전자 DS 부문의 2026Q2 매출은 1,275,161억원이다. [출처: DART 반기보고서 (2026.06) 부문 주석 표 20260814003699]\n- 삼성전자 DX 부문의 2026Q2 매출은 480,224억원이다. [출처: DART 반기보고서 (2026.06) 부문 주석 표 20260814003699]\n- 삼성전자 Harman(원문 표기: Haman)의 2026Q2 매출은 45,678억원이다. [출처: DART 반기보고서 (2026.06) 부문 주석 표 20260814003699]\n- 삼성전자 SDC의 2026Q2 매출은 74,851억원이다. [출처: DART 반기보고서 (2026.06) 부문 주석 표 20260814003699]\n- 삼성전자 연결 매출 합계(원문 표기 \"계(*)\")의 2026Q2 매출은 1,714,995억원이다. [출처: DART 반기보고서 (2026.06) 부문 주석 표 20260814003699]\n\n**무엇을 하는 사업인가(원문 인용 1개씩)**\n- [DS 부문 · 제품·서비스] \"메모리 반도체는 크게 읽고 쓸 수 있는 램(RAM)제품과 읽기만 할 수 있는 롬(ROM)제품으로 구분됩니다.\"\n- [DX 부문 · 제품·서비스] \"또한 '삼성 아트 스토어'가 더프레임 및 25년형 Neo QLED와 QLED뿐만 아니라 26년형 Micro RGB, OLED 및 Mini LED 제품으로까지 추가 확대되어 당사 TV를 구매하는 대부분의 소비자들이 Art 경험을 즐길 수 있습니다.\"\n- [Harman · 제품·서비스] \"또한, Harman에서는 디지털 콕핏(Digital Cockpit), 카오디오 등 전장제품과 포터블/사운드바 스피커 등 컨슈머 오디오 제품 등을 개발, 생산, 판매하고 있습니다.\"\n\n**쉬운 말로**\n- 사업부: 회사가 공시에서 나눠 보고한 사업 단위입니다.\n- 단독분기: 그 분기 3개월만의 금액입니다. 4분기는 연간에서 3분기 누적을 빼서 계산합니다.\n- 보류: 지금 자료로는 말할 수 없어 결론을 내지 않은 부분입니다.",
+  "L2_neutral": "## 요약\n\n**사업별 매출과 변화(가장 최근 분기)**\n- 삼성전자 DS 부문의 2026Q2 매출은 1,275,161억원이다.\n- 삼성전자 DX 부문의 2026Q2 매출은 480,224억원이다.\n- 삼성전자 Harman(원문 표기: Haman)의 2026Q2 매출은 45,678억원이다.\n- 삼성전자 SDC의 2026Q2 매출은 74,851억원이다.\n- 삼성전자 연결 매출 합계(원문 표기 \"계(*)\")의 2026Q2 매출은 1,714,995억원이다.\n- 삼성전자 내부거래 조정 등의 2026Q2 매출은 -160,918억원이다.\n- 삼성전자 DS 부문의 2026Q2 매출은 전년 동기 대비 +357.46% 변했다.\n- 삼성전자 DX 부문의 2026Q2 매출은 전년 동기 대비 +10.22% 변했다.\n- 삼성전자 Harman(원문 표기: Haman)의 2026Q2 매출은 전년 동기 대비 +19.26% 변했다.\n- 삼성전자 SDC의 2026Q2 매출은 전년 동기 대비 +17.32% 변했다.\n- 삼성전자 연결 매출 합계(원문 표기 \"계(*)\")의 2026Q2 매출은 전년 동기 대비 +130.00% 변했다.\n\n**계산 예시** (CAL-Q0143): 원문 3개월 매출 = 127516071000000\n\n**비교 가능한 범위**: 합계 검사를 통과한 기간·축만 수치로 냈습니다(통과 기간 2023Q1~2026Q2). 정의가 바뀐 기간끼리는 비교하지 않습니다.",
+  "L3_neutral": "## 요약\n\n**입력과 산식**\n- CAL-Q0143: 원문 3개월 매출 (입력 O0676)\n- CAL-Q0157: 원문 3개월 매출 (입력 O0674)\n- CAL-Q0171: 원문 3개월 매출 (입력 O0680)\n- CAL-Q0185: 원문 3개월 매출 (입력 O0678)\n\n**사업 정의 변경**\n- product product-v1→product-v2 (2023-09-30): 신설, 추가 ['TV,모니터등', '디스플레이패널', '스마트폰등'] / 제외 ['DP', '무선', '영상기기'], 확정=False\n- region region-v1→region-v2 (2024-12-31): 이름 변경 후보, 추가 ['본사소재지국가'] / 제외 ['국내'], 확정=False\n- region region-v2→region-v3 (2025-06-30): 이름 변경 후보, 추가 ['국내'] / 제외 ['본사소재지국가'], 확정=False\n\n**합계 차이**\n- product 축 부분 공개 표: 2023Q1, 2023Q2, 2023Q3 등 — 일부 항목만 공시한 표는 합계 일치를 주장하지 않습니다.\n- product 축 부분표 가능(합계 불일치): 2024Q2, 2024Q3, 2024Q4 등 — 일부 항목만 공시한 표는 합계 일치를 주장하지 않습니다.",
+  "L4_neutral": "## 요약\n\n- reportId=P02-005930-2026-11-04 / inputDigest=8bd577f79c9e291ce88e4c4a1229b8d908d3d44b5a360d02661622745ab70312\n- sourceDigest=10fdabf817bba6f7b60f021ff2f1ba44e93626f15669f90e8abbec23a04f7d98 / codeVersion=p02-agent-5.1\n- 주장 194개(표현 제외 0개, 원 분석 숨김 89개)\n- 보류 등록부: 활성 51 / 차단 24 / 미검토 51\n- 최근 분기 주장 ID: C-Q0143, C-Q0157, C-Q0171, C-Q0185, C-Q0199, C-Q0213"
+ },
+ "source": {
+  "notebook": "P02_Agent_LIVE__Final_v5.2.ipynb",
+  "run": "p02_out/20261104T085311928947Z",
+  "dataMode": "LIVE"
+ }
+}
